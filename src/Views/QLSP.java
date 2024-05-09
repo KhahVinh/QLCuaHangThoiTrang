@@ -366,6 +366,7 @@ public class QLSP extends javax.swing.JPanel {
         // TODO add your handling code here:
         JProductStock.addItem("Còn hàng");
         JProductStock.addItem("Hết hàng");
+        JProductStock.addItem("Đang nhập");
     }//GEN-LAST:event_JProductStockActionPerformed
     public static class RoundedBorder implements Border {
 
