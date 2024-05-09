@@ -3,14 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/M:/Source%20Code/BTL_JAVA/QLCuaHangThoiTrang/src/Views/QLSP.java</file>
-            <file>file:/M:/Source%20Code/BTL_JAVA/QLCuaHangThoiTrang/src/Component/ListProduct.java</file>
-            <file>file:/M:/Source%20Code/BTL_JAVA/QLCuaHangThoiTrang/src/Component/ChangeController.java</file>
-            <file>file:/M:/Source%20Code/BTL_JAVA/QLCuaHangThoiTrang/src/Models/DanhMuc.java</file>
-            <file>file:/M:/Source%20Code/BTL_JAVA/QLCuaHangThoiTrang/src/Models/Product.java</file>
             <file>file:/M:/Source%20Code/BTL_JAVA/QLCuaHangThoiTrang/src/Component/Menu.java</file>
-            <file>file:/M:/Source%20Code/BTL_JAVA/QLCuaHangThoiTrang/src/Component/ReadWriteProduct.java</file>
-            <file>file:/M:/Source%20Code/BTL_JAVA/QLCuaHangThoiTrang/src/Views/GiaoDien.java</file>
+            <file>file:/M:/Source%20Code/BTL_JAVA/QLCuaHangThoiTrang/src/Views/QuanLyMatHang.java</file>
+            <file>file:/M:/Source%20Code/BTL_JAVA/QLCuaHangThoiTrang/src/Views/DangNhap.java</file>
         </group>
     </open-files>
 </project-private>
