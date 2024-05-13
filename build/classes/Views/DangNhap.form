@@ -188,10 +188,8 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="108" max="-2" attributes="0"/>
                       <Component id="btnDangNhap" min="-2" pref="120" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="btnDoiMK" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -200,10 +198,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="btnDangNhap" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnDoiMK" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="btnDangNhap" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -214,14 +209,6 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="&#x110;&#x102;NG NH&#x1eac;P"/>
               </Properties>
-            </Component>
-            <Component class="javax.swing.JButton" name="btnDoiMK">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="&#x110;&#x1ed4;I M&#x1eac;T KH&#x1ea8;U"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDoiMKActionPerformed"/>
-              </Events>
             </Component>
           </SubComponents>
         </Container>
