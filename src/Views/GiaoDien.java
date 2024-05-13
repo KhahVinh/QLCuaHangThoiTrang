@@ -1,5 +1,5 @@
 package Views;
-import Component.ChangeController;
+import Controllers.ChangeController;
 import Models.DanhMuc;
 import java.util.ArrayList;
 

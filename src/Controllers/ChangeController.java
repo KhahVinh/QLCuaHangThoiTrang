@@ -1,6 +1,4 @@
-
-package Component;
-
+package Controllers;
 import Models.DanhMuc;
 import Views.QLSP;
 import java.awt.BorderLayout;
