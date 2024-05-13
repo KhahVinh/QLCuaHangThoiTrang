@@ -2,6 +2,7 @@ package Views;
 import Component.ChangeController;
 import Models.DanhMuc;
 import java.util.ArrayList;
+
 public class GiaoDien extends javax.swing.JFrame {
     public GiaoDien() {
         initComponents();
@@ -199,7 +200,6 @@ public class GiaoDien extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public static void main(String args[]) {
-
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new GiaoDien().setVisible(true);
@@ -211,7 +211,8 @@ public class GiaoDien extends javax.swing.JFrame {
         ChangeController ccl = new ChangeController(JDisplay);
         ccl.setQLSP(JQLSP, QLDM);
         ArrayList<DanhMuc> danhmuc = new ArrayList<>();
-//        danhmuc.add(new DanhMuc("QLSP", JQLSP, QLSP));
+        danhmuc.add(new DanhMuc("QLSP", JQLSP, QLSP));  
+        
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JDisplay;

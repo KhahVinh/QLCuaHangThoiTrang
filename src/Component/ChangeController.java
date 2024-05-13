@@ -7,6 +7,7 @@ import java.awt.BorderLayout;
 import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import Views.DienThongTInSanPham;
 
 public class ChangeController {
     private ArrayList<DanhMuc> danhmuc = new ArrayList<>();
