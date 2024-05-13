@@ -13,11 +13,13 @@ import Component.ReadWriteProduct;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import static Views.DienThongTInSanPham.danhsachsanpham;
+
+import java.util.ArrayList;
 public class QLSP extends javax.swing.JPanel {
     static String[] columnName = {"Mã sản phẩm","Sản phẩm", "Loại", "Tình trạng", "Giá bán"};
     static DefaultTableModel dtmProduct = new DefaultTableModel(columnName, 0);
     static ListProduct listProduct = new ListProduct();
+    static ArrayList<Product> danhsachsanpham = new ArrayList<>();
     Product pd;
     ReadWriteProduct rwp = new ReadWriteProduct();
     String fileName = "QuanLySanPham.txt";

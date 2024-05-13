@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import Models.Product;
 import javax.swing.table.DefaultTableModel;
+
 public class ListProduct implements Serializable {
-    public void displayData(DefaultTableModel dtm,ArrayList<Product> danhsachsanpham) {
+
+    public void displayData(DefaultTableModel dtm, ArrayList<Product> danhsachsanpham) {
         try {
             danhsachsanpham.stream().forEach((product) -> {
                 dtm.addRow(new Object[]{product.getProductName(), product.getProductCategory(), product.getProductStock(), product.getProductPrice()});
@@ -15,7 +17,7 @@ public class ListProduct implements Serializable {
         }
     }
 
-    public boolean searchProduct(DefaultTableModel dtm, String name,ArrayList<Product> danhsachsanpham) {
+    public boolean searchProduct(DefaultTableModel dtm, String name, ArrayList<Product> danhsachsanpham) {
         try {
             for (Product product : danhsachsanpham) {
                 if (product.getProductName().equalsIgnoreCase(name)) {
@@ -28,7 +30,7 @@ public class ListProduct implements Serializable {
         return false;
     }
 
-    public boolean correctProduct(String id,ArrayList<Product> danhsachsanpham) {
+    public boolean correctProduct(String id, ArrayList<Product> danhsachsanpham) {
         try {
             for (Product product : danhsachsanpham) {
                 if (product.getProductName().equalsIgnoreCase(id)) {
@@ -41,7 +43,7 @@ public class ListProduct implements Serializable {
         return false;
     }
 
-    public boolean addProduct(Product p,ArrayList<Product> danhsachsanpham) {
+    public boolean addProduct(Product p, ArrayList<Product> danhsachsanpham) {
         try {
             if (danhsachsanpham.contains(p)) {
                 return false;
@@ -55,10 +57,29 @@ public class ListProduct implements Serializable {
         }
     }
 
-    public void delete(int index,ArrayList<Product> danhsachsanpham) {
+    public void delete(int index, ArrayList<Product> danhsachsanpham) {
         danhsachsanpham.remove(index);
     }
-        public Product SanPham(int index,ArrayList<Product> danhsachsanpham) {
+
+    public Product SanPham(int index, ArrayList<Product> danhsachsanpham) {
         return danhsachsanpham.get(index);
+    }
+
+    public boolean checkID(String id, int index,ArrayList<Product> danhsachsanpham) {
+        int cout = 0;
+        for (Product product : danhsachsanpham) {
+            if (product.getProductID().equalsIgnoreCase(id)) {
+                cout++;
+            }
+            if (product.getProductID().equalsIgnoreCase(id)) {
+                if (danhsachsanpham.get(index).getProductID().equalsIgnoreCase(id)) {
+                    cout--;
+                }
+            }
+        }
+        if (cout >= 1) {
+            return false;
+        }
+        return true;
     }
 }

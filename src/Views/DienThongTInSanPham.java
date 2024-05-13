@@ -6,17 +6,20 @@ import Component.ListProduct;
 import static Views.QLSP.loadDataIntoTableModel;
 import static Views.QLSP.listProduct;
 import static Views.QLSP.selectIndex;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import static Views.QLSP.dtmProduct;
+import static Views.QLSP.danhsachsanpham;
 public class DienThongTInSanPham extends javax.swing.JPanel {
-    static ArrayList<Product> danhsachsanpham = new ArrayList<>(); ;
     static Product product;
-//    static ListProduct listProduct;
+    private  QLSP qlsp;
     private ReadWriteProduct rwp = new ReadWriteProduct();
     private ListProduct listproduct = new ListProduct();
     private String fileName = "QuanLySanPham.txt";
 
     public DienThongTInSanPham() {
         initComponents();
-
+//        qlsp = (QLSP)parent;
     }
 
     @SuppressWarnings("unchecked")
@@ -199,6 +202,48 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
     }//GEN-LAST:event_JDeleteActionPerformed
 
     private void JConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JConfirmActionPerformed
+        String id = "";
+        String name = "";
+        String category = "";
+        String stock = "";
+        float price = 0;
+        boolean check = true;
+        int index = danhsachsanpham.size();
+        category = ProductCategory.getText();
+        stock = ProductStock.getSelectedItem().toString();
+        try {
+            id = ProductID.getText();
+            if (id.trim().length() == 0){
+                JOptionPane.showConfirmDialog(null, "ID Không được để trống", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            }
+            if(!listproduct.checkID(id, index, danhsachsanpham)){
+                JOptionPane.showConfirmDialog(null, "ID đã tồn tại", "Thông báo",  JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            check = false;
+        }
+        try {
+            name = ProductName.getText();
+            if (name.trim().length() == 0){
+                JOptionPane.showConfirmDialog(null, "Tên Không được để trống", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            check = false;
+        }
+        try {
+            price = Float.parseFloat(ProductPrice.getText());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Giá tiền không đúng", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            check = false;
+        }
+        if (check) {
+            product = new Product(id, name, category, stock, price);
+            danhsachsanpham.add(product);
+//            dtmProduct.addRow(new Object{);
+            JOptionPane.showMessageDialog(null, "Thêm thành công","Thông báo",JOptionPane.DEFAULT_OPTION);
+        }
 //        try {
 //            dtmProduct = new DefaultTableModel();
 //            danhsachsanpham = new ArrayList<>();
@@ -214,7 +259,6 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
 //                danhsachsanpham.add(product);
 //                rwp.writeFile(danhsachsanpham,fileName);
 //                deleteFile();
-////                listProduct.displayData(dtmProduct, danhsachsanpham);
 //            }
 //            
 //        } catch (NumberFormatException numberF) {
@@ -222,25 +266,10 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
 //        } catch (Exception e) {
 //            System.out.println(e.getMessage());
 //        }
-        selectIndex = danhsachsanpham.size() + 1;
-        if(selectIndex != -1) {
-            try {
-                if(listProduct.correctProduct(fileName, danhsachsanpham)){
-                    product = listProduct.SanPham(selectIndex, danhsachsanpham);
-                    product.setProductID(ProductID.getText());
-                    product.setProductName(ProductName.getText());
-                    product.setProductCategory(ProductCategory.getText());
-                    product.setProductStock(ProductStock.getSelectedItem().toString());
-                    product.setProductPrice(Float.parseFloat(ProductPrice.getText()));
-                    loadDataIntoTableModel();
-                }
-            } catch (Exception e) {
-            }
-        }
     }//GEN-LAST:event_JConfirmActionPerformed
 
     private void JDelete1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JDelete1ActionPerformed
-        new DienThongTInSanPham().remove(Name);
+        
     }//GEN-LAST:event_JDelete1ActionPerformed
 
 
