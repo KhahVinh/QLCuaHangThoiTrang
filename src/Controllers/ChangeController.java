@@ -4,6 +4,7 @@ package Controllers;
 import Models.DanhMuc;
 import Views.QLDM;
 import Views.QLSP;
+import Views.QLTKhoan;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
@@ -31,15 +32,6 @@ public class ChangeController {
         jpnRoot.removeAll();
         jpnRoot.setLayout(new BorderLayout());
         jpnRoot.add(new QLSP());
-        jpnRoot.validate();
-        jpnRoot.repaint();
-    }
-    
-    public void setQLDM(JPanel jpn, JLabel jpl) {
-        kindSelected = "QLDM";
-        jpnRoot.removeAll();
-        jpnRoot.setLayout(new BorderLayout());
-        jpnRoot.add(new QLDM());
         jpnRoot.validate();
         jpnRoot.repaint();
     }
@@ -107,6 +99,10 @@ public class ChangeController {
                     node = new QLDM();
                     break;
                 }
+                case "QLTKhoan": {
+                    node = new QLTKhoan();
+                    break;
+                }
                 default:
                     node = new QLSP();
 //                    throw new AssertionError();
@@ -117,7 +113,7 @@ public class ChangeController {
             jpnRoot.add(node);
             jpnRoot.validate();
             jpnRoot.repaint();
-//            setChangeBackground(kind);
+            setChangeBackground(kind);
         }
 
         @Override
@@ -145,6 +141,17 @@ public class ChangeController {
                 jlbItem.setBackground(new Color(26, 29, 31));
             }
         }
-
+        
+        private void setChangeBackground(String kind) {
+            for (DanhMuc i : danhMuc) {
+                if (i.getKind().equalsIgnoreCase(kind)) {
+                    i.getJpl().setBackground(new Color(39, 43, 48));
+                    i.getJlb().setBackground(new Color(39, 43, 48));
+                } else {
+                    i.getJpl().setBackground(new Color(26, 29, 31));
+                    i.getJlb().setBackground(new Color(26, 29, 31));
+                }
+            }
+        }
     }
 }
