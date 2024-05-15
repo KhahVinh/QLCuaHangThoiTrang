@@ -12,7 +12,7 @@ public class ListProduct implements Serializable {
     public void displayData(DefaultTableModel dtm) {
         try {
             pd.stream().forEach((product) -> {
-                dtm.addRow(new Object[]{product.getProductName(), product.getProductSold(), product.getProductCategory(), product.getProductStock(), product.getProductPrice()});
+                dtm.addRow(new Object[]{product.getProductName(), product.getProductCategory(), product.getProductStock(), product.getProductPrice()});
             });
         } catch (Exception e) {
             System.out.println(e);
@@ -57,5 +57,22 @@ public class ListProduct implements Serializable {
     }
     public void delete(int index) {
         pd.remove(index);
+    }
+    public boolean checkID(String id, int index,ArrayList<Product> danhsachsanpham) {
+        int cout = 0;
+        for (Product product : danhsachsanpham) {
+            if (product.getProductID().equalsIgnoreCase(id)) {
+                cout++;
+            }
+            if (product.getProductID().equalsIgnoreCase(id)) {
+                if (danhsachsanpham.get(index).getProductID().equalsIgnoreCase(id)) {
+                    cout--;
+                }
+            }
+        }
+        if (cout >= 1) {
+            return false;
+        }
+        return true;
     }
 }
