@@ -36,7 +36,7 @@ public class QLSP extends javax.swing.JPanel {
             System.out.println(e.getMessage());
             JOptionPane.showMessageDialog(null, "Danh sach hien tai rong");
         }
-//        String[] columnName = {"Mã sản phẩm","Sản phẩm", "Loại", "Tình trạng", "Giá bán"};
+        
         dtmProduct = new DefaultTableModel(columnName, 0);
         for (Product product : danhsachsanpham) {
             Object[] rowData = {product.getProductID(),product.getProductName(),product.getProductCategory(),product.getProductStock(),product.getProductPrice()};
@@ -56,7 +56,6 @@ public class QLSP extends javax.swing.JPanel {
     static void loadDataIntoTableModel() {
         XoaDLTrenBang();
         listProduct.displayData(dtmProduct,danhsachsanpham);
-//        luuFile();
     }
 
     static void XoaDLTrenBang() {
@@ -236,7 +235,6 @@ public class QLSP extends javax.swing.JPanel {
             JPanel dienthongtin = new DienThongTInSanPham();
             newFrame.add(dienthongtin);
             newFrame.setVisible(true);
-//            listProduct.displayData(dtmProduct, danhsachsanpham);
             
         } catch (Exception e) {
             System.out.println(e.getMessage());
