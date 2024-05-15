@@ -4,6 +4,7 @@ package Controllers;
 import Models.DanhMuc;
 import Views.QLDM;
 import Views.QLSP;
+import Views.QLTKhoan;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
@@ -105,6 +106,10 @@ public class ChangeController {
                 }
                 case "QLDM": {
                     node = new QLDM();
+                    break;
+                }
+                case "QLTKhoan": {
+                    node = new QLTKhoan();
                     break;
                 }
                 default:
