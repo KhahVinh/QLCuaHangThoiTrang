@@ -5,7 +5,6 @@ import java.io.Serializable;
 public class Product implements Serializable{
     private String productID;
     private String productName;
-    private int productSold;
     private String productCategory;
     private String productStock;
     private float productPrice;
@@ -13,10 +12,9 @@ public class Product implements Serializable{
     public Product() {
     }
 
-    public Product(String productID, String productName, int productSold, String productCategory, String productStock, float productPrice) {
+    public Product(String productID, String productName, String productCategory, String productStock, float productPrice) {
         this.productID = productID;
         this.productName = productName;
-        this.productSold = productSold;
         this.productCategory = productCategory;
         this.productStock = productStock;
         this.productPrice = productPrice;
@@ -36,14 +34,6 @@ public class Product implements Serializable{
 
     public void setProductName(String productName) {
         this.productName = productName;
-    }
-
-    public int getProductSold() {
-        return productSold;
-    }
-
-    public void setProductSold(int productSold) {
-        this.productSold = productSold;
     }
 
     public String getProductCategory() {
@@ -72,8 +62,6 @@ public class Product implements Serializable{
 
     @Override
     public String toString() {
-        return productID + productName +  productSold + productCategory + productStock +productPrice ;
+        return productID + productName + productCategory + productStock +productPrice ;
     }
-
-    
 }
