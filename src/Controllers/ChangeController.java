@@ -109,7 +109,6 @@ public class ChangeController {
                 }
                 default:
                     node = new QLSP();
-//                    throw new AssertionError();
                     break;
             }
             jpnRoot.removeAll();
@@ -117,7 +116,7 @@ public class ChangeController {
             jpnRoot.add(node);
             jpnRoot.validate();
             jpnRoot.repaint();
-//            setChangeBackground(kind);
+            resetBackgroundNoSelected(kind);
         }
 
         @Override
@@ -146,5 +145,16 @@ public class ChangeController {
             }
         }
 
+        private void resetBackgroundNoSelected(String kind) {
+            for (DanhMuc i : danhMuc) {
+                if (i.getKind().equalsIgnoreCase(kind)) {
+                    i.getJlb().setBackground(new Color(39, 43, 48));
+                    i.getJpl().setBackground(new Color(39, 43, 48));
+                } else {
+                    i.getJlb().setBackground(new Color(26, 29, 31));
+                    i.getJpl().setBackground(new Color(26, 29, 31));
+                }
+            }
+        }
     }
 }
