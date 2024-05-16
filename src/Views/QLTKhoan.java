@@ -145,13 +145,20 @@ public class QLTKhoan extends javax.swing.JPanel {
             if(evt.getSource() == btnCapNhap){
                 while (cu != null) {                    
                     if(mkCu.equals(cu)){
-                        br.close();
-                        fr.close();
-                        PrintWriter pw = new PrintWriter(f);
-                        pw.println(mkMoi);
-                        pw.flush();
-                        pw.close();
-                        JOptionPane.showMessageDialog(this, "Cập nhập thành công");
+                        if(!nhaplai.equals(mkMoi) )
+                        {
+                            JOptionPane.showMessageDialog(this, "Nhập mật khẩu lại không đúng", "Thông báo", JOptionPane.ERROR_MESSAGE);
+                        }else{
+                            br.close();
+                            fr.close();
+                            PrintWriter pw = new PrintWriter(f);
+                            pw.println(mkMoi);
+                            pw.flush();
+                            pw.close();
+                            JOptionPane.showMessageDialog(this, "Cập nhập thành công");
+                        }
+                    }else{
+                        JOptionPane.showMessageDialog(this, "Nhập sai mật khẩu cũ", "Thông báo", JOptionPane.ERROR_MESSAGE);
                     }
                     break;
                 }
