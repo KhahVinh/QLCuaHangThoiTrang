@@ -5,13 +5,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 public class QLTKhoan extends javax.swing.JPanel {
 
-//    String filePassword = "password.dat";
-//    File f = new File(filePassword);
+    String filePassword = "password.dat";
+    File f = new File(filePassword);
 
     public QLTKhoan() {
         initComponents();
@@ -87,6 +86,11 @@ public class QLTKhoan extends javax.swing.JPanel {
         jPanel2.add(txtNhapLai, new org.netbeans.lib.awtextra.AbsoluteConstraints(255, 370, 245, 30));
 
         btnCapNhap.setText("CẬP NHẬP");
+        btnCapNhap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCapNhapActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnCapNhap, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 430, 110, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -110,6 +114,53 @@ public class QLTKhoan extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCapNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapNhapActionPerformed
+        String mkCu = txtMKC.getText();
+        String mkMoi = txtMKM.getText();
+        String nhaplai = txtNhapLai.getText();
+
+        StringBuilder sb = new StringBuilder();
+
+        if (mkCu.equals("")) {
+            sb.append("Mật khẩu cũ đang bị rỗng\n");
+        }
+        if (mkMoi.equals("")) {
+            sb.append("Mật khẩu mới đang bị rỗng\n");
+        }
+        if (nhaplai.equals("")) {
+            sb.append("Mật khẩu nhập lại đang bị rỗng\n");
+        }
+        if (sb.length() > 0) {
+            JOptionPane.showMessageDialog(this,
+                    sb.toString(),
+                    "Thông báo", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        try {
+            FileReader fr = new FileReader(f);
+            BufferedReader br = new BufferedReader(fr);
+            String cu = br.readLine();
+            if(evt.getSource() == btnCapNhap){
+                while (cu != null) {                    
+                    if(mkCu.equals(cu)){
+                        br.close();
+                        fr.close();
+                        PrintWriter pw = new PrintWriter(f);
+                        pw.println(mkMoi);
+                        pw.flush();
+                        pw.close();
+                        JOptionPane.showMessageDialog(this, "Cập nhập thành công");
+                    }
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error");
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnCapNhapActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
