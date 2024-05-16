@@ -1,7 +1,5 @@
 package Views;
 
-import Models.Product;
-import javax.swing.JOptionPane;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Insets;
@@ -13,17 +11,15 @@ import Component.ReadWriteProduct;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
-import java.util.ArrayList;
+import static  Views.DienThongTInSanPham.danhsachsanpham;
 public class QLSP extends javax.swing.JPanel {
-    static String[] columnName = {"Mã sản phẩm","Sản phẩm", "Loại", "Tình trạng", "Giá bán"};
+
+    static String[] columnName = {"Mã sản phẩm", "Sản phẩm", "Loại", "Tình trạng", "Giá bán"};
     static DefaultTableModel dtmProduct = new DefaultTableModel(columnName, 0);
     static ListProduct listProduct = new ListProduct();
-    static ArrayList<Product> danhsachsanpham = new ArrayList<>();
-    Product pd;
     ReadWriteProduct rwp = new ReadWriteProduct();
     String fileName = "QuanLySanPham.txt";
-    static int selectIndex = -1;
+
     public QLSP() {
         initComponents();
         Init();
@@ -31,32 +27,32 @@ public class QLSP extends javax.swing.JPanel {
 
     private void Init() {
         try {
-            rwp.readFile(fileName,danhsachsanpham);
+            rwp.readFile(fileName, danhsachsanpham);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             JOptionPane.showMessageDialog(null, "Danh sach hien tai rong");
         }
-//        String[] columnName = {"Mã sản phẩm","Sản phẩm", "Loại", "Tình trạng", "Giá bán"};
-        dtmProduct = new DefaultTableModel(columnName, 0);
+        updateTable();
+    }
+
+    public void addProduct(Product product) {
+        danhsachsanpham.add(product);
+       
+        updateTable();
+    }
+
+    public void updateTable() {
+        dtmProduct.setRowCount(0);// Xóa tất cả các dòng hiện tại
         for (Product product : danhsachsanpham) {
-            Object[] rowData = {product.getProductID(),product.getProductName(),product.getProductCategory(),product.getProductStock(),product.getProductPrice()};
+            Object[] rowData = {product.getProductID(), product.getProductName(), product.getProductCategory(), product.getProductStock(), product.getProductPrice()};
             dtmProduct.addRow(rowData);
         }
         TableProduct.setModel(dtmProduct);
     }
 
-//    public void luuFile() {
-//        try {
-//            rwp.writeFile(danhsachsanpham, fileName);
-//        } catch (Exception ex) {
-//            System.out.println(ex);
-//        }
-//    }
-
     static void loadDataIntoTableModel() {
         XoaDLTrenBang();
-//        listProduct.displayData(dtmProduct,danhsachsanpham);
-//        luuFile();
+
     }
 
     static void XoaDLTrenBang() {
@@ -66,7 +62,6 @@ public class QLSP extends javax.swing.JPanel {
         }
     }
 
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -74,10 +69,12 @@ public class QLSP extends javax.swing.JPanel {
         Header = new javax.swing.JPanel();
         Title = new javax.swing.JLabel();
         AddProduct = new javax.swing.JButton();
+        JLength = new javax.swing.JLabel();
         JDisplayProduct = new javax.swing.JPanel();
         JFeature = new javax.swing.JPanel();
         JSearch = new javax.swing.JPanel();
         SearchText = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
         Products = new javax.swing.JScrollPane();
         TableProduct = new javax.swing.JTable();
 
@@ -99,6 +96,8 @@ public class QLSP extends javax.swing.JPanel {
             }
         });
 
+        JLength.setText("jLabel1");
+
         javax.swing.GroupLayout HeaderLayout = new javax.swing.GroupLayout(Header);
         Header.setLayout(HeaderLayout);
         HeaderLayout.setHorizontalGroup(
@@ -106,6 +105,8 @@ public class QLSP extends javax.swing.JPanel {
             .addGroup(HeaderLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(Title)
+                .addGap(198, 198, 198)
+                .addComponent(JLength, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(AddProduct)
                 .addGap(34, 34, 34))
@@ -113,11 +114,17 @@ public class QLSP extends javax.swing.JPanel {
         HeaderLayout.setVerticalGroup(
             HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(HeaderLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Title, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(AddProduct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(9, Short.MAX_VALUE)
+                .addGroup(HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(HeaderLayout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addComponent(JLength, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(HeaderLayout.createSequentialGroup()
+                        .addGroup(HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(Title, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AddProduct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         JDisplayProduct.setBackground(new java.awt.Color(102, 102, 102));
@@ -151,6 +158,13 @@ public class QLSP extends javax.swing.JPanel {
             .addComponent(SearchText, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
         );
 
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout JFeatureLayout = new javax.swing.GroupLayout(JFeature);
         JFeature.setLayout(JFeatureLayout);
         JFeatureLayout.setHorizontalGroup(
@@ -158,22 +172,26 @@ public class QLSP extends javax.swing.JPanel {
             .addGroup(JFeatureLayout.createSequentialGroup()
                 .addGap(41, 41, 41)
                 .addComponent(JSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(101, 101, 101))
         );
         JFeatureLayout.setVerticalGroup(
             JFeatureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JFeatureLayout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addComponent(JSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(JFeatureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1)
+                    .addComponent(JSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(10, Short.MAX_VALUE))
         );
 
-        Products.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Products.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
 
+        TableProduct.setAutoCreateRowSorter(true);
         TableProduct.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Sản phẩm", "Đã bán", "Loại", "Tình trạng", "Giá bán"
@@ -187,6 +205,7 @@ public class QLSP extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
+        TableProduct.setRowHeight(25);
         Products.setViewportView(TableProduct);
 
         javax.swing.GroupLayout JDisplayProductLayout = new javax.swing.GroupLayout(JDisplayProduct);
@@ -236,8 +255,7 @@ public class QLSP extends javax.swing.JPanel {
             JPanel dienthongtin = new DienThongTInSanPham();
             newFrame.add(dienthongtin);
             newFrame.setVisible(true);
-//            listProduct.displayData(dtmProduct, danhsachsanpham);
-            
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -246,6 +264,11 @@ public class QLSP extends javax.swing.JPanel {
     private void SearchTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchTextActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_SearchTextActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        JLength.setText("length: " + danhsachsanpham.size());
+    }//GEN-LAST:event_jButton1ActionPerformed
     public static class RoundedBorder implements Border {
 
         private int radius;
@@ -271,10 +294,12 @@ public class QLSP extends javax.swing.JPanel {
     private javax.swing.JPanel Header;
     private javax.swing.JPanel JDisplayProduct;
     private javax.swing.JPanel JFeature;
+    private javax.swing.JLabel JLength;
     private javax.swing.JPanel JSearch;
     private javax.swing.JScrollPane Products;
     private javax.swing.JTextField SearchText;
     private javax.swing.JTable TableProduct;
     private javax.swing.JLabel Title;
+    private javax.swing.JButton jButton1;
     // End of variables declaration//GEN-END:variables
 }

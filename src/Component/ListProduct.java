@@ -7,72 +7,70 @@ import javax.swing.table.DefaultTableModel;
 
 public class ListProduct implements Serializable {
 
-    ArrayList<Product> pd = new ArrayList<>();
 
-    public void displayData(DefaultTableModel dtm) {
+    public void displayData(DefaultTableModel dtm,ArrayList<Product> danhsachsanpham) {
         try {
-            pd.stream().forEach((product) -> {
+            danhsachsanpham.stream().forEach((product) -> {
                 dtm.addRow(new Object[]{product.getProductName(), product.getProductCategory(), product.getProductStock(), product.getProductPrice()});
             });
+            
         } catch (Exception e) {
             System.out.println(e);
         }
     }
-    public boolean searchProduct(DefaultTableModel dtm, String name) {
+
+    public boolean searchProduct(DefaultTableModel dtm, String name,ArrayList<Product> danhsachsanpham) {
         try {
-            for (Product product : pd) {
-                if(product.getProductName().equalsIgnoreCase(name)){
-                   return true;
+            for (Product product : danhsachsanpham) {
+                if (product.getProductName().equalsIgnoreCase(name)) {
+                    return true;
                 }
             }
         } catch (Exception e) {
             System.out.println(e);
         }
-                return false;
+        return false;
     }
-    public boolean correctProduct(String id) {
+
+    public boolean correctProduct(String id,ArrayList<Product> danhsachsanpham) {
         try {
-            for (Product product : pd) {
-                if(product.getProductName().equalsIgnoreCase(id)){
-                   return true;
+            for (Product product : danhsachsanpham) {
+                if (product.getProductName().equalsIgnoreCase(id)) {
+                    return true;
                 }
             }
         } catch (Exception e) {
             System.out.println(e);
         }
-                return false;
+        return false;
     }
-    public boolean addProduct(Product p){
+
+    public boolean addProduct(Product p,ArrayList<Product> danhsachsanpham) {
         try {
-            if(pd.contains(p)){
+            if (danhsachsanpham.contains(p)) {
                 return false;
             } else {
-                pd.add(p);
+                danhsachsanpham.add(p);
             }
-            return true; 
+            return true;
         } catch (Exception e) {
             System.out.println(e);
             return false;
         }
     }
-    public void delete(int index) {
-        pd.remove(index);
+
+    public void delete(int index,ArrayList<Product> danhsachsanpham) {
+        danhsachsanpham.remove(index);
     }
-    public boolean checkID(String id, int index,ArrayList<Product> danhsachsanpham) {
-        int cout = 0;
-        for (Product product : danhsachsanpham) {
-            if (product.getProductID().equalsIgnoreCase(id)) {
-                cout++;
-            }
-            if (product.getProductID().equalsIgnoreCase(id)) {
-                if (danhsachsanpham.get(index).getProductID().equalsIgnoreCase(id)) {
-                    cout--;
-                }
+
+    public boolean checkIDSame(String id, ArrayList<Product> danhsachsanpham) {
+        int count = 0;
+        for (int i = 0; i < danhsachsanpham.size(); i++) {
+            if (danhsachsanpham.get(i).getProductID().toUpperCase().equalsIgnoreCase(id.toUpperCase())) {
+                count++;
             }
         }
-        if (cout >= 1) {
-            return false;
-        }
-        return true;
+        if(count != 0) return true;
+        else return false;
     }
 }
