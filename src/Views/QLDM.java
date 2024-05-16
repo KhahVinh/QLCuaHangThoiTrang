@@ -4,6 +4,12 @@
  */
 package Views;
 
+import Models.DanhMuc;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.util.ArrayList;
+import javax.swing.JPanel;
+
 /**
  *
  * @author T&T Center
@@ -13,8 +19,10 @@ public class QLDM extends javax.swing.JPanel {
     /**
      * Creates new form QLDM
      */
+    private ArrayList<DanhMuc> list = new ArrayList<>();
     public QLDM() {
         initComponents();
+        setView("NhaCungCap");
     }
 
     /**
@@ -27,44 +35,158 @@ public class QLDM extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        tabNCC = new javax.swing.JPanel();
+        titleNCC = new javax.swing.JLabel();
+        tabKH = new javax.swing.JPanel();
+        titleKH = new javax.swing.JLabel();
+        tabMH = new javax.swing.JPanel();
+        titleMH = new javax.swing.JLabel();
+        viewContent = new javax.swing.JPanel();
 
-        setLayout(new javax.swing.OverlayLayout(this));
+        setPreferredSize(new java.awt.Dimension(770, 444));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 989, Short.MAX_VALUE)
+        jPanel1.setLayout(new java.awt.GridLayout(1, 3, 80, 0));
+
+        tabNCC.setBackground(new java.awt.Color(135, 143, 253));
+        tabNCC.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        tabNCC.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabNCCMouseClicked(evt);
+            }
+        });
+        tabNCC.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 14));
+
+        titleNCC.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        titleNCC.setForeground(new java.awt.Color(255, 255, 255));
+        titleNCC.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        titleNCC.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/icon/parcel.png"))); // NOI18N
+        titleNCC.setText("Nhà cung cấp");
+        titleNCC.setIconTextGap(10);
+        titleNCC.setRequestFocusEnabled(false);
+        tabNCC.add(titleNCC);
+
+        jPanel1.add(tabNCC);
+
+        tabKH.setBackground(new java.awt.Color(205, 163, 246));
+        tabKH.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        tabKH.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabKHMouseClicked(evt);
+            }
+        });
+        tabKH.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 14));
+
+        titleKH.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        titleKH.setForeground(new java.awt.Color(255, 255, 255));
+        titleKH.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/icon/customer (1).png"))); // NOI18N
+        titleKH.setText("Khách hàng");
+        titleKH.setIconTextGap(10);
+        tabKH.add(titleKH);
+
+        jPanel1.add(tabKH);
+
+        tabMH.setBackground(new java.awt.Color(232, 208, 125));
+        tabMH.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        tabMH.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabMHMouseClicked(evt);
+            }
+        });
+        tabMH.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 14));
+
+        titleMH.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        titleMH.setForeground(new java.awt.Color(255, 255, 255));
+        titleMH.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/icon/cubes (1).png"))); // NOI18N
+        titleMH.setText("Mặt hàng");
+        titleMH.setIconTextGap(10);
+        tabMH.add(titleMH);
+
+        jPanel1.add(tabMH);
+
+        viewContent.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout viewContentLayout = new javax.swing.GroupLayout(viewContent);
+        viewContent.setLayout(viewContentLayout);
+        viewContentLayout.setHorizontalGroup(
+            viewContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 813, Short.MAX_VALUE)
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 147, Short.MAX_VALUE)
+        viewContentLayout.setVerticalGroup(
+            viewContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 431, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(viewContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(viewContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(367, Short.MAX_VALUE))
-        );
-
-        add(jPanel1);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void setView(String name) {
+        JPanel node;
+        switch (name) {
+            case "NhaCungCap": node = new NhaCungCap(); break;
+            case "KhachHang": node = new KhachHang(); break;
+            case "MatHang": node = new MatHang(); break;
+            default: node = new NhaCungCap();
+        }
+        viewContent.removeAll();
+        viewContent.setLayout(new BorderLayout());
+        viewContent.add(node);
+        viewContent.validate();
+        viewContent.repaint();
+    }
+    
+    private void tabNCCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabNCCMouseClicked
+        tabNCC.setBackground(new Color(135, 143, 253));
+        tabKH.setBackground(new Color(205, 163, 246));
+        tabMH.setBackground(new Color(232, 208, 125));
+        setView("NhaCungCap");
+        
+    }//GEN-LAST:event_tabNCCMouseClicked
+
+    private void tabKHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabKHMouseClicked
+        tabKH.setBackground(new Color(185, 128, 248));
+        tabNCC.setBackground(new Color(169, 175, 251));
+        tabMH.setBackground(new Color(232, 208, 125));
+        setView("KhachHang");
+    }//GEN-LAST:event_tabKHMouseClicked
+
+    private void tabMHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabMHMouseClicked
+        tabMH.setBackground(new Color(240, 198, 56));
+        tabNCC.setBackground(new Color(169, 175, 251));
+        tabKH.setBackground(new Color(205, 163, 246));
+        setView("MatHang");
+    }//GEN-LAST:event_tabMHMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel tabKH;
+    private javax.swing.JPanel tabMH;
+    private javax.swing.JPanel tabNCC;
+    private javax.swing.JLabel titleKH;
+    private javax.swing.JLabel titleMH;
+    private javax.swing.JLabel titleNCC;
+    private javax.swing.JPanel viewContent;
     // End of variables declaration//GEN-END:variables
 }

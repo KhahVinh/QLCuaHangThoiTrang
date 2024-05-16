@@ -205,14 +205,11 @@ public class GiaoDien extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jpnDisplay.setBackground(new java.awt.Color(255, 255, 255));
-        jpnDisplay.setOpaque(false);
-
         javax.swing.GroupLayout jpnDisplayLayout = new javax.swing.GroupLayout(jpnDisplay);
         jpnDisplay.setLayout(jpnDisplayLayout);
         jpnDisplayLayout.setHorizontalGroup(
             jpnDisplayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 770, Short.MAX_VALUE)
+            .addGap(0, 772, Short.MAX_VALUE)
         );
         jpnDisplayLayout.setVerticalGroup(
             jpnDisplayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
