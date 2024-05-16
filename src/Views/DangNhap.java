@@ -4,12 +4,20 @@
  */
 package Views;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author ASUS-PC
  */
 public class DangNhap extends javax.swing.JFrame {
 
+    String filePassword = "password.dat";
+    File f = new File(filePassword);
     /**
      * Creates new form DangNhap
      */
@@ -104,6 +112,11 @@ public class DangNhap extends javax.swing.JFrame {
         );
 
         btnDangNhap.setText("ĐĂNG NHẬP");
+        btnDangNhap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDangNhapActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -166,6 +179,50 @@ public class DangNhap extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangNhapActionPerformed
+        String taiKhoan = txtTaiKhoan.getText();
+        String matKhau = new String(txtMatKhau.getPassword());
+
+        StringBuilder sb = new StringBuilder();
+
+        if (taiKhoan.equals("")) {
+            sb.append("Tên tài khoản bị rỗng\n");
+        }
+        if (matKhau.equals("")) {
+            sb.append("Mật khẩu bị rỗng");
+        }
+        if (sb.length() > 0) {
+            JOptionPane.showMessageDialog(this,
+                    sb.toString(),
+                    "Thông báo", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            FileReader fr = new FileReader(f);
+            BufferedReader br = new BufferedReader(fr);
+            String passWord = br.readLine();
+
+            if (evt.getSource() == btnDangNhap) {
+                while (passWord != null) {
+                    if (taiKhoan.equals("admin") && matKhau.equals(passWord)) {
+                        JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
+                        GiaoDien gd = new GiaoDien();
+                        gd.setVisible(true);
+                        this.dispose();
+                    } else {
+                        JOptionPane.showConfirmDialog(this, "Tài khoản và mật khẩu đang sai", "Thông báo", JOptionPane.CLOSED_OPTION);
+                    }
+                    break;
+                }
+            }
+            br.close();
+        } catch (IOException e) {
+            System.err.println("Error");
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnDangNhapActionPerformed
 
     /**
      * @param args the command line arguments
