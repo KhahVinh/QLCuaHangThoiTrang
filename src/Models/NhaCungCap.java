@@ -6,13 +6,17 @@ import java.util.Objects;
 public class NhaCungCap {
     private int ma;
     private String ten;
-
-    public NhaCungCap(int ma, String ten) {
-        this.ma = ma;
-        this.ten = ten;
-    }
+    private String soDienThoai;
+    private String diaChi;
 
     public NhaCungCap() {
+    }
+
+    public NhaCungCap(int ma, String ten, String soDienThoai, String diaChi) {
+        this.ma = ma;
+        this.ten = ten;
+        this.soDienThoai = soDienThoai;
+        this.diaChi = diaChi;
     }
 
     public int getMa() {
@@ -23,6 +27,14 @@ public class NhaCungCap {
         return ten;
     }
 
+    public String getSoDienThoai() {
+        return soDienThoai;
+    }
+
+    public String getDiaChi() {
+        return diaChi;
+    }
+
     public void setMa(int ma) {
         this.ma = ma;
     }
@@ -31,35 +43,12 @@ public class NhaCungCap {
         this.ten = ten;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 29 * hash + this.ma;
-        hash = 29 * hash + Objects.hashCode(this.ten);
-        return hash;
+    public void setSoDienThoai(String soDienThoai) {
+        this.soDienThoai = soDienThoai;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final NhaCungCap other = (NhaCungCap) obj;
-        if (this.ma != other.ma) {
-            return false;
-        }
-        return Objects.equals(this.ten, other.ten);
-    }
-
-    @Override
-    public String toString() {
-        return "NhaCungCap{" + "ma=" + ma + ", ten=" + ten + '}';
+    public void setDiaChi(String diaChi) {
+        this.diaChi = diaChi;
     }
     
     
