@@ -122,13 +122,13 @@ public class QLTKhoan extends javax.swing.JPanel {
 
         StringBuilder sb = new StringBuilder();
 
-        if (mkCu.equals("")) {
+        if (mkCu.trim().equals("")) {
             sb.append("Mật khẩu cũ đang bị rỗng\n");
         }
-        if (mkMoi.equals("")) {
+        if (mkMoi.trim().equals("")) {
             sb.append("Mật khẩu mới đang bị rỗng\n");
         }
-        if (nhaplai.equals("")) {
+        if (nhaplai.trim().equals("")) {
             sb.append("Mật khẩu nhập lại đang bị rỗng\n");
         }
         if (sb.length() > 0) {
