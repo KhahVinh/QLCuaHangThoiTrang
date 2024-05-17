@@ -186,7 +186,7 @@ public class DangNhap extends javax.swing.JFrame {
 
         StringBuilder sb = new StringBuilder();
 
-        if (taiKhoan.equals("")) {
+        if (taiKhoan.trim().equals("")) {
             sb.append("Tên tài khoản bị rỗng\n");
         }
         if (matKhau.equals("")) {

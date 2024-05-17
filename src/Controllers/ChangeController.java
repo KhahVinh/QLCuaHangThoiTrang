@@ -5,6 +5,7 @@ import Models.DanhMuc;
 import Views.QLDM;
 import Views.QLSP;
 import Views.QLTKhoan;
+import Views.QLXH;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
@@ -97,6 +98,10 @@ public class ChangeController {
                 }
                 case "QLDM": {
                     node = new QLDM();
+                    break;
+                }
+                case "QLXH": {
+                    node = new QLXH();
                     break;
                 }
                 case "QLTKhoan": {
