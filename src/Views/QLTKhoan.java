@@ -34,6 +34,7 @@ public class QLTKhoan extends javax.swing.JPanel {
         btnCapNhap = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(102, 102, 102));
+        setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 1, new java.awt.Color(0, 0, 0)));
 
         titleDoiMatKhau.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         titleDoiMatKhau.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -46,7 +47,7 @@ public class QLTKhoan extends javax.swing.JPanel {
             HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(HeaderLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(titleDoiMatKhau, javax.swing.GroupLayout.DEFAULT_SIZE, 746, Short.MAX_VALUE)
+                .addComponent(titleDoiMatKhau, javax.swing.GroupLayout.DEFAULT_SIZE, 743, Short.MAX_VALUE)
                 .addContainerGap())
         );
         HeaderLayout.setVerticalGroup(
@@ -110,7 +111,7 @@ public class QLTKhoan extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(Header, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 547, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -122,13 +123,13 @@ public class QLTKhoan extends javax.swing.JPanel {
 
         StringBuilder sb = new StringBuilder();
 
-        if (mkCu.equals("")) {
+        if (mkCu.trim().equals("")) {
             sb.append("Mật khẩu cũ đang bị rỗng\n");
         }
-        if (mkMoi.equals("")) {
+        if (mkMoi.trim().equals("")) {
             sb.append("Mật khẩu mới đang bị rỗng\n");
         }
-        if (nhaplai.equals("")) {
+        if (nhaplai.trim().equals("")) {
             sb.append("Mật khẩu nhập lại đang bị rỗng\n");
         }
         if (sb.length() > 0) {
