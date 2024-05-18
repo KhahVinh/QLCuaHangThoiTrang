@@ -4,9 +4,12 @@
  */
 package Views;
 
+import Controllers.NhaCungCapController;
 import Models.DanhMuc;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 
@@ -14,15 +17,17 @@ import javax.swing.JPanel;
  *
  * @author T&T Center
  */
-public class QLDM extends javax.swing.JPanel {
+public class QLDMView extends javax.swing.JPanel {
 
     /**
      * Creates new form QLDM
      */
     private ArrayList<DanhMuc> list = new ArrayList<>();
-    public QLDM() {
+    public QLDMView() {
         initComponents();
         setView("NhaCungCap");
+        NhaCungCapController nccController = new NhaCungCapController(new NhaCungCapView());
+        nccController.showNhaCungCapView();
     }
 
     /**
@@ -109,11 +114,11 @@ public class QLDM extends javax.swing.JPanel {
         viewContent.setLayout(viewContentLayout);
         viewContentLayout.setHorizontalGroup(
             viewContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 813, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         viewContentLayout.setVerticalGroup(
             viewContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 431, Short.MAX_VALUE)
+            .addGap(0, 332, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -123,12 +128,11 @@ public class QLDM extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(viewContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
+                    .addComponent(viewContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(0, 97, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -144,10 +148,10 @@ public class QLDM extends javax.swing.JPanel {
     private void setView(String name) {
         JPanel node;
         switch (name) {
-            case "NhaCungCap": node = new NhaCungCap(); break;
-            case "KhachHang": node = new KhachHang(); break;
+            case "NhaCungCap": node = new NhaCungCapView(); break;
+            case "KhachHang": node = new KhachHangView(); break;
             case "MatHang": node = new MatHang(); break;
-            default: node = new NhaCungCap();
+            default: node = new NhaCungCapView();
         }
         viewContent.removeAll();
         viewContent.setLayout(new BorderLayout());
@@ -157,25 +161,24 @@ public class QLDM extends javax.swing.JPanel {
     }
     
     private void tabNCCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabNCCMouseClicked
-        tabNCC.setBackground(new Color(135, 143, 253));
-        tabKH.setBackground(new Color(205, 163, 246));
-        tabMH.setBackground(new Color(232, 208, 125));
-        setView("NhaCungCap");
-        
+//        tabNCC.setBackground(new Color(135, 143, 253));
+//        tabKH.setBackground(new Color(205, 163, 246));
+//        tabMH.setBackground(new Color(232, 208, 125));
+//        setView("NhaCungCap");
     }//GEN-LAST:event_tabNCCMouseClicked
 
     private void tabKHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabKHMouseClicked
-        tabKH.setBackground(new Color(185, 128, 248));
-        tabNCC.setBackground(new Color(169, 175, 251));
-        tabMH.setBackground(new Color(232, 208, 125));
-        setView("KhachHang");
+//        tabKH.setBackground(new Color(185, 128, 248));
+//        tabNCC.setBackground(new Color(169, 175, 251));
+//        tabMH.setBackground(new Color(232, 208, 125));
+//        setView("KhachHang");
     }//GEN-LAST:event_tabKHMouseClicked
 
     private void tabMHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabMHMouseClicked
-        tabMH.setBackground(new Color(240, 198, 56));
-        tabNCC.setBackground(new Color(169, 175, 251));
-        tabKH.setBackground(new Color(205, 163, 246));
-        setView("MatHang");
+//        tabMH.setBackground(new Color(240, 198, 56));
+//        tabNCC.setBackground(new Color(169, 175, 251));
+//        tabKH.setBackground(new Color(205, 163, 246));
+//        setView("MatHang");
     }//GEN-LAST:event_tabMHMouseClicked
 
 
