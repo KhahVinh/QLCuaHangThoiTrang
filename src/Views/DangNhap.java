@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package Views;
 
 import java.io.BufferedReader;
@@ -10,17 +7,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author ASUS-PC
- */
+
 public class DangNhap extends javax.swing.JFrame {
 
     String filePassword = "password.dat";
     File f = new File(filePassword);
-    /**
-     * Creates new form DangNhap
-     */
+    
     public DangNhap() {
         initComponents();
     }
