@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
+
 package Views;
 
 import Models.NhaCungCap;
@@ -12,8 +9,6 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
 public class NhaCungCapView extends javax.swing.JPanel {
     private static final String FILE_NAME = "NhaCungCap.txt";
@@ -101,7 +96,6 @@ public class NhaCungCapView extends javax.swing.JPanel {
         }
     }
     
-    
     public void handleEditValue() {
         int index = -1;
         index = tableView.getSelectedRow();
@@ -113,7 +107,7 @@ public class NhaCungCapView extends javax.swing.JPanel {
     }
     
     public void editValue(NhaCungCap value, int index, ChinhSuaNhaCungCap editView) {
-        if (value != null || index == -1) {
+        if (value != null && index != -1) {
             this.list.clear();
             this.list = readFromFile(FILE_NAME);
             this.list.get(index).setMa(value.getMa());
@@ -275,7 +269,7 @@ public class NhaCungCapView extends javax.swing.JPanel {
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(12, Short.MAX_VALUE))
         );
         boxSearchLayout.setVerticalGroup(
             boxSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -295,8 +289,8 @@ public class NhaCungCapView extends javax.swing.JPanel {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(boxFunction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(boxSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(boxSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -378,7 +372,6 @@ public class NhaCungCapView extends javax.swing.JPanel {
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
         ThemNhaCungCap addNewView = new ThemNhaCungCap();
-//        showListData();
     }//GEN-LAST:event_addBtnActionPerformed
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed

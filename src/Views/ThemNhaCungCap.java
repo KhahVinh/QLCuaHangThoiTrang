@@ -109,8 +109,6 @@ public class ThemNhaCungCap extends javax.swing.JFrame {
         }
     }
     
-    
-    
     private void handleCancel() {
         if (listHasData()) {
             int rely = JOptionPane.showConfirmDialog(null, "Bạn có muốn thêm các nhà cung cấp trước đó không?", "Thông báo", JOptionPane.YES_NO_OPTION);
@@ -141,6 +139,7 @@ public class ThemNhaCungCap extends javax.swing.JFrame {
         inputSdtNCC = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         inputDiaChiNCC = new javax.swing.JTextField();
+        jPanel5 = new javax.swing.JPanel();
         btnHuy = new javax.swing.JButton();
         btnThemMoi = new javax.swing.JButton();
         btnHoanThanh = new javax.swing.JButton();
@@ -159,9 +158,9 @@ public class ThemNhaCungCap extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Thêm mới nhà cung cấp");
         setBackground(new java.awt.Color(255, 255, 255));
-        setMaximumSize(new java.awt.Dimension(700, 400));
-        setMinimumSize(new java.awt.Dimension(700, 400));
-        setPreferredSize(new java.awt.Dimension(700, 400));
+        setMaximumSize(new java.awt.Dimension(574, 400));
+        setMinimumSize(new java.awt.Dimension(574, 400));
+        setPreferredSize(new java.awt.Dimension(574, 400));
         setResizable(false);
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
             public void windowGainedFocus(java.awt.event.WindowEvent evt) {
@@ -170,6 +169,7 @@ public class ThemNhaCungCap extends javax.swing.JFrame {
                 formWindowLostFocus(evt);
             }
         });
+        getContentPane().setLayout(new javax.swing.OverlayLayout(getContentPane()));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -224,46 +224,56 @@ public class ThemNhaCungCap extends javax.swing.JFrame {
             }
         });
 
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel5.setLayout(new java.awt.GridLayout(1, 3, 30, 0));
+
         btnHuy.setBackground(new java.awt.Color(225, 47, 64));
         btnHuy.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnHuy.setForeground(new java.awt.Color(255, 255, 255));
         btnHuy.setText("Hủy");
+        btnHuy.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(225, 47, 64)));
         btnHuy.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnHuy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnHuyActionPerformed(evt);
             }
         });
+        jPanel5.add(btnHuy);
 
         btnThemMoi.setBackground(new java.awt.Color(75, 174, 79));
         btnThemMoi.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnThemMoi.setForeground(new java.awt.Color(255, 255, 255));
         btnThemMoi.setText("Thêm mới");
+        btnThemMoi.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(75, 174, 79)));
         btnThemMoi.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnThemMoi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnThemMoiActionPerformed(evt);
             }
         });
+        jPanel5.add(btnThemMoi);
 
         btnHoanThanh.setBackground(new java.awt.Color(51, 153, 255));
         btnHoanThanh.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnHoanThanh.setForeground(new java.awt.Color(255, 255, 255));
         btnHoanThanh.setText("Hoàn thành");
+        btnHoanThanh.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 153, 255)));
         btnHoanThanh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnHoanThanhActionPerformed(evt);
             }
         });
+        jPanel5.add(btnHoanThanh);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(84, 84, 84)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(80, 80, 80)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3)
@@ -274,15 +284,8 @@ public class ThemNhaCungCap extends javax.swing.JFrame {
                             .addComponent(inputMaNCC, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
                             .addComponent(inputTenNCC)
                             .addComponent(inputSdtNCC)
-                            .addComponent(inputDiaChiNCC)))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(185, 185, 185)
-                        .addComponent(btnHuy)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnThemMoi)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnHoanThanh)))
-                .addContainerGap(80, Short.MAX_VALUE))
+                            .addComponent(inputDiaChiNCC))))
+                .addContainerGap(84, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -304,22 +307,19 @@ public class ThemNhaCungCap extends javax.swing.JFrame {
                     .addComponent(jLabel5)
                     .addComponent(inputDiaChiNCC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnHuy, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnThemMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnHoanThanh, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30))
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -330,16 +330,7 @@ public class ThemNhaCungCap extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        getContentPane().add(jPanel1);
 
         pack();
         setLocationRelativeTo(null);
@@ -400,6 +391,7 @@ public class ThemNhaCungCap extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JLabel titleTab;
     // End of variables declaration//GEN-END:variables
 }

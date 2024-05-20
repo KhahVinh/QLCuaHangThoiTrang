@@ -2,7 +2,6 @@
 package Models;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 public class NhaCungCap implements Serializable{
     private String ma;
