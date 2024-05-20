@@ -148,7 +148,10 @@ public class QLTKhoan extends javax.swing.JPanel {
                     if(mkCu.equals(cu)){
                         if(!nhaplai.equals(mkMoi) )
                         {
-                            JOptionPane.showMessageDialog(this, "Nhập mật khẩu lại không đúng", "Thông báo", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(this, 
+                                    "Nhập lại mật khẩu không đúng", 
+                                    "Thông báo", 
+                                    JOptionPane.ERROR_MESSAGE);
                         }else{
                             br.close();
                             fr.close();
@@ -156,17 +159,22 @@ public class QLTKhoan extends javax.swing.JPanel {
                             pw.println(mkMoi);
                             pw.flush();
                             pw.close();
-                            JOptionPane.showMessageDialog(this, "Cập nhập thành công");
+                            JOptionPane.showMessageDialog(this, 
+                                    "Cập nhập thành công", 
+                                    "Thông báo", 
+                                    JOptionPane.INFORMATION_MESSAGE);
                         }
                     }else{
-                        JOptionPane.showMessageDialog(this, "Nhập sai mật khẩu cũ", "Thông báo", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(this, 
+                                "Nhập sai mật khẩu cũ", 
+                                "Thông báo", 
+                                JOptionPane.ERROR_MESSAGE);
                     }
                     break;
                 }
             }
         } catch (IOException e) {
-            System.err.println("Error");
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, e, "Thông báo", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnCapNhapActionPerformed
 
