@@ -250,7 +250,6 @@ public class GiaoDien extends javax.swing.JFrame {
     }
     public void changeController() {
         ChangeController controller = new ChangeController(jpnDisplay);
-//        ccl.setQLSP(JQLSP, QLDM);
         ArrayList<DanhMuc> danhMuc = new ArrayList<>();
         danhMuc.add(new DanhMuc("QLSP", jpnQLSP, jlbQLSP));
         danhMuc.add(new DanhMuc("QLDM", jpnQLDM, jlbQLDM));
