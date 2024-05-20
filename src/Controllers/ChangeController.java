@@ -2,7 +2,7 @@
 package Controllers;
 
 import Models.DanhMuc;
-import Views.QLDM;
+import Views.QLDMView;
 import Views.QLSP;
 import Views.QLTKhoan;
 import Views.QLXH;
@@ -97,7 +97,7 @@ public class ChangeController {
                     break;
                 }
                 case "QLDM": {
-                    node = new QLDM();
+                    node = new QLDMView();
                     break;
                 }
                 case "QLXH": {

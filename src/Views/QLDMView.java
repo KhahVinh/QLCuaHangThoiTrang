@@ -14,13 +14,13 @@ import javax.swing.JPanel;
  *
  * @author T&T Center
  */
-public class QLDM extends javax.swing.JPanel {
+public class QLDMView extends javax.swing.JPanel {
 
     /**
      * Creates new form QLDM
      */
     private ArrayList<DanhMuc> list = new ArrayList<>();
-    public QLDM() {
+    public QLDMView() {
         initComponents();
         setView("NhaCungCap");
     }
@@ -109,11 +109,11 @@ public class QLDM extends javax.swing.JPanel {
         viewContent.setLayout(viewContentLayout);
         viewContentLayout.setHorizontalGroup(
             viewContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 813, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         viewContentLayout.setVerticalGroup(
             viewContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 431, Short.MAX_VALUE)
+            .addGap(0, 332, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -123,12 +123,11 @@ public class QLDM extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(viewContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
+                    .addComponent(viewContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(0, 97, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -142,16 +141,24 @@ public class QLDM extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void setView(String name) {
-        JPanel node;
-        switch (name) {
-            case "NhaCungCap": node = new NhaCungCap(); break;
-            case "KhachHang": node = new KhachHang(); break;
-            case "MatHang": node = new MatHang(); break;
-            default: node = new NhaCungCap();
-        }
         viewContent.removeAll();
         viewContent.setLayout(new BorderLayout());
-        viewContent.add(node);
+//        switch (name) {
+//            case "NhaCungCap": node = new NhaCungCapView(); break;
+//            case "KhachHang": node = new KhachHangView(); break;
+//            case "MatHang": node = new MatHang(); break;
+//            default: node = new NhaCungCapView();
+//        }
+        if (name.equalsIgnoreCase("NhaCungCap")) {
+            NhaCungCapView nccView = new NhaCungCapView();
+            viewContent.add(nccView);
+            nccView.showListData();
+        }
+        if (name.equalsIgnoreCase("KhachHang")) {
+//            KhachHangView khView = new KhachHang();
+//            viewContent.add(khView);
+        }
+        
         viewContent.validate();
         viewContent.repaint();
     }
