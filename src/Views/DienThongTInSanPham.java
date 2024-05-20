@@ -1,20 +1,29 @@
 package Views;
+
 import Component.ListProduct;
 import Component.ReadWriteProduct;
 import Models.Product;
 import javax.swing.JOptionPane;
 import java.util.ArrayList;
+import static Views.QLSP.checkFuntions;
+import static Views.QLSP.index;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class DienThongTInSanPham extends javax.swing.JPanel {
-static ArrayList<Product> danhsachsanpham = new ArrayList<>();
+
+    static ArrayList<Product> danhsachsanpham = new ArrayList<>();
     static Product product;
     private QLSP qlsp;
     private ReadWriteProduct rwp = new ReadWriteProduct();
     private ListProduct listProduct = new ListProduct();
     private String fileName = "QuanLySanPham.txt";
 
-
     public DienThongTInSanPham() {
         initComponents();
+        Init();
     }
 
     @SuppressWarnings("unchecked")
@@ -32,9 +41,8 @@ static ArrayList<Product> danhsachsanpham = new ArrayList<>();
         ProductName = new javax.swing.JTextField();
         ProductStock = new javax.swing.JComboBox<>();
         ProductPrice = new javax.swing.JTextField();
-        JDelete = new javax.swing.JButton();
-        JConfirm = new javax.swing.JButton();
-        JDelete1 = new javax.swing.JButton();
+        ButtonDelete = new javax.swing.JButton();
+        ButtonConfirm = new javax.swing.JButton();
         ProductCategory = new javax.swing.JComboBox<>();
 
         JTitle.setBackground(new java.awt.Color(51, 153, 255));
@@ -63,7 +71,7 @@ static ArrayList<Product> danhsachsanpham = new ArrayList<>();
         );
 
         ID.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        ID.setText("ID");
+        ID.setText("Mã sản phẩm");
 
         Name.setBackground(new java.awt.Color(153, 204, 255));
         Name.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -87,35 +95,24 @@ static ArrayList<Product> danhsachsanpham = new ArrayList<>();
 
         ProductPrice.setMinimumSize(new java.awt.Dimension(64, 30));
 
-        JDelete.setBackground(new java.awt.Color(255, 51, 51));
-        JDelete.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        JDelete.setForeground(new java.awt.Color(255, 255, 255));
-        JDelete.setText("Đặt lại");
-        JDelete.setPreferredSize(new java.awt.Dimension(90, 27));
-        JDelete.addActionListener(new java.awt.event.ActionListener() {
+        ButtonDelete.setBackground(new java.awt.Color(255, 51, 51));
+        ButtonDelete.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        ButtonDelete.setForeground(new java.awt.Color(255, 255, 255));
+        ButtonDelete.setText("Đặt lại");
+        ButtonDelete.setPreferredSize(new java.awt.Dimension(90, 27));
+        ButtonDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JDeleteActionPerformed(evt);
+                ButtonDeleteActionPerformed(evt);
             }
         });
 
-        JConfirm.setBackground(new java.awt.Color(102, 153, 255));
-        JConfirm.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        JConfirm.setForeground(new java.awt.Color(255, 255, 255));
-        JConfirm.setText("Xác nhận");
-        JConfirm.addActionListener(new java.awt.event.ActionListener() {
+        ButtonConfirm.setBackground(new java.awt.Color(102, 153, 255));
+        ButtonConfirm.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        ButtonConfirm.setForeground(new java.awt.Color(255, 255, 255));
+        ButtonConfirm.setText("Xác nhận");
+        ButtonConfirm.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JConfirmActionPerformed(evt);
-            }
-        });
-
-        JDelete1.setBackground(new java.awt.Color(0, 0, 0));
-        JDelete1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        JDelete1.setForeground(new java.awt.Color(255, 255, 255));
-        JDelete1.setText("Đóng");
-        JDelete1.setPreferredSize(new java.awt.Dimension(90, 27));
-        JDelete1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JDelete1ActionPerformed(evt);
+                ButtonConfirmActionPerformed(evt);
             }
         });
 
@@ -142,15 +139,13 @@ static ArrayList<Product> danhsachsanpham = new ArrayList<>();
                     .addComponent(ProductPrice, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(ProductID)
                     .addComponent(ProductCategory, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(150, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(138, Short.MAX_VALUE)
-                .addComponent(JDelete1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(70, 70, 70)
-                .addComponent(JDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(70, 70, 70)
-                .addComponent(JConfirm)
-                .addGap(150, 150, 150))
+                .addGap(220, 220, 220)
+                .addComponent(ButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(ButtonConfirm)
+                .addGap(220, 220, 220))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,7 +155,7 @@ static ArrayList<Product> danhsachsanpham = new ArrayList<>();
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ID)
                     .addComponent(ProductID, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Name, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ProductName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -178,40 +173,37 @@ static ArrayList<Product> danhsachsanpham = new ArrayList<>();
                     .addComponent(ProductPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(JConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(JDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(JDelete1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ButtonConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40))
         );
     }// </editor-fold>//GEN-END:initComponents
     public void Init() {
-            
+        if (checkFuntions == 1) {
+            Title.setText("Thêm thông tin sản phẩm");
+        } else if (checkFuntions == 2) {
+            Title.setText("Sửa thông tin sản phẩm");
+            ButtonConfirm.setText("Cập nhật");
+        }
     }
+
     public void deleteFile() {
         ProductID.setText("");
         ProductName.setText("");
         ProductCategory.setSelectedIndex(0);
         ProductStock.setSelectedIndex(0);
         ProductPrice.setText("");
-        ProductID.requestFocus(); 
+        ProductID.requestFocus();
     }
-    private void JDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JDeleteActionPerformed
+    private void ButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonDeleteActionPerformed
         deleteFile();
-    }//GEN-LAST:event_JDeleteActionPerformed
-    
-    public void AddProduct(ArrayList<Product> danhsachsanpham) {
-        String id = "";
-        String name = "";
-        String category = "";
-        String stock = "";
-        long price = 0;
+    }//GEN-LAST:event_ButtonDeleteActionPerformed
+
+    public boolean checkValue(String id, String name, String category, String stock, long price) {
         boolean check = true;
-        category = ProductCategory.getSelectedItem().toString();
-        stock = ProductStock.getSelectedItem().toString();
         try {
-            id = ProductID.getText();
             if (id.trim().length() == 0) {
-                JOptionPane.showConfirmDialog(null, "ID Không được để trống", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showConfirmDialog(ProductID, "ID Không được để trống", "Thông báo", JOptionPane.WARNING_MESSAGE);
                 check = false;
                 ProductID.requestFocus();
             } else if (listProduct.checkIDSame(id, danhsachsanpham)) {
@@ -222,7 +214,6 @@ static ArrayList<Product> danhsachsanpham = new ArrayList<>();
             System.out.println(e.getMessage());
         }
         try {
-            name = ProductName.getText();
             if (name.trim().length() == 0) {
                 JOptionPane.showConfirmDialog(ProductName, "Tên Không được để trống", "Thông báo", JOptionPane.WARNING_MESSAGE);
                 check = false;
@@ -232,20 +223,34 @@ static ArrayList<Product> danhsachsanpham = new ArrayList<>();
             System.out.println(e.getMessage());
         }
         try {
-            price = Long.parseLong(ProductPrice.getText());
-            if (price == 0) {
+
+            if (price <= 0) {
                 check = false;
+                JOptionPane.showMessageDialog(ProductPrice, "Giá phải lớn hơn 0", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                ProductPrice.requestFocus();
             }
-        } catch (NumberFormatException e) {
-            check = false;
-            ProductPrice.requestFocus();
-            JOptionPane.showMessageDialog(ProductPrice, "Giá tiền không đúng", "Thông báo", JOptionPane.WARNING_MESSAGE);
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(ProductPrice, "Giá phải lớn hơn 0", "Thông báo", JOptionPane.WARNING_MESSAGE);
-            ProductPrice.requestFocus();
+            System.out.println(e);
         }
 
-        if (check) {
+        return check;
+    }
+
+    public void AddProduct(ArrayList<Product> danhsachsanpham) {
+        String id = ProductID.getText();
+        String name = ProductName.getText();
+        String category = ProductCategory.getSelectedItem().toString();
+        String stock = ProductStock.getSelectedItem().toString();
+        long price = 0;
+        try {
+            String priceString = ProductPrice.getText();
+            price = Long.parseLong(ProductPrice.getText());
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(ProductPrice, "Giá tiền không đúng", "Thông báo", JOptionPane.WARNING_MESSAGE);
+        }
+        if (checkValue(id, name, category, stock, price)) {
             qlsp = new QLSP();
             product = new Product(id, name, category, stock, price);
             rwp.writeFile(product, fileName, danhsachsanpham);
@@ -255,21 +260,57 @@ static ArrayList<Product> danhsachsanpham = new ArrayList<>();
         }
 
     }
-    private void JConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JConfirmActionPerformed
-        AddProduct(danhsachsanpham);
-    }//GEN-LAST:event_JConfirmActionPerformed
 
-    private void JDelete1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JDelete1ActionPerformed
-        
-    }//GEN-LAST:event_JDelete1ActionPerformed
+    private void ModifyProduct() {
+        String id = ProductID.getText();
+        String name = ProductName.getText();
+        String category = ProductCategory.getSelectedItem().toString();
+        String stock = ProductStock.getSelectedItem().toString();
+        long price = 0;
+        try {
+            String priceString = ProductPrice.getText();
+            price = Long.parseLong(ProductPrice.getText());
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(ProductPrice, "Giá tiền không đúng", "Thông báo", JOptionPane.WARNING_MESSAGE);
+        }
+        if (checkValue(id, name, category, stock, price)) {
+            qlsp = new QLSP();
+            danhsachsanpham.get(index).setProductID(id);
+            danhsachsanpham.get(index).setProductName(name);
+            danhsachsanpham.get(index).setProductCategory(category);
+            danhsachsanpham.get(index).setProductStock(stock);
+            danhsachsanpham.get(index).setProductPrice(price);
+            PrintWriter writer;
+            try {
+                writer = new PrintWriter(fileName);
+                writer.print("");
+                writer.close();
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(QLSP.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            for (Product product : danhsachsanpham) {
+
+                rwp.writeFile(product, fileName, danhsachsanpham);
+            }
+            JOptionPane.showMessageDialog(null, "Sửa thành công", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            qlsp.updateTable();
+        }
+    }
+    private void ButtonConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonConfirmActionPerformed
+        if (checkFuntions == 1) {
+            AddProduct(danhsachsanpham);
+        } else if (checkFuntions == 2) {
+            ModifyProduct();
+        }
+    }//GEN-LAST:event_ButtonConfirmActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton ButtonConfirm;
+    private javax.swing.JButton ButtonDelete;
     private javax.swing.JLabel Category;
     private javax.swing.JLabel ID;
-    private javax.swing.JButton JConfirm;
-    private javax.swing.JButton JDelete;
-    private javax.swing.JButton JDelete1;
     private javax.swing.JPanel JTitle;
     private javax.swing.JLabel Name;
     private javax.swing.JLabel Price;
