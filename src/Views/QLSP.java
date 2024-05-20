@@ -19,11 +19,14 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.RowFilter;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 public class QLSP extends javax.swing.JPanel {
-    static int index;
+    static int index = -1;
     static int checkFuntions;
-    static String[] columnName = {"Mã sản phẩm", "Tên Sản phẩm", "Loại", "Tình trạng", "Giá bán"};
+    static String[] columnName = {"Mã sản phẩm", "Tên Sản phẩm", "Loại","Số lượng", "Trạng thái", "Giá bán"};
     static DefaultTableModel dtmProduct = new DefaultTableModel(columnName, 0);
     static ListProduct listProduct = new ListProduct();
     ReadWriteProduct rwp = new ReadWriteProduct();
@@ -55,7 +58,7 @@ public class QLSP extends javax.swing.JPanel {
         for (Product product : danhsachsanpham) {
             String formattedNumber = format.format(product.getProductPrice());
             String price = formattedNumber;
-            Object[] rowData = {product.getProductID(), product.getProductName(), product.getProductCategory(), product.getProductStock(), price};
+            Object[] rowData = {product.getProductID(), product.getProductName(), product.getProductCategory(),product.getProductQuantity(), product.getProductStock(), price};
             dtmProduct.addRow(rowData);
         }
         TableProduct.setModel(dtmProduct);
@@ -70,14 +73,18 @@ public class QLSP extends javax.swing.JPanel {
                 danhsachsanphamtimkiem = listProduct.findAll(danhsachsanpham, name);
                 listProduct.displayData(dtmProduct, danhsachsanphamtimkiem);
             } else {
-                dtmProduct = new DefaultTableModel(columnName, 0);
-                danhsachsanphamtimkiem = listProduct.searchProduct(danhsachsanpham, name);
-                listProduct.displayData(dtmProduct, danhsachsanphamtimkiem);
-                if (danhsachsanphamtimkiem.isEmpty()) {
-                    JOptionPane.showMessageDialog(TableProduct, "Không tìm thấy sản phẩm " + name, "Thông báo", JOptionPane.WARNING_MESSAGE);
-                    danhsachsanphamtimkiem = listProduct.findAll(danhsachsanpham, name);
-                    listProduct.displayData(dtmProduct, danhsachsanphamtimkiem);
-                }
+//                dtmProduct = new DefaultTableModel(columnName, 0);
+                TableRowSorter<TableModel> sorter = new TableRowSorter<>(dtmProduct);
+                TableProduct.setRowSorter(sorter);
+                sorter.setRowFilter(RowFilter.regexFilter(name));
+                
+//                danhsachsanphamtimkiem = listProduct.searchProduct(danhsachsanpham, name);
+//                listProduct.displayData(dtmProduct, danhsachsanphamtimkiem);
+//                if (danhsachsanphamtimkiem.isEmpty()) {
+//                    JOptionPane.showMessageDialog(TableProduct, "Không tìm thấy sản phẩm " + name, "Thông báo", JOptionPane.WARNING_MESSAGE);
+//                    danhsachsanphamtimkiem = listProduct.findAll(danhsachsanpham, name);
+//                    listProduct.displayData(dtmProduct, danhsachsanphamtimkiem);
+//                }
             }
             TableProduct.setModel(dtmProduct);
         } catch (Exception e) {
@@ -90,9 +97,9 @@ public class QLSP extends javax.swing.JPanel {
         int vitri = -1;
         vitri = TableProduct.getSelectedRow();
         if (vitri == -1) {
-            JOptionPane.showMessageDialog(TableProduct, "Bạn chưa chọn sản phẩm xóa", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Bạn chưa chọn sản phẩm xóa", "Thông báo", JOptionPane.OK_OPTION);
         } else {
-            int a = JOptionPane.showConfirmDialog(TableProduct, "Bạn có muốn xóa không", "Thông báo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            int a = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa không", "Thông báo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
             if (a == 0) {
                 danhsachsanpham.remove(vitri);
                 danhsachsauxoa = danhsachsanpham;
@@ -110,7 +117,7 @@ public class QLSP extends javax.swing.JPanel {
                 }
                 vitri--;
                 updateTable();
-                JOptionPane.showMessageDialog(TableProduct, "Xóa thành công", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Xóa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
@@ -153,7 +160,7 @@ public class QLSP extends javax.swing.JPanel {
         setForeground(new java.awt.Color(204, 204, 204));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        Header.setBackground(new java.awt.Color(255, 255, 255));
+        Header.setBackground(new java.awt.Color(204, 204, 204));
 
         Title.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         Title.setText("Quản Lí Sản Phẩm");
@@ -169,10 +176,10 @@ public class QLSP extends javax.swing.JPanel {
         );
         HeaderLayout.setVerticalGroup(
             HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(HeaderLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HeaderLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Title, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addComponent(Title, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         JDisplayProduct.setBackground(new java.awt.Color(255, 255, 255));
@@ -202,14 +209,19 @@ public class QLSP extends javax.swing.JPanel {
                 SearchTextActionPerformed(evt);
             }
         });
+        SearchText.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                SearchTextKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout JSearchLayout = new javax.swing.GroupLayout(JSearch);
         JSearch.setLayout(JSearchLayout);
         JSearchLayout.setHorizontalGroup(
             JSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JSearchLayout.createSequentialGroup()
-                .addComponent(SearchText, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                .addComponent(SearchText, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ButtonSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         JSearchLayout.setVerticalGroup(
@@ -308,7 +320,7 @@ public class QLSP extends javax.swing.JPanel {
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
@@ -317,14 +329,14 @@ public class QLSP extends javax.swing.JPanel {
         JFeatureLayout.setHorizontalGroup(
             JFeatureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JFeatureLayout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         JFeatureLayout.setVerticalGroup(
             JFeatureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JFeatureLayout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(JFeatureLayout.createSequentialGroup()
                 .addContainerGap()
@@ -387,7 +399,7 @@ public class QLSP extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addComponent(Header, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11)
+                .addGap(5, 5, 5)
                 .addComponent(JDisplayProduct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -402,11 +414,16 @@ public class QLSP extends javax.swing.JPanel {
 
     private void ButtonModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonModifyActionPerformed
         index = TableProduct.getSelectedRow();
+        if (index == -1) {
+            JOptionPane.showMessageDialog(null, "Bạn chưa chọn sản phẩm để sửa", "Thông báo", JOptionPane.OK_OPTION);
+        } else {
+            
         try {
             checkFuntions =2;
             displayFunctions("Sửa thông tin sản phẩm");
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }
         }
     }//GEN-LAST:event_ButtonModifyActionPerformed
 
@@ -426,8 +443,12 @@ public class QLSP extends javax.swing.JPanel {
     }//GEN-LAST:event_ButtonDeleteActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        updateTable();
+
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void SearchTextKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SearchTextKeyReleased
+        searchProduct();
+    }//GEN-LAST:event_SearchTextKeyReleased
     public static class RoundedBorder implements Border {
         
         private int radius;

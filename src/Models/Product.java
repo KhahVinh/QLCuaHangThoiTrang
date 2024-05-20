@@ -7,16 +7,18 @@ public class Product implements Serializable{
     private String productName;
     private String productCategory;
     private String productStock;
+    private int productQuantity;
     private long productPrice;
 
     public Product() {
     }
 
-    public Product(String productID, String productName, String productCategory, String productStock, long productPrice) {
+    public Product(String productID, String productName, String productCategory, String productStock, int productQuantity, long productPrice) {
         this.productID = productID;
         this.productName = productName;
         this.productCategory = productCategory;
         this.productStock = productStock;
+        this.productQuantity = productQuantity;
         this.productPrice = productPrice;
     }
 
@@ -52,6 +54,14 @@ public class Product implements Serializable{
         this.productStock = productStock;
     }
 
+    public int getProductQuantity() {
+        return productQuantity;
+    }
+
+    public void setProductQuantity(int productQuantity) {
+        this.productQuantity = productQuantity;
+    }
+
     public long getProductPrice() {
         return productPrice;
     }
@@ -62,6 +72,8 @@ public class Product implements Serializable{
 
     @Override
     public String toString() {
-        return productID + productName + productCategory + productStock +productPrice ;
+        return "Product{" + "productID=" + productID + ", productName=" + productName + ", productCategory=" + productCategory + ", productStock=" + productStock + ", productQuantity=" + productQuantity + ", productPrice=" + productPrice + '}';
     }
+
+   
 }

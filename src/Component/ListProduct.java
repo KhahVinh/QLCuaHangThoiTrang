@@ -15,7 +15,7 @@ public class ListProduct implements Serializable {
             danhsachsanpham.stream().forEach((product) -> {
             String formattedNumber = format.format(product.getProductPrice());
             String price = formattedNumber;
-                dtm.addRow(new Object[]{product.getProductID(),product.getProductName(), product.getProductCategory(), product.getProductStock(), price});
+                dtm.addRow(new Object[]{product.getProductID(),product.getProductName(), product.getProductCategory(),product.getProductQuantity(), product.getProductStock(), price});
             });
           
             

@@ -31,13 +31,14 @@ public class QLXH extends javax.swing.JPanel {
         rwp.readFile(fileQLSP, sp);
         
         model = (DefaultTableModel) tableThongTin.getModel();
-        Object rowData[] = new Object[5];
+        Object rowData[] = new Object[6];
         for (int i = 0; i < sp.size(); i++) {
             rowData[0] = sp.get(i).getProductID();
             rowData[1] = sp.get(i).getProductName();
             rowData[2] = sp.get(i).getProductCategory();
-            rowData[3] = sp.get(i).getProductStock();
-            rowData[4] = f.format(sp.get(i).getProductPrice());
+            rowData[3] = sp.get(i).getProductQuantity();
+            rowData[4] = sp.get(i).getProductStock();
+            rowData[5] = f.format(sp.get(i).getProductPrice());
             model.addRow(rowData);
         }
     }
@@ -87,9 +88,10 @@ public class QLXH extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Mã sản phẩm", "Tên sản phẩm", "Loại", "Tình trạng", "Giá bán"
+                "Mã sản phẩm", "Tên sản phẩm", "Loại", "Số lượng", "Tình trạng", "Giá bán"
             }
         ));
+        tableThongTin.setRowHeight(25);
         jScrollPane1.setViewportView(tableThongTin);
 
         btnThem.setBackground(new java.awt.Color(0, 153, 51));
@@ -112,6 +114,7 @@ public class QLXH extends javax.swing.JPanel {
                 "STT", "Mã sản phẩm", "Tên sản phẩm", "Loại", "Tình trạng", "Giá bán"
             }
         ));
+        tableXuat.setRowHeight(25);
         jScrollPane2.setViewportView(tableXuat);
 
         btnXoa.setText("Xóa sản phẩm");
@@ -253,6 +256,7 @@ public class QLXH extends javax.swing.JPanel {
             row[3] = model1.getValueAt(indexs[i], 2);
             row[4] = model1.getValueAt(indexs[i], 3);
             row[5] = model1.getValueAt(indexs[i], 4);
+            row[6] = model1.getValueAt(indexs[i], 5);
             model.addRow(row);
         }
     }//GEN-LAST:event_btnThemActionPerformed
