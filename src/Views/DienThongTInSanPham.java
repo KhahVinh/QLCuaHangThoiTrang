@@ -1,21 +1,17 @@
 package Views;
-import java.util.ArrayList;
-import Models.Product;
-import Component.ReadWriteProduct;
 import Component.ListProduct;
-import static Views.QLSP.loadDataIntoTableModel;
-import static Views.QLSP.listProduct;
-import static Views.QLSP.selectIndex;
+import Component.ReadWriteProduct;
+import Models.Product;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import static Views.QLSP.dtmProduct;
-import static Views.QLSP.danhsachsanpham;
+import java.util.ArrayList;
 public class DienThongTInSanPham extends javax.swing.JPanel {
+static ArrayList<Product> danhsachsanpham = new ArrayList<>();
     static Product product;
-    private  QLSP qlsp;
+    private QLSP qlsp;
     private ReadWriteProduct rwp = new ReadWriteProduct();
-    private ListProduct listproduct = new ListProduct();
+    private ListProduct listProduct = new ListProduct();
     private String fileName = "QuanLySanPham.txt";
+
 
     public DienThongTInSanPham() {
         initComponents();
@@ -34,12 +30,12 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
         Price = new javax.swing.JLabel();
         ProductID = new javax.swing.JTextField();
         ProductName = new javax.swing.JTextField();
-        ProductCategory = new javax.swing.JTextField();
         ProductStock = new javax.swing.JComboBox<>();
         ProductPrice = new javax.swing.JTextField();
         JDelete = new javax.swing.JButton();
         JConfirm = new javax.swing.JButton();
         JDelete1 = new javax.swing.JButton();
+        ProductCategory = new javax.swing.JComboBox<>();
 
         JTitle.setBackground(new java.awt.Color(51, 153, 255));
 
@@ -123,6 +119,9 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
             }
         });
 
+        ProductCategory.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        ProductCategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Áo nam", "Quần nam ", "Áo nữ", "Quần nữ", "Áo Unisex", "Váy ", "Chân váy ", "Phụ kiện", "Giày nam", "Giày nữ" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -141,8 +140,8 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
                     .addComponent(ProductStock, 0, 264, Short.MAX_VALUE)
                     .addComponent(ProductName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(ProductPrice, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ProductCategory)
-                    .addComponent(ProductID))
+                    .addComponent(ProductID)
+                    .addComponent(ProductCategory, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(138, Short.MAX_VALUE)
@@ -161,11 +160,11 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ID)
                     .addComponent(ProductID, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Name, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ProductName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Category, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ProductCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -186,13 +185,12 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     public void Init() {
-        
-        
+            
     }
     public void deleteFile() {
         ProductID.setText("");
         ProductName.setText("");
-        ProductCategory.setText("");
+        ProductCategory.setSelectedIndex(0);
         ProductStock.setSelectedIndex(0);
         ProductPrice.setText("");
         ProductID.requestFocus(); 
@@ -200,89 +198,65 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
     private void JDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JDeleteActionPerformed
         deleteFile();
     }//GEN-LAST:event_JDeleteActionPerformed
-
-    private void JConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JConfirmActionPerformed
+    
+    public void AddProduct(ArrayList<Product> danhsachsanpham) {
         String id = "";
         String name = "";
         String category = "";
         String stock = "";
-        float price = 0;
+        long price = 0;
         boolean check = true;
-        int index = danhsachsanpham.size();
-        category = ProductCategory.getText();
+        category = ProductCategory.getSelectedItem().toString();
         stock = ProductStock.getSelectedItem().toString();
         try {
             id = ProductID.getText();
-            if (id.trim().length() == 0){
+            if (id.trim().length() == 0) {
                 JOptionPane.showConfirmDialog(null, "ID Không được để trống", "Thông báo", JOptionPane.WARNING_MESSAGE);
-            }
-            if(!listproduct.checkID(id, index, danhsachsanpham)){
-                JOptionPane.showConfirmDialog(null, "ID đã tồn tại", "Thông báo",  JOptionPane.WARNING_MESSAGE);
+                check = false;
+                ProductID.requestFocus();
+            } else if (listProduct.checkIDSame(id, danhsachsanpham)) {
+                JOptionPane.showMessageDialog(ProductID, "ID đã tồn tại", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                check = false;
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            check = false;
         }
         try {
             name = ProductName.getText();
-            if (name.trim().length() == 0){
-                JOptionPane.showConfirmDialog(null, "Tên Không được để trống", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            if (name.trim().length() == 0) {
+                JOptionPane.showConfirmDialog(ProductName, "Tên Không được để trống", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                check = false;
+                ProductName.requestFocus();
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            check = false;
         }
         try {
-            price = Float.parseFloat(ProductPrice.getText());
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Giá tiền không đúng", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            price = Long.parseLong(ProductPrice.getText());
+            if (price == 0) {
+                check = false;
+            }
+        } catch (NumberFormatException e) {
             check = false;
+            ProductPrice.requestFocus();
+            JOptionPane.showMessageDialog(ProductPrice, "Giá tiền không đúng", "Thông báo", JOptionPane.WARNING_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(ProductPrice, "Giá phải lớn hơn 0", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            ProductPrice.requestFocus();
         }
+
         if (check) {
+            qlsp = new QLSP();
             product = new Product(id, name, category, stock, price);
-            danhsachsanpham.add(product);
-            rwp.writeFile(product, fileName);
-            JOptionPane.showMessageDialog(null, "Thêm thành công","Thông báo",JOptionPane.DEFAULT_OPTION);
+            rwp.writeFile(product, fileName, danhsachsanpham);
             deleteFile();
+            qlsp.addProduct(product);
+            JOptionPane.showMessageDialog(ProductCategory, "Thêm thành công", "Thông báo", JOptionPane.DEFAULT_OPTION);
         }
-//        try {
-//            dtmProduct = new DefaultTableModel();
-//            danhsachsanpham = new ArrayList<>();
-//            float productPrice = Float.parseFloat(ProductPrice.getText());
-//            if (ProductPrice.getText().length() == 0) {
-//                productPrice = 0;
-//            }
-//            product = new Product(ProductID.getText(), ProductName.getText(), ProductCategory.getText(), ProductStock.getSelectedItem().toString(), productPrice);
-//            if (ProductName.getText().trim().length() == 0) {
-//                JOptionPane.showMessageDialog(null, "Tên không được bỏ trống", "Thông báo", HEIGHT);
-//            }
-//            if (listproduct.addProduct(product,danhsachsanpham)) {
-//                danhsachsanpham.add(product);
-//                rwp.writeFile(danhsachsanpham,fileName);
-//                deleteFile();
-//            }
-//            
-//        } catch (NumberFormatException numberF) {
-//            System.out.println(numberF.getMessage());
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }
-//        selectIndex = danhsachsanpham.size() + 1;
-//        if(selectIndex != -1) {
-//            try {
-//                if(listProduct.correctProduct(fileName, danhsachsanpham)){
-//                    product = listProduct.SanPham(selectIndex, danhsachsanpham);
-//                    product.setProductID(ProductID.getText());
-//                    product.setProductName(ProductName.getText());
-//                    product.setProductCategory(ProductCategory.getText());
-//                    product.setProductStock(ProductStock.getSelectedItem().toString());
-//                    product.setProductPrice(Float.parseFloat(ProductPrice.getText()));
-//                    loadDataIntoTableModel();
-//                    
-//                }
-//            } catch (Exception e) {
-//            }
-//        }
+
+    }
+    private void JConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JConfirmActionPerformed
+        AddProduct(danhsachsanpham);
     }//GEN-LAST:event_JConfirmActionPerformed
 
     private void JDelete1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JDelete1ActionPerformed
@@ -299,7 +273,7 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
     private javax.swing.JPanel JTitle;
     private javax.swing.JLabel Name;
     private javax.swing.JLabel Price;
-    private javax.swing.JTextField ProductCategory;
+    private javax.swing.JComboBox<String> ProductCategory;
     private javax.swing.JTextField ProductID;
     private javax.swing.JTextField ProductName;
     private javax.swing.JTextField ProductPrice;
