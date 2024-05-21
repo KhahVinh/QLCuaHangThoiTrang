@@ -175,10 +175,10 @@ public class DangNhap extends javax.swing.JFrame {
         StringBuilder sb = new StringBuilder();
 
         if (taiKhoan.trim().equals("")) {
-            sb.append("Tên tài khoản bị rỗng\n");
+            sb.append("Tên tài khoản đang bị trống\n");
         }
         if (matKhau.equals("")) {
-            sb.append("Mật khẩu bị rỗng");
+            sb.append("Mật khẩu đang bị trống\n");
         }
         if (sb.length() > 0) {
             JOptionPane.showMessageDialog(this,
