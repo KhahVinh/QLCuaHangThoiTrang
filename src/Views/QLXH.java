@@ -31,14 +31,13 @@ public class QLXH extends javax.swing.JPanel {
         rwp.readFile(fileQLSP, sp);
         
         model = (DefaultTableModel) tableThongTin.getModel();
-        Object rowData[] = new Object[6];
+        Object rowData[] = new Object[5];
         for (int i = 0; i < sp.size(); i++) {
             rowData[0] = sp.get(i).getProductID();
             rowData[1] = sp.get(i).getProductName();
             rowData[2] = sp.get(i).getProductCategory();
             rowData[3] = sp.get(i).getProductQuantity();
-            rowData[4] = sp.get(i).getProductStock();
-            rowData[5] = f.format(sp.get(i).getProductPrice());
+            rowData[4] = f.format(sp.get(i).getProductPrice());
             model.addRow(rowData);
         }
     }
@@ -88,7 +87,7 @@ public class QLXH extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Mã sản phẩm", "Tên sản phẩm", "Loại", "Số lượng", "Tình trạng", "Giá bán"
+                "Mã sản phẩm", "Tên sản phẩm", "Loại", "Số lượng", "Giá bán"
             }
         ));
         tableThongTin.setRowHeight(25);
@@ -247,7 +246,7 @@ public class QLXH extends javax.swing.JPanel {
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         TableModel model1 = tableThongTin.getModel();
         int[] indexs = tableThongTin.getSelectedRows();
-        Object[] row = new Object[6];
+        Object[] row = new Object[5];
         model = (DefaultTableModel) tableXuat.getModel();
         for (int i = 0; i < indexs.length; i++) {
             row[0] = i+1;
@@ -255,8 +254,7 @@ public class QLXH extends javax.swing.JPanel {
             row[2] = model1.getValueAt(indexs[i], 1);
             row[3] = model1.getValueAt(indexs[i], 2);
             row[4] = model1.getValueAt(indexs[i], 3);
-            row[5] = model1.getValueAt(indexs[i], 4);
-            row[6] = model1.getValueAt(indexs[i], 5);
+            row[5] = model1.getValueAt(indexs[i], 5);
             model.addRow(row);
         }
     }//GEN-LAST:event_btnThemActionPerformed

@@ -26,7 +26,7 @@ import javax.swing.table.TableRowSorter;
 public class QLSP extends javax.swing.JPanel {
     static int index = -1;
     static int checkFuntions;
-    static String[] columnName = {"Mã sản phẩm", "Tên Sản phẩm", "Loại","Số lượng", "Trạng thái", "Giá bán"};
+    static String[] columnName = {"Mã sản phẩm", "Tên Sản phẩm", "Loại","Số lượng", "Giá bán"};
     static DefaultTableModel dtmProduct = new DefaultTableModel(columnName, 0);
     static ListProduct listProduct = new ListProduct();
     ReadWriteProduct rwp = new ReadWriteProduct();
@@ -58,7 +58,7 @@ public class QLSP extends javax.swing.JPanel {
         for (Product product : danhsachsanpham) {
             String formattedNumber = format.format(product.getProductPrice());
             String price = formattedNumber;
-            Object[] rowData = {product.getProductID(), product.getProductName(), product.getProductCategory(),product.getProductQuantity(), product.getProductStock(), price};
+            Object[] rowData = {product.getProductID(), product.getProductName(), product.getProductCategory(),product.getProductQuantity(), price};
             dtmProduct.addRow(rowData);
         }
         TableProduct.setModel(dtmProduct);
@@ -99,8 +99,8 @@ public class QLSP extends javax.swing.JPanel {
         if (vitri == -1) {
             JOptionPane.showMessageDialog(null, "Bạn chưa chọn sản phẩm xóa", "Thông báo", JOptionPane.OK_OPTION);
         } else {
-            int a = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa không", "Thông báo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-            if (a == 0) {
+            int select = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa không", "Thông báo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            if (select == 0) {
                 danhsachsanpham.remove(vitri);
                 danhsachsauxoa = danhsachsanpham;
                 PrintWriter writer;
