@@ -10,8 +10,9 @@ import Component.ReadWriteProduct;
 import Models.Product;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import static Views.DienThongTInSanPham.danhsachsanpham;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.text.NumberFormat;
@@ -19,21 +20,27 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
+import javax.annotation.processing.Generated;
+import javax.swing.RowFilter;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 public class QLSP extends javax.swing.JPanel {
-    static int index;
+
+    static int index = -1;
     static int checkFuntions;
-    static String[] columnName = {"Mã sản phẩm", "Tên Sản phẩm", "Loại", "Tình trạng", "Giá bán"};
+    static String[] columnName = {"Mã sản phẩm", "Tên Sản phẩm", "Loại", "Số lượng", "Giá bán"};
     static DefaultTableModel dtmProduct = new DefaultTableModel(columnName, 0);
     static ListProduct listProduct = new ListProduct();
     ReadWriteProduct rwp = new ReadWriteProduct();
-    String fileName = "QuanLySanPham.txt";    
+    String fileName = "QuanLySanPham.txt";
 
     public QLSP() {
         initComponents();
         Init();
     }
-    
+
     private void Init() {
         try {
             rwp.readFile(fileName, danhsachsanpham);
@@ -43,57 +50,46 @@ public class QLSP extends javax.swing.JPanel {
         }
         updateTable();
     }
-    
+
     public void addProduct(Product product) {
         danhsachsanpham.add(product);
         updateTable();
     }
-    
+
     public void updateTable() {
         NumberFormat format = NumberFormat.getInstance(Locale.US);
         dtmProduct.setRowCount(0);
         for (Product product : danhsachsanpham) {
             String formattedNumber = format.format(product.getProductPrice());
             String price = formattedNumber;
-            Object[] rowData = {product.getProductID(), product.getProductName(), product.getProductCategory(), product.getProductStock(), price};
+            Object[] rowData = {product.getProductID(), product.getProductName(), product.getProductCategory(), product.getProductQuantity(), price};
             dtmProduct.addRow(rowData);
         }
         TableProduct.setModel(dtmProduct);
     }
-    
+
     private void searchProduct() {
         ArrayList<Product> danhsachsanphamtimkiem = new ArrayList<>();;
         String name = SearchText.getText();
         try {
-            if (name.trim().length() == 0) {
-                dtmProduct = new DefaultTableModel(columnName, 0);
-                danhsachsanphamtimkiem = listProduct.findAll(danhsachsanpham, name);
-                listProduct.displayData(dtmProduct, danhsachsanphamtimkiem);
-            } else {
-                dtmProduct = new DefaultTableModel(columnName, 0);
-                danhsachsanphamtimkiem = listProduct.searchProduct(danhsachsanpham, name);
-                listProduct.displayData(dtmProduct, danhsachsanphamtimkiem);
-                if (danhsachsanphamtimkiem.isEmpty()) {
-                    JOptionPane.showMessageDialog(TableProduct, "Không tìm thấy sản phẩm " + name, "Thông báo", JOptionPane.WARNING_MESSAGE);
-                    danhsachsanphamtimkiem = listProduct.findAll(danhsachsanpham, name);
-                    listProduct.displayData(dtmProduct, danhsachsanphamtimkiem);
-                }
-            }
-            TableProduct.setModel(dtmProduct);
+            TableRowSorter<TableModel> sorter = new TableRowSorter<>(dtmProduct);
+            TableProduct.setRowSorter(sorter);
+            RowFilter<TableModel, Integer> rf = RowFilter.regexFilter("(?i)" + Pattern.quote(SearchText.getText()), 1);
+            sorter.setRowFilter(rf);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Lỗi", "Thông báo", JOptionPane.WARNING_MESSAGE);
         }
     }
-    
+
     private void deleteProduct() {
         ArrayList<Product> danhsachsauxoa = new ArrayList<>();
         int vitri = -1;
         vitri = TableProduct.getSelectedRow();
         if (vitri == -1) {
-            JOptionPane.showMessageDialog(TableProduct, "Bạn chưa chọn sản phẩm xóa", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Bạn chưa chọn sản phẩm xóa", "Thông báo", JOptionPane.OK_OPTION);
         } else {
-            int a = JOptionPane.showConfirmDialog(TableProduct, "Bạn có muốn xóa không", "Thông báo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-            if (a == 0) {
+            int select = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa không", "Thông báo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            if (select == 0) {
                 danhsachsanpham.remove(vitri);
                 danhsachsauxoa = danhsachsanpham;
                 PrintWriter writer;
@@ -105,24 +101,45 @@ public class QLSP extends javax.swing.JPanel {
                     Logger.getLogger(QLSP.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 for (Product product : danhsachsauxoa) {
-                    
+
                     rwp.writeFile(product, fileName, danhsachsauxoa);
                 }
                 vitri--;
                 updateTable();
-                JOptionPane.showMessageDialog(TableProduct, "Xóa thành công", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Xóa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
 
-    private void displayFunctions(String name) {
+    private void displayFunctions(String name, DienThongTInSanPham dienthongtinsanpham) {
         JFrame newFrame = new JFrame(name);
         newFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         newFrame.setSize(720, 600);
-        JPanel dienthongtin = new DienThongTInSanPham();
-        newFrame.add(dienthongtin);
+        newFrame.add(dienthongtinsanpham);
         newFrame.setVisible(true);
-        
+        newFrame.setLocationRelativeTo(null);
+    }
+
+    public void ModifyProduct() {
+        index = TableProduct.getSelectedRow();
+        if (index == -1) {
+            JOptionPane.showMessageDialog(null, "Bạn chưa chọn sản phẩm để sửa", "Thông báo", JOptionPane.OK_OPTION);
+        } else {
+
+            try {
+                checkFuntions = 2;
+                String id = danhsachsanpham.get(index).getProductID();
+                String name = danhsachsanpham.get(index).getProductName();
+                String category = danhsachsanpham.get(index).getProductCategory();
+                int quantity = danhsachsanpham.get(index).getProductQuantity();
+                long price = danhsachsanpham.get(index).getProductPrice();
+                DienThongTInSanPham dienthongtinsanpham = new DienThongTInSanPham(index, id, name, category, quantity, price);
+                displayFunctions("Sửa thông tin sản phẩm", dienthongtinsanpham);
+                dienthongtinsanpham.setDataModify(id, name, category, quantity, price);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -138,7 +155,7 @@ public class QLSP extends javax.swing.JPanel {
         JSearch = new javax.swing.JPanel();
         ButtonSearch = new javax.swing.JButton();
         SearchText = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
+        ButtonRefresh = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         ButtonDelete = new javax.swing.JButton();
@@ -153,7 +170,7 @@ public class QLSP extends javax.swing.JPanel {
         setForeground(new java.awt.Color(204, 204, 204));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        Header.setBackground(new java.awt.Color(255, 255, 255));
+        Header.setBackground(new java.awt.Color(204, 204, 204));
 
         Title.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         Title.setText("Quản Lí Sản Phẩm");
@@ -169,10 +186,10 @@ public class QLSP extends javax.swing.JPanel {
         );
         HeaderLayout.setVerticalGroup(
             HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(HeaderLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HeaderLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Title, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addComponent(Title, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         JDisplayProduct.setBackground(new java.awt.Color(255, 255, 255));
@@ -197,9 +214,9 @@ public class QLSP extends javax.swing.JPanel {
 
         SearchText.setBackground(new java.awt.Color(239, 239, 239));
         SearchText.setBorder(null);
-        SearchText.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SearchTextActionPerformed(evt);
+        SearchText.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                SearchTextKeyReleased(evt);
             }
         });
 
@@ -208,8 +225,8 @@ public class QLSP extends javax.swing.JPanel {
         JSearchLayout.setHorizontalGroup(
             JSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JSearchLayout.createSequentialGroup()
-                .addComponent(SearchText, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                .addComponent(SearchText, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ButtonSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         JSearchLayout.setVerticalGroup(
@@ -218,14 +235,14 @@ public class QLSP extends javax.swing.JPanel {
             .addComponent(SearchText, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
-        jButton2.setBackground(new java.awt.Color(15, 149, 224));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/icon/reload-arrow.png"))); // NOI18N
-        jButton2.setText("Làm mới");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        ButtonRefresh.setBackground(new java.awt.Color(15, 149, 224));
+        ButtonRefresh.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        ButtonRefresh.setForeground(new java.awt.Color(255, 255, 255));
+        ButtonRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/icon/reload-arrow.png"))); // NOI18N
+        ButtonRefresh.setText("Làm mới");
+        ButtonRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                ButtonRefreshActionPerformed(evt);
             }
         });
 
@@ -237,13 +254,13 @@ public class QLSP extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(JSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
+                .addComponent(ButtonRefresh)
                 .addGap(16, 16, 16))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(JSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(ButtonRefresh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
@@ -308,7 +325,7 @@ public class QLSP extends javax.swing.JPanel {
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
@@ -317,15 +334,13 @@ public class QLSP extends javax.swing.JPanel {
         JFeatureLayout.setHorizontalGroup(
             JFeatureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JFeatureLayout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         JFeatureLayout.setVerticalGroup(
             JFeatureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(JFeatureLayout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(JFeatureLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -387,34 +402,25 @@ public class QLSP extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addComponent(Header, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11)
+                .addGap(5, 5, 5)
                 .addComponent(JDisplayProduct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void SearchTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchTextActionPerformed
-
-    }//GEN-LAST:event_SearchTextActionPerformed
 
     private void ButtonSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonSearchActionPerformed
         searchProduct();
     }//GEN-LAST:event_ButtonSearchActionPerformed
 
     private void ButtonModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonModifyActionPerformed
-        index = TableProduct.getSelectedRow();
-        try {
-            checkFuntions =2;
-            displayFunctions("Sửa thông tin sản phẩm");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        ModifyProduct();
     }//GEN-LAST:event_ButtonModifyActionPerformed
 
     private void ButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonAddActionPerformed
 
         try {
-            checkFuntions =1;
-            displayFunctions("Điền thông tin sản phẩm");
+            checkFuntions = 1;
+            DienThongTInSanPham dienThongTInSanPham = new DienThongTInSanPham();
+            displayFunctions("Điền thông tin sản phẩm", dienThongTInSanPham);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -425,25 +431,29 @@ public class QLSP extends javax.swing.JPanel {
         deleteProduct();
     }//GEN-LAST:event_ButtonDeleteActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        updateTable();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void ButtonRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonRefreshActionPerformed
+
+    }//GEN-LAST:event_ButtonRefreshActionPerformed
+
+    private void SearchTextKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SearchTextKeyReleased
+        searchProduct();
+    }//GEN-LAST:event_SearchTextKeyReleased
     public static class RoundedBorder implements Border {
-        
+
         private int radius;
-        
+
         RoundedBorder(int radius) {
             this.radius = radius;
         }
-        
+
         public Insets getBorderInsets(Component c) {
             return new Insets(this.radius + 1, this.radius + 1, this.radius + 2, this.radius);
         }
-        
+
         public boolean isBorderOpaque() {
             return true;
         }
-        
+
         public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
             g.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
         }
@@ -452,6 +462,7 @@ public class QLSP extends javax.swing.JPanel {
     private javax.swing.JButton ButtonAdd;
     private javax.swing.JButton ButtonDelete;
     private javax.swing.JButton ButtonModify;
+    private javax.swing.JButton ButtonRefresh;
     private javax.swing.JButton ButtonSearch;
     private javax.swing.JPanel Header;
     private javax.swing.JPanel JDisplayProduct;
@@ -462,7 +473,6 @@ public class QLSP extends javax.swing.JPanel {
     private javax.swing.JTable TableProduct;
     private javax.swing.JLabel Title;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

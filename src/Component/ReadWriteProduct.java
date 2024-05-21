@@ -1,4 +1,3 @@
-
 package Component;
 
 import Models.Product;
@@ -11,18 +10,18 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class ReadWriteProduct {
+
     ListProduct listProduct = new ListProduct();
+
     public ReadWriteProduct() {
     }
-    public void writeFile(Product product,String fileName,ArrayList<Product> danhsachsanpham) {
+
+    public void writeFile(Product product, String fileName, ArrayList<Product> danhsachsanpham) {
         try (FileWriter fw = new FileWriter(fileName, true); BufferedWriter bw = new BufferedWriter(fw); PrintWriter pw = new PrintWriter(bw)) {
-
-            pw.println(product.getProductID());
-            pw.println(product.getProductName());
-            pw.println(product.getProductCategory());
-            pw.println(product.getProductStock());
-            pw.println(product.getProductPrice());
-
+            pw.println(product.toString());
+            pw.close();
+            bw.close();
+            fw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -32,17 +31,14 @@ public class ReadWriteProduct {
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = br.readLine()) != null) {
-                Product p = new Product();
-                p.setProductID(line);
-                p.setProductName(br.readLine());
-                p.setProductCategory(br.readLine());
-                p.setProductStock(br.readLine());
-                p.setProductPrice(Long.parseLong(br.readLine()));
-                if(!listProduct.correctProduct(line, danhsachsanpham)){
+                String txt[] = line.split(",");
+                Product p = new Product(txt[0], txt[1], txt[2], Integer.parseInt(txt[3]), Long.parseLong(txt[4]));
+                if (!listProduct.correctProduct(txt[0], danhsachsanpham)) {
                     danhsachsanpham.add(p);
-                } 
+                }
 
             }
+            br.close();
         } catch (IOException | NumberFormatException e) {
             e.printStackTrace();
 

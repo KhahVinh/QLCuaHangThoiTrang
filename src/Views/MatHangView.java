@@ -276,6 +276,7 @@ public class MatHangView extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tableView.setRowHeight(25);
         tableView.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tableView.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tableView.setShowHorizontalLines(true);
