@@ -5,8 +5,14 @@ import Component.ReadWriteProduct;
 import Models.Product;
 import java.awt.Color;
 import java.text.DecimalFormat;
+import java.text.MessageFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -24,7 +30,6 @@ public class QLXH extends javax.swing.JPanel {
     public QLXH() {
         initComponents();
         getData();
-        totalPrice();
     }
     
     public void getData(){
@@ -42,13 +47,13 @@ public class QLXH extends javax.swing.JPanel {
         }
     }
     
-    public void totalPrice(){
-//        float total = 0f;
-//        for(int i = 0; i < tableThongTin.getRowCount(); i++){
-//            float var = Float.parseFloat((String) tableThongTin.getValueAt(i, 3));
-//            total += var;
-//        }
-//        txtTotalPrice.setText(String.valueOf(f.format(total)));
+    public void totalPrice() throws ParseException{
+        int total = 0;
+        for(int i = 0; i < tableXuat.getRowCount(); i++){
+            Number num = f.parse((String) tableXuat.getValueAt(i, 5));
+            total = total + (Integer.parseInt(num.toString()) * Integer.parseInt(txtSoLuong.getText()));
+        }
+        txtTotalPrice.setText(Integer.toString(total)+"đ");
     }
     
     @SuppressWarnings("unchecked")
@@ -69,9 +74,13 @@ public class QLXH extends javax.swing.JPanel {
         btnSua = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         txtTotalPrice = new javax.swing.JTextField();
-        jButton5 = new javax.swing.JButton();
+        btnXuat = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         txtSoLuong = new javax.swing.JTextField();
+        titleMaKH = new javax.swing.JLabel();
+        txtMaKH = new javax.swing.JTextField();
+        titleTenKH = new javax.swing.JLabel();
+        txtTenKH = new javax.swing.JTextField();
         txtTimKiem = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(153, 153, 153));
@@ -140,15 +149,27 @@ public class QLXH extends javax.swing.JPanel {
         txtTotalPrice.setForeground(new java.awt.Color(204, 0, 0));
         txtTotalPrice.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
 
-        jButton5.setBackground(new java.awt.Color(0, 153, 51));
-        jButton5.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(255, 255, 255));
-        jButton5.setText("Xuất hàng");
+        btnXuat.setBackground(new java.awt.Color(0, 153, 51));
+        btnXuat.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        btnXuat.setForeground(new java.awt.Color(255, 255, 255));
+        btnXuat.setText("Xuất hàng");
+        btnXuat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXuatActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Số lượng");
 
         txtSoLuong.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtSoLuong.setText("1");
+
+        titleMaKH.setText("Mã khách hàng");
+
+        txtMaKH.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        txtMaKH.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        titleTenKH.setText("Tên khách hàng");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -157,28 +178,37 @@ public class QLXH extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 774, Short.MAX_VALUE)
+                    .addComponent(jSeparator1)
+                    .addComponent(jScrollPane2)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addGap(18, 18, 18)
                         .addComponent(txtTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 297, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnXoa)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSua))
-                    .addComponent(jSeparator1)
-                    .addComponent(jScrollPane2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSua)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnXuat, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtSoLuong, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(titleMaKH, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtMaKH, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(36, 36, 36)
+                                .addComponent(titleTenKH, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtTenKH, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -199,22 +229,28 @@ public class QLXH extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(titleTenKH, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtTenKH, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtMaKH, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(titleMaKH, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(52, Short.MAX_VALUE))
+                    .addComponent(txtTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnXuat, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(35, 35, 35))
         );
 
         txtTimKiem.setBackground(new java.awt.Color(153, 153, 153));
         txtTimKiem.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
         txtTimKiem.setForeground(new java.awt.Color(255, 255, 255));
-        txtTimKiem.setText("Nhập sản phẩm cần tìm kiếm");
+        txtTimKiem.setText("Nhập tên sản phẩm cần tìm kiếm");
         txtTimKiem.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
         txtTimKiem.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -273,6 +309,11 @@ public class QLXH extends javax.swing.JPanel {
             row[5] = model1.getValueAt(indexs[i], 4);
             model.addRow(row);
         }
+        try {
+            totalPrice() ;
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(this, ex);
+        }
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
@@ -284,6 +325,17 @@ public class QLXH extends javax.swing.JPanel {
         } catch(Exception e){
             JOptionPane.showMessageDialog(this, "Chưa chọn sản phẩm cần xóa", "Thông báo lỗi", JOptionPane.ERROR_MESSAGE);
         }
+        
+        int total = 0;
+            for (int i = 0; i < model.getRowCount(); i++) {
+                try {
+                    Number num = f.parse((String) model.getValueAt(i, 5));
+                    total = total + (Integer.parseInt(model.getValueAt(i, 4).toString()) * Integer.parseInt(num.toString()));
+                } catch (ParseException ex) {
+                    JOptionPane.showMessageDialog(this, ex);
+                }
+            }
+            txtTotalPrice.setText(Integer.toString(total) + "đ");
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
@@ -306,19 +358,30 @@ public class QLXH extends javax.swing.JPanel {
         }catch(Exception e){
             JOptionPane.showMessageDialog(this, "Chưa chọn sản phẩm cần sửa", "Thông báo", JOptionPane.ERROR_MESSAGE);
         }
+        
+        int total = 0;
+            for (int i = 0; i < model.getRowCount(); i++) {
+                try {
+                    Number num = f.parse((String) model.getValueAt(i, 5));
+                    total = total + (Integer.parseInt(model.getValueAt(i, 4).toString()) * Integer.parseInt(num.toString()));
+                } catch (ParseException ex) {
+                    JOptionPane.showMessageDialog(this, ex);
+                }
+            }
+            txtTotalPrice.setText(Integer.toString(total) + "đ");
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void txtTimKiemFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTimKiemFocusGained
-        if(txtTimKiem.getText().equals("Nhập sản phẩm cần tìm kiếm")){
+        if(txtTimKiem.getText().equals("Nhập tên sản phẩm cần tìm kiếm")){
             txtTimKiem.setText("");
-            txtTimKiem.setForeground(new Color(0,0,0));
+            txtTimKiem.setForeground(new Color(255,255,255));
         }
     }//GEN-LAST:event_txtTimKiemFocusGained
 
     private void txtTimKiemFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTimKiemFocusLost
         if(txtTimKiem.getText().equals("")){
-            txtTimKiem.setText("Nhập sản phẩm cần tìm kiếm");
-            txtTimKiem.setForeground(new Color(0,0,0));
+            txtTimKiem.setText("Nhập tên sản phẩm cần tìm kiếm");
+            txtTimKiem.setForeground(new Color(255,255,255));
         }
     }//GEN-LAST:event_txtTimKiemFocusLost
 
@@ -326,15 +389,18 @@ public class QLXH extends javax.swing.JPanel {
         model = (DefaultTableModel) tableThongTin.getModel();
         TableRowSorter<DefaultTableModel> obj = new TableRowSorter<>(model);
         tableThongTin.setRowSorter(obj);
-        obj.setRowFilter(RowFilter.regexFilter(txtTimKiem.getText()));
+        obj.setRowFilter(RowFilter.regexFilter(txtTimKiem.getText(),1));
     }//GEN-LAST:event_txtTimKiemKeyReleased
 
+    private void btnXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatActionPerformed
+        
+    }//GEN-LAST:event_btnXuatActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnXoa;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton btnXuat;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -346,7 +412,11 @@ public class QLXH extends javax.swing.JPanel {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable tableThongTin;
     private javax.swing.JTable tableXuat;
+    private javax.swing.JLabel titleMaKH;
+    private javax.swing.JLabel titleTenKH;
+    private javax.swing.JTextField txtMaKH;
     private javax.swing.JTextField txtSoLuong;
+    private javax.swing.JTextField txtTenKH;
     private javax.swing.JTextField txtTimKiem;
     private javax.swing.JTextField txtTotalPrice;
     // End of variables declaration//GEN-END:variables
