@@ -70,6 +70,8 @@ public class QLXH extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         txtTotalPrice = new javax.swing.JTextField();
         jButton5 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        txtSoLuong = new javax.swing.JTextField();
         txtTimKiem = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(153, 153, 153));
@@ -110,7 +112,7 @@ public class QLXH extends javax.swing.JPanel {
 
             },
             new String [] {
-                "STT", "Mã sản phẩm", "Tên sản phẩm", "Loại", "Tình trạng", "Giá bán"
+                "STT", "Mã sản phẩm", "Tên sản phẩm", "Loại", "Số lương", "Giá bán"
             }
         ));
         tableXuat.setRowHeight(25);
@@ -123,7 +125,7 @@ public class QLXH extends javax.swing.JPanel {
             }
         });
 
-        btnSua.setText("Sửa sản phẩm");
+        btnSua.setText("Sửa số lượng");
         btnSua.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSuaActionPerformed(evt);
@@ -143,6 +145,11 @@ public class QLXH extends javax.swing.JPanel {
         jButton5.setForeground(new java.awt.Color(255, 255, 255));
         jButton5.setText("Xuất hàng");
 
+        jLabel3.setText("Số lượng");
+
+        txtSoLuong.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtSoLuong.setText("1");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -155,7 +162,7 @@ public class QLXH extends javax.swing.JPanel {
                         .addComponent(jLabel5)
                         .addGap(18, 18, 18)
                         .addComponent(txtTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 291, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 297, Short.MAX_VALUE)
                         .addComponent(btnXoa)
                         .addGap(18, 18, 18)
                         .addComponent(btnSua))
@@ -166,7 +173,12 @@ public class QLXH extends javax.swing.JPanel {
                             .addComponent(jLabel1)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtSoLuong, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -178,7 +190,10 @@ public class QLXH extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSoLuong, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -193,12 +208,12 @@ public class QLXH extends javax.swing.JPanel {
                     .addComponent(txtTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         txtTimKiem.setBackground(new java.awt.Color(153, 153, 153));
-        txtTimKiem.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        txtTimKiem.setForeground(new java.awt.Color(204, 204, 204));
+        txtTimKiem.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
+        txtTimKiem.setForeground(new java.awt.Color(255, 255, 255));
         txtTimKiem.setText("Nhập sản phẩm cần tìm kiếm");
         txtTimKiem.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
         txtTimKiem.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -246,15 +261,16 @@ public class QLXH extends javax.swing.JPanel {
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         TableModel model1 = tableThongTin.getModel();
         int[] indexs = tableThongTin.getSelectedRows();
-        Object[] row = new Object[5];
+        Object[] row = new Object[6];
+        String soLuong = txtSoLuong.getText();
         model = (DefaultTableModel) tableXuat.getModel();
         for (int i = 0; i < indexs.length; i++) {
             row[0] = i+1;
             row[1] = model1.getValueAt(indexs[i], 0);
             row[2] = model1.getValueAt(indexs[i], 1);
             row[3] = model1.getValueAt(indexs[i], 2);
-            row[4] = model1.getValueAt(indexs[i], 3);
-            row[5] = model1.getValueAt(indexs[i], 5);
+            row[4] = soLuong;
+            row[5] = model1.getValueAt(indexs[i], 4);
             model.addRow(row);
         }
     }//GEN-LAST:event_btnThemActionPerformed
@@ -271,24 +287,25 @@ public class QLXH extends javax.swing.JPanel {
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
-        //        model = (DefaultTableModel) tableXuat.getModel();
-        //
-        //        int selectedRowIndex = tableXuat.getSelectedRow();
-        //
-        //        String ma = model.getValueAt(selectedRowIndex, 1).toString();
-        //        String ten = model.getValueAt(selectedRowIndex, 2).toString();
-        //        String loai = model.getValueAt(selectedRowIndex, 3).toString();
-        //        String gia = model.getValueAt(selectedRowIndex, 4).toString();
-        //
-        //        String newMa = JOptionPane.showInputDialog(null,"Sửa lại mã sản phẩm",ma);
-        //        String newTen = JOptionPane.showInputDialog(null,"Sửa lại tên sản phẩm",ten);
-        //        String newLoai = JOptionPane.showInputDialog(null,"Sửa lại loại sản phẩm",loai);
-        //        String newGia = JOptionPane.showInputDialog(null,"Sửa lại giá sản phẩm",gia);
-        //
-        //        model.setValueAt(newMa, selectedRowIndex, 1);
-        //        model.setValueAt(newTen, selectedRowIndex, 2);
-        //        model.setValueAt(newLoai, selectedRowIndex, 3);
-        //        model.setValueAt(newGia, selectedRowIndex, 4);
+        try{        
+            model = (DefaultTableModel) tableXuat.getModel();
+
+            int selectedRowIndex = tableXuat.getSelectedRow();
+
+            String soLuong = model.getValueAt(selectedRowIndex, 4).toString();
+
+            String newSoLuong = JOptionPane.showInputDialog(null,"Nhập lại số lượng",soLuong);
+            
+            if(newSoLuong.trim().equals("") || newSoLuong.equals("0")){
+                JOptionPane.showMessageDialog(this, 
+                        "Số lượng không được để trống hoặc phải lớn hơn 0",
+                        "Thông báo", JOptionPane.ERROR_MESSAGE);
+            }else{
+                model.setValueAt(newSoLuong, selectedRowIndex, 4);
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this, "Chưa chọn sản phẩm cần sửa", "Thông báo", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void txtTimKiemFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTimKiemFocusGained
@@ -320,6 +337,7 @@ public class QLXH extends javax.swing.JPanel {
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
@@ -328,6 +346,7 @@ public class QLXH extends javax.swing.JPanel {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable tableThongTin;
     private javax.swing.JTable tableXuat;
+    private javax.swing.JTextField txtSoLuong;
     private javax.swing.JTextField txtTimKiem;
     private javax.swing.JTextField txtTotalPrice;
     // End of variables declaration//GEN-END:variables
