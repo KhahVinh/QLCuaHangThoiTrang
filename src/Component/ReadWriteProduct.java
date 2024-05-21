@@ -20,7 +20,7 @@ public class ReadWriteProduct {
             pw.println(product.getProductID());
             pw.println(product.getProductName());
             pw.println(product.getProductCategory());
-            pw.println(product.getProductStock());
+            pw.println(product.getProductQuantity());
             pw.println(product.getProductPrice());
 
         } catch (IOException e) {
@@ -36,7 +36,7 @@ public class ReadWriteProduct {
                 p.setProductID(line);
                 p.setProductName(br.readLine());
                 p.setProductCategory(br.readLine());
-                p.setProductStock(br.readLine());
+                p.setProductQuantity(Integer.parseInt(br.readLine()));
                 p.setProductPrice(Long.parseLong(br.readLine()));
                 if(!listProduct.correctProduct(line, danhsachsanpham)){
                     danhsachsanpham.add(p);

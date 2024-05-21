@@ -327,6 +327,7 @@ public class NhaCungCapView extends javax.swing.JPanel {
         });
         tableView.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tableView.setDragEnabled(true);
+        tableView.setRowHeight(25);
         tableView.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tableView.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tableView.setShowGrid(true);
