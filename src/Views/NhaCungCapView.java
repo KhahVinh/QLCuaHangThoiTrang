@@ -13,7 +13,7 @@ import javax.swing.table.DefaultTableModel;
 public class NhaCungCapView extends javax.swing.JPanel {
     private static final String FILE_NAME = "NhaCungCap.txt";
     private String[] columnName = {"Mã NCC", "Tên nhà cung cấp", "Số điện thoại", "Địa chỉ"};
-    private ArrayList<NhaCungCap> list = new ArrayList<NhaCungCap>();
+    private static ArrayList<NhaCungCap> list = new ArrayList<NhaCungCap>();
     
     public NhaCungCapView() {
         initComponents();

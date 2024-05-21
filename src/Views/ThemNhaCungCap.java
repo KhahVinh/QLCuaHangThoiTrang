@@ -1,4 +1,3 @@
-
 package Views;
 
 import Models.NhaCungCap;
@@ -7,20 +6,22 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
 public class ThemNhaCungCap extends javax.swing.JFrame {
+
     private static final String FILE_NAME = "NhaCungCap.txt";
     private static ArrayList<NhaCungCap> list = new ArrayList<NhaCungCap>();
-    
+
     public ThemNhaCungCap() {
         initComponents();
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setVisible(true);
     }
-    
+
     private void showMessage(String errorMessage) {
         JOptionPane.showMessageDialog(null, errorMessage, "Cảnh báo nhập dữ liệu", JOptionPane.WARNING_MESSAGE);
     }
-    
+
     private boolean checkInput() {
         boolean check = true;
         try {
@@ -58,30 +59,45 @@ public class ThemNhaCungCap extends javax.swing.JFrame {
         }
         return check;
     }
-    
+
     private void resetInput() {
         inputMaNCC.setText("");
         inputTenNCC.setText("");
         inputSdtNCC.setText("");
         inputDiaChiNCC.setText("");
     }
-    
+
     private boolean listHasData() {
-        if (this.list.size() != 0) {
+        if (list.size() != 0) {
             return true;
-        } 
+        }
         return false;
     }
-    
+
     private void getInfor() {
         if (checkInput()) {
             NhaCungCap newValue = new NhaCungCap(inputMaNCC.getText(), inputTenNCC.getText(), inputSdtNCC.getText(), inputDiaChiNCC.getText());
-            list.add(newValue);
+            if(checkSame(newValue, list)){            
             resetInput();
             JOptionPane.showMessageDialog(null, "Đã thêm vào danh sách chờ", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
     }
-    
+
+    private boolean checkSame(NhaCungCap ncc, ArrayList<NhaCungCap> list) {
+        try {
+            if (list.contains(ncc)) {
+                return false;
+            } else {
+                list.add(ncc);
+            }
+            return true;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
     private void handleAddData() {
         if (!listHasData()) {
             int rely = JOptionPane.showConfirmDialog(null, "Bạn chưa có dữ liệu trong danh sách chờ. Bạn muốn kết thúc chứ?", "Thông báo", JOptionPane.YES_NO_OPTION);
@@ -108,7 +124,7 @@ public class ThemNhaCungCap extends javax.swing.JFrame {
             this.dispose();
         }
     }
-    
+
     private void handleCancel() {
         if (listHasData()) {
             int rely = JOptionPane.showConfirmDialog(null, "Bạn có muốn thêm các nhà cung cấp trước đó không?", "Thông báo", JOptionPane.YES_NO_OPTION);
@@ -121,7 +137,7 @@ public class ThemNhaCungCap extends javax.swing.JFrame {
             this.dispose();
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
