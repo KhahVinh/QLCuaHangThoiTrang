@@ -1,10 +1,10 @@
-12A75;Quần áo
-3B89K;Quần áo
-12A75;Quần áo
-12A75;Quần áo
-12A75;Quần áo
-12A75;Quần áo
-12A75;Giày dép
-12A75;Quần áo
-12A75;Quần áo
-áda;ádad
+QA728;Quần nam
+QNU9349;Quần nữ
+AOM120;Áo nam
+AOFM9012;Áo nữ
+AOUNS012;Áo Unisix
+GIAYM1923;Giày nam
+GIAYFM192;Giày nữ
+PK919;Phụ kiện
+VAYN123;Váy
+CHANV9129;Chân váy

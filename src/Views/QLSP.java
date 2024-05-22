@@ -10,7 +10,6 @@ import Component.ReadWriteProduct;
 import Models.Product;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import static Views.DienThongTInSanPham.danhsachsanpham;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -24,19 +23,20 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public class QLSP extends javax.swing.JPanel {
+
     static int index = -1;
     static int checkFuntions;
-    static String[] columnName = {"Mã sản phẩm", "Tên Sản phẩm", "Loại","Số lượng", "Giá bán"};
+    static String[] columnName = {"Mã sản phẩm", "Tên Sản phẩm", "Loại", "Số lượng", "Giá bán"};
     static DefaultTableModel dtmProduct = new DefaultTableModel(columnName, 0);
     static ListProduct listProduct = new ListProduct();
     ReadWriteProduct rwp = new ReadWriteProduct();
-    String fileName = "QuanLySanPham.txt";    
+    String fileName = "QuanLySanPham.txt";
 
     public QLSP() {
         initComponents();
         Init();
     }
-    
+
     private void Init() {
         try {
             rwp.readFile(fileName, danhsachsanpham);
@@ -46,52 +46,36 @@ public class QLSP extends javax.swing.JPanel {
         }
         updateTable();
     }
-    
+
     public void addProduct(Product product) {
         danhsachsanpham.add(product);
         updateTable();
     }
-    
+
     public void updateTable() {
         NumberFormat format = NumberFormat.getInstance(Locale.US);
         dtmProduct.setRowCount(0);
         for (Product product : danhsachsanpham) {
             String formattedNumber = format.format(product.getProductPrice());
             String price = formattedNumber;
-            Object[] rowData = {product.getProductID(), product.getProductName(), product.getProductCategory(),product.getProductQuantity(), price};
+            Object[] rowData = {product.getProductID(), product.getProductName(), product.getProductCategory(), product.getProductQuantity(), price};
             dtmProduct.addRow(rowData);
         }
         TableProduct.setModel(dtmProduct);
     }
-    
+
     private void searchProduct() {
         ArrayList<Product> danhsachsanphamtimkiem = new ArrayList<>();;
         String name = SearchText.getText();
         try {
-            if (name.trim().length() == 0) {
-                dtmProduct = new DefaultTableModel(columnName, 0);
-                danhsachsanphamtimkiem = listProduct.findAll(danhsachsanpham, name);
-                listProduct.displayData(dtmProduct, danhsachsanphamtimkiem);
-            } else {
-//                dtmProduct = new DefaultTableModel(columnName, 0);
-                TableRowSorter<TableModel> sorter = new TableRowSorter<>(dtmProduct);
-                TableProduct.setRowSorter(sorter);
-                sorter.setRowFilter(RowFilter.regexFilter(name));
-                
-//                danhsachsanphamtimkiem = listProduct.searchProduct(danhsachsanpham, name);
-//                listProduct.displayData(dtmProduct, danhsachsanphamtimkiem);
-//                if (danhsachsanphamtimkiem.isEmpty()) {
-//                    JOptionPane.showMessageDialog(TableProduct, "Không tìm thấy sản phẩm " + name, "Thông báo", JOptionPane.WARNING_MESSAGE);
-//                    danhsachsanphamtimkiem = listProduct.findAll(danhsachsanpham, name);
-//                    listProduct.displayData(dtmProduct, danhsachsanphamtimkiem);
-//                }
-            }
-            TableProduct.setModel(dtmProduct);
+            TableRowSorter<TableModel> sorter = new TableRowSorter<>(dtmProduct);
+            TableProduct.setRowSorter(sorter);
+            sorter.setRowFilter(RowFilter.regexFilter(name));
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Lỗi", "Thông báo", JOptionPane.WARNING_MESSAGE);
         }
     }
-    
+
     private void deleteProduct() {
         ArrayList<Product> danhsachsauxoa = new ArrayList<>();
         int vitri = -1;
@@ -112,7 +96,7 @@ public class QLSP extends javax.swing.JPanel {
                     Logger.getLogger(QLSP.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 for (Product product : danhsachsauxoa) {
-                    
+
                     rwp.writeFile(product, fileName, danhsachsauxoa);
                 }
                 vitri--;
@@ -122,16 +106,36 @@ public class QLSP extends javax.swing.JPanel {
         }
     }
 
-    private void displayFunctions(String name) {
+    private void displayFunctions(String name, DienThongTInSanPham dienthongtinsanpham) {
         JFrame newFrame = new JFrame(name);
         newFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         newFrame.setSize(720, 600);
-        JPanel dienthongtin = new DienThongTInSanPham();
-        newFrame.add(dienthongtin);
+        newFrame.add(dienthongtinsanpham);
         newFrame.setVisible(true);
-        
+        newFrame.setLocationRelativeTo(null);
     }
 
+    private void ModifyProduct() {
+        index = TableProduct.getSelectedRow();
+        if (index == -1) {
+            JOptionPane.showMessageDialog(null, "Bạn chưa chọn sản phẩm để sửa", "Thông báo", JOptionPane.OK_OPTION);
+        } else {
+            try {
+                checkFuntions = 2;
+                String id = danhsachsanpham.get(index).getProductID();
+                String name = danhsachsanpham.get(index).getProductName();
+                String category = danhsachsanpham.get(index).getProductCategory();
+                int quantity = danhsachsanpham.get(index).getProductQuantity();
+                long price = danhsachsanpham.get(index).getProductPrice();
+                DienThongTInSanPham dienthongtinsanpham = new DienThongTInSanPham(index, id, name, category, quantity, price);
+                displayFunctions("Điền thông tin sản phẩm", dienthongtinsanpham);
+                
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -413,25 +417,15 @@ public class QLSP extends javax.swing.JPanel {
     }//GEN-LAST:event_ButtonSearchActionPerformed
 
     private void ButtonModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonModifyActionPerformed
-        index = TableProduct.getSelectedRow();
-        if (index == -1) {
-            JOptionPane.showMessageDialog(null, "Bạn chưa chọn sản phẩm để sửa", "Thông báo", JOptionPane.OK_OPTION);
-        } else {
-            
-        try {
-            checkFuntions =2;
-            displayFunctions("Sửa thông tin sản phẩm");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        }
+     ModifyProduct();
     }//GEN-LAST:event_ButtonModifyActionPerformed
 
     private void ButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonAddActionPerformed
 
         try {
-            checkFuntions =1;
-            displayFunctions("Điền thông tin sản phẩm");
+            checkFuntions = 1;
+            DienThongTInSanPham dienThongTInSanPham = new DienThongTInSanPham();
+            displayFunctions("Điền thông tin sản phẩm", dienThongTInSanPham);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -450,21 +444,21 @@ public class QLSP extends javax.swing.JPanel {
         searchProduct();
     }//GEN-LAST:event_SearchTextKeyReleased
     public static class RoundedBorder implements Border {
-        
+
         private int radius;
-        
+
         RoundedBorder(int radius) {
             this.radius = radius;
         }
-        
+
         public Insets getBorderInsets(Component c) {
             return new Insets(this.radius + 1, this.radius + 1, this.radius + 2, this.radius);
         }
-        
+
         public boolean isBorderOpaque() {
             return true;
         }
-        
+
         public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
             g.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
         }

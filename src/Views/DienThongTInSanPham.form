@@ -229,20 +229,6 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="14" style="1"/>
         </Property>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="10">
-            <StringItem index="0" value="&#xc1;o nam"/>
-            <StringItem index="1" value="Qu&#x1ea7;n nam "/>
-            <StringItem index="2" value="&#xc1;o n&#x1eef;"/>
-            <StringItem index="3" value="Qu&#x1ea7;n n&#x1eef;"/>
-            <StringItem index="4" value="&#xc1;o Unisex"/>
-            <StringItem index="5" value="V&#xe1;y "/>
-            <StringItem index="6" value="Ch&#xe2;n v&#xe1;y "/>
-            <StringItem index="7" value="Ph&#x1ee5; ki&#x1ec7;n"/>
-            <StringItem index="8" value="Gi&#xe0;y nam"/>
-            <StringItem index="9" value="Gi&#xe0;y n&#x1eef;"/>
-          </StringArray>
-        </Property>
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>

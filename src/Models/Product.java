@@ -59,6 +59,11 @@ public class Product implements Serializable{
     public void setProductPrice(long productPrice) {
         this.productPrice = productPrice;
     }
+
+    @Override
+    public String toString() {
+        return productID + ";" + productName + ";" + productCategory + ";" + productQuantity + ";" + productPrice;
+    }
     
    
 }
