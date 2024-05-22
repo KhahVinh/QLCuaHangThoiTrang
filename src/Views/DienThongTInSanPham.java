@@ -7,7 +7,10 @@ import javax.swing.JOptionPane;
 import java.util.ArrayList;
 import static Views.QLSP.checkFuntions;
 import static Views.QLSP.index;
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,8 +27,20 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
     public DienThongTInSanPham() {
         initComponents();
         Init();
+        getDataCategory();
     }
 
+    public DienThongTInSanPham(int index, String id, String name, String category, int quantity, long price){
+        initComponents();
+        Init();
+        getDataCategory();
+        ProductID.setText(id);
+        ProductName.setText(name);
+        ProductCategory.setSelectedItem(category);
+        ProductQuantity.setText(String.valueOf(quantity));
+        ProductPrice.setText(String.valueOf(price));
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -110,7 +125,6 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
         });
 
         ProductCategory.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        ProductCategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Áo nam", "Quần nam ", "Áo nữ", "Quần nữ", "Áo Unisex", "Váy ", "Chân váy ", "Phụ kiện", "Giày nam", "Giày nữ" }));
 
         Quantity.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         Quantity.setText("Số lượng");
@@ -188,9 +202,28 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
         ProductID.setText("");
         ProductName.setText("");
         ProductCategory.setSelectedIndex(0);
+        ProductQuantity.setText("");
         ProductPrice.setText("");
         ProductID.requestFocus();
     }
+    
+    private void getDataCategory() {
+        String fileData = "MatHang.txt";
+        try {
+            FileReader fw = new FileReader(fileData);
+            BufferedReader br = new BufferedReader(fw);
+            String line;
+            while ((line = br.readLine()) != null){
+                String txt [] = line.split(";");
+                ProductCategory.addItem(txt[1]);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    
+    
     private void ButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonDeleteActionPerformed
         deleteFile();
     }//GEN-LAST:event_ButtonDeleteActionPerformed
@@ -202,9 +235,6 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(null, "ID Không được để trống", "Thông báo", JOptionPane.OK_OPTION);
                 check = false;
                 ProductID.requestFocus();
-            } else if (listProduct.checkIDSame(id, danhsachsanpham)) {
-                JOptionPane.showMessageDialog(null, "ID đã tồn tại", "Thông báo", JOptionPane.OK_OPTION);
-                check = false;
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -250,6 +280,11 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
         String category = ProductCategory.getSelectedItem().toString();
         int quantity = 0;
         long price = 0;
+        boolean check = true;
+        if (listProduct.checkIDSame(id, danhsachsanpham)) {
+                JOptionPane.showMessageDialog(null, "ID đã tồn tại", "Thông báo", JOptionPane.OK_OPTION);
+                check = false;
+            }
         try {
             String priceString = ProductPrice.getText();
             price = Long.parseLong(ProductPrice.getText());
@@ -263,7 +298,7 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Số lượng không đúng", "Thông báo", JOptionPane.OK_OPTION);
         }
-        if (checkValue(id, name, category, quantity, price)) {
+        if (checkValue(id, name, category, quantity, price) && check) {
             qlsp = new QLSP();
             product = new Product(id, name, category, quantity, price);
             int select = JOptionPane.showConfirmDialog(null, "Bạn có muốn thêm sản phẩm: \n" + "ID: " + id + "\nTên sản phẩm: " + name
