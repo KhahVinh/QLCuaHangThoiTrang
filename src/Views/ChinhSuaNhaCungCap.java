@@ -20,7 +20,7 @@ public class ChinhSuaNhaCungCap extends javax.swing.JFrame {
     }
     
     private void showMessage(String errorMessage) {
-        JOptionPane.showMessageDialog(inputMaNCC, errorMessage, "Cảnh báo nhập dữ liệu", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(null, errorMessage, "Cảnh báo nhập dữ liệu", JOptionPane.WARNING_MESSAGE);
     }
     
     private boolean checkInput() {
@@ -29,7 +29,6 @@ public class ChinhSuaNhaCungCap extends javax.swing.JFrame {
             String ma = inputMaNCC.getText();
             String ten = inputTenNCC.getText();
             String dienThoai = inputSdtNCC.getText();
-            System.out.println(dienThoai);
             String diaChi = inputDiaChiNCC.getText();
             if (ma.length() == 0) {
                 showMessage("Không được để trống mã nhà cung cấp");

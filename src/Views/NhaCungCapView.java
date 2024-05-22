@@ -20,7 +20,7 @@ public class NhaCungCapView extends javax.swing.JPanel {
     }
     
     private void showMessage(String errorMessage) {
-        JOptionPane.showMessageDialog(null, errorMessage, "Thông báo xóa", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(null, errorMessage, "Thông báo", JOptionPane.WARNING_MESSAGE);
     }
     
     private ArrayList<NhaCungCap> readFromFile(String url) {

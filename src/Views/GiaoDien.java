@@ -26,7 +26,7 @@ public class GiaoDien extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("QUẢN LÍ CỬA HÀNG THỜI TRANG");
-        setBackground(new java.awt.Color(26, 29, 31));
+        setBackground(new java.awt.Color(255, 255, 255));
 
         jpnMenu.setBackground(new java.awt.Color(26, 29, 31));
 
@@ -204,6 +204,8 @@ public class GiaoDien extends javax.swing.JFrame {
                 .addComponent(jpnTKhoan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
+
+        jpnDisplay.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jpnDisplayLayout = new javax.swing.GroupLayout(jpnDisplay);
         jpnDisplay.setLayout(jpnDisplayLayout);
