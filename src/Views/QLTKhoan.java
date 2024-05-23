@@ -1,10 +1,11 @@
 package Views;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import javax.swing.JOptionPane;
 
 public class QLTKhoan extends javax.swing.JPanel {
@@ -33,7 +34,7 @@ public class QLTKhoan extends javax.swing.JPanel {
         txtNhapLai = new javax.swing.JTextField();
         btnCapNhap = new javax.swing.JButton();
 
-        setBackground(new java.awt.Color(102, 102, 102));
+        setBackground(new java.awt.Color(153, 153, 153));
         setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 1, new java.awt.Color(0, 0, 0)));
 
         titleDoiMatKhau.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
@@ -140,9 +141,10 @@ public class QLTKhoan extends javax.swing.JPanel {
         }
 
         try {
-            FileReader fr = new FileReader(f);
-            BufferedReader br = new BufferedReader(fr);
-            String cu = br.readLine();
+            FileInputStream fis = new FileInputStream(f);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            String cu = ois.readObject().toString();
+
             if (evt.getSource() == btnCapNhap) {
                 while (cu != null) {
                     if (mkCu.equals(cu)) {
@@ -152,12 +154,13 @@ public class QLTKhoan extends javax.swing.JPanel {
                                     "Thông báo",
                                     JOptionPane.ERROR_MESSAGE);
                         } else {
-                            br.close();
-                            fr.close();
-                            PrintWriter pw = new PrintWriter(f);
-                            pw.println(mkMoi);
-                            pw.flush();
-                            pw.close();
+                            ois.close();
+                            fis.close();
+                            FileOutputStream fos = new FileOutputStream(f);
+                            try (ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+                                oos.writeObject(mkMoi);
+                                oos.flush();
+                            }
                             JOptionPane.showMessageDialog(this,
                                     "Cập nhập thành công",
                                     "Thông báo",
@@ -172,7 +175,7 @@ public class QLTKhoan extends javax.swing.JPanel {
                     break;
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             JOptionPane.showMessageDialog(this, e, "Thông báo", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnCapNhapActionPerformed
