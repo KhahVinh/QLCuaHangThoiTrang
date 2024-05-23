@@ -1,4 +1,3 @@
-
 package Views;
 
 import java.io.BufferedReader;
@@ -7,17 +6,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import javax.swing.JOptionPane;
 
-
 public class DangNhap extends javax.swing.JFrame {
 
     String filePassword = "password.dat";
     File f = new File(filePassword);
-    
+
     public DangNhap() {
         initComponents();
     }
 
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -195,17 +192,17 @@ public class DangNhap extends javax.swing.JFrame {
             if (evt.getSource() == btnDangNhap) {
                 while (passWord != null) {
                     if (taiKhoan.equals("admin") && matKhau.equals(passWord)) {
-                        JOptionPane.showMessageDialog(this, 
-                                "Đăng nhập thành công", 
-                                "Thông báo", 
+                        JOptionPane.showMessageDialog(this,
+                                "Đăng nhập thành công",
+                                "Thông báo",
                                 JOptionPane.INFORMATION_MESSAGE);
                         GiaoDien gd = new GiaoDien();
                         gd.setVisible(true);
                         this.dispose();
                     } else {
-                        JOptionPane.showConfirmDialog(this, 
-                                "Tài khoản và mật khẩu đang sai", 
-                                "Thông báo", 
+                        JOptionPane.showConfirmDialog(this,
+                                "Tài khoản và mật khẩu đang sai",
+                                "Thông báo",
                                 JOptionPane.CLOSED_OPTION);
                     }
                     break;

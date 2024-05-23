@@ -138,36 +138,35 @@ public class QLTKhoan extends javax.swing.JPanel {
                     "Thông báo", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         try {
             FileReader fr = new FileReader(f);
             BufferedReader br = new BufferedReader(fr);
             String cu = br.readLine();
-            if(evt.getSource() == btnCapNhap){
-                while (cu != null) {                    
-                    if(mkCu.equals(cu)){
-                        if(!nhaplai.equals(mkMoi) )
-                        {
-                            JOptionPane.showMessageDialog(this, 
-                                    "Nhập lại mật khẩu không đúng", 
-                                    "Thông báo", 
+            if (evt.getSource() == btnCapNhap) {
+                while (cu != null) {
+                    if (mkCu.equals(cu)) {
+                        if (!nhaplai.equals(mkMoi)) {
+                            JOptionPane.showMessageDialog(this,
+                                    "Nhập lại mật khẩu không đúng",
+                                    "Thông báo",
                                     JOptionPane.ERROR_MESSAGE);
-                        }else{
+                        } else {
                             br.close();
                             fr.close();
                             PrintWriter pw = new PrintWriter(f);
                             pw.println(mkMoi);
                             pw.flush();
                             pw.close();
-                            JOptionPane.showMessageDialog(this, 
-                                    "Cập nhập thành công", 
-                                    "Thông báo", 
+                            JOptionPane.showMessageDialog(this,
+                                    "Cập nhập thành công",
+                                    "Thông báo",
                                     JOptionPane.INFORMATION_MESSAGE);
                         }
-                    }else{
-                        JOptionPane.showMessageDialog(this, 
-                                "Nhập sai mật khẩu cũ", 
-                                "Thông báo", 
+                    } else {
+                        JOptionPane.showMessageDialog(this,
+                                "Nhập sai mật khẩu cũ",
+                                "Thông báo",
                                 JOptionPane.ERROR_MESSAGE);
                     }
                     break;
