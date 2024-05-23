@@ -1,6 +1,7 @@
 
 package Component;
 
+import Models.MatHang;
 import Models.Product;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -15,7 +16,14 @@ public class ReadWriteProduct {
     public ReadWriteProduct() {
     }
        public void writeFile(Product product, String fileName, ArrayList<Product> danhsachsanpham) {
+            ArrayList<MatHang> danhsachmathang = new ArrayList<>();
+            danhsachmathang = readFromFile("MatHang.txt");
         try (FileWriter fw = new FileWriter(fileName, true); BufferedWriter bw = new BufferedWriter(fw); PrintWriter pw = new PrintWriter(bw)) {
+            for (int i = 0; i < danhsachmathang.size(); i++) {
+                if(product.getProductCategory().equalsIgnoreCase(danhsachmathang.get(i).getTen())){
+                    product.setProductCategory(danhsachmathang.get(i).getMa());
+                }
+            }
             pw.println(product.toString());
             pw.close();
             bw.close();
@@ -24,13 +32,44 @@ public class ReadWriteProduct {
             e.printStackTrace();
         }
     }
-
+    private ArrayList<MatHang> readFromFile(String url) {
+        ArrayList<MatHang> list = new ArrayList<MatHang>();
+        String FILE_NAME = "MatHang.txt";
+        try {
+            FileReader fr = new FileReader(FILE_NAME);
+            BufferedReader br = new BufferedReader(fr);
+            String line = "";
+            while(true) {
+                line = br.readLine();
+                if (line == null) {
+                    break;
+                }
+                String txt[] = line.split(";");
+                list.add(new MatHang(txt[0], txt[1]));
+            }
+            br.close();
+            fr.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (list == null) {
+            list = new ArrayList<MatHang>();
+        }
+        return list;
+    }
     public ArrayList readFile(String fileName, ArrayList<Product> danhsachsanpham) {
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
+            ArrayList<MatHang> danhsachmathang = new ArrayList<>();
+            danhsachmathang = readFromFile("MatHang.txt");
             while ((line = br.readLine()) != null) {
                 String txt[] = line.split(";");
-                Product p = new Product(txt[0], txt[1], txt[2], Integer.parseInt(txt[3]), Long.parseLong(txt[4]));
+                String id = txt[0];
+                String name = txt[1];
+                String category = txt[2];
+                int quantity = Integer.parseInt(txt[3]);
+                long price = Long.parseLong(txt[4]);
+                Product p = new Product(id, name, category, quantity, price);
                 if (!listProduct.correctProduct(txt[0], danhsachsanpham)) {
                     danhsachsanpham.add(p);
                 }
