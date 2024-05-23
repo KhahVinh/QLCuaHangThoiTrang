@@ -3,6 +3,7 @@ package Controllers;
 
 import Models.DanhMuc;
 import Views.QLDMView;
+import Views.QLNHView;
 import Views.QLSP;
 import Views.QLTKhoan;
 import Views.QLXH;
@@ -100,6 +101,10 @@ public class ChangeController {
                     node = new QLDMView();
                     break;
                 }
+                case "QLNH": {
+                    node = new QLNHView();
+                    break;
+                }
                 case "QLXH": {
                     node = new QLXH();
                     break;
@@ -110,7 +115,6 @@ public class ChangeController {
                 }
                 default:
                     node = new QLSP();
-//                    throw new AssertionError();
                     break;
             }
             jpnRoot.removeAll();

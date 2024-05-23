@@ -255,7 +255,7 @@ public class GiaoDien extends javax.swing.JFrame {
         ArrayList<DanhMuc> danhMuc = new ArrayList<>();
         danhMuc.add(new DanhMuc("QLSP", jpnQLSP, jlbQLSP));
         danhMuc.add(new DanhMuc("QLDM", jpnQLDM, jlbQLDM));
-//        danhMuc.add(new DanhMuc("QLNH", jpnQLNH, jlbQLNH));
+        danhMuc.add(new DanhMuc("QLNH", jpnQLNH, jlbQLNH));
         danhMuc.add(new DanhMuc("QLXH", jpnQLXH, jlbQLXH));
         danhMuc.add(new DanhMuc("QLTKhoan", jpnTKhoan, jlbTKhoan));
         

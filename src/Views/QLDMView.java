@@ -111,12 +111,6 @@ public class QLDMView extends javax.swing.JPanel {
     private void setView(String name) {
         viewContent.removeAll();
         viewContent.setLayout(new BorderLayout());
-//        switch (name) {
-//            case "NhaCungCap": node = new NhaCungCapView(); break;
-//            case "KhachHang": node = new KhachHangView(); break;
-//            case "MatHang": node = new MatHang(); break;
-//            default: node = new NhaCungCapView();
-//        }
         if (name.equalsIgnoreCase("NhaCungCap")) {
             NhaCungCapView nccView = new NhaCungCapView();
             viewContent.add(nccView);

@@ -20,7 +20,7 @@ public class MatHangView extends javax.swing.JPanel {
     }
     
     private void showMessage(String errorMessage) {
-        JOptionPane.showMessageDialog(null, errorMessage, "Thông báo xóa", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(null, errorMessage, "Thông báo", JOptionPane.WARNING_MESSAGE);
     }
     
     private ArrayList<MatHang> readFromFile(String url) {
@@ -118,7 +118,7 @@ public class MatHangView extends javax.swing.JPanel {
             showListData();
             tableView.repaint();
         } else {
-            JOptionPane.showMessageDialog(null, "Chỉnh sửa không thành công", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Chỉnh sửa không thành công", "Thông báo", JOptionPane.ERROR_MESSAGE);
         }
     }
   
