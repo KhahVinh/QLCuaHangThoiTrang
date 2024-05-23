@@ -11,7 +11,9 @@ import Models.Product;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JFrame;
 import static Views.DienThongTInSanPham.danhsachsanpham;
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.PrintWriter;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -31,7 +33,6 @@ public class QLSP extends javax.swing.JPanel {
     static ListProduct listProduct = new ListProduct();
     ReadWriteProduct rwp = new ReadWriteProduct();
     String fileName = "QuanLySanPham.txt";
-
     public QLSP() {
         initComponents();
         Init();
@@ -51,14 +52,60 @@ public class QLSP extends javax.swing.JPanel {
         danhsachsanpham.add(product);
         updateTable();
     }
+    
+    private void showMessage(String message, String title) {
+        
+    }
+    
+    private ArrayList<Models.MatHang> readFromFile(String url) {
+        ArrayList<Models.MatHang> list = new ArrayList<Models.MatHang>();
+        String FILE_NAME = "MatHang.txt";
+        try {
+            FileReader fr = new FileReader(FILE_NAME);
+            BufferedReader br = new BufferedReader(fr);
+            String line = "";
+            while (true) {
+                line = br.readLine();
+                if (line == null) {
+                    break;
+                }
+                String txt[] = line.split(";");
+                list.add(new Models.MatHang(txt[0], txt[1]));
+            }
+            br.close();
+            fr.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (list == null) {
+            list = new ArrayList<Models.MatHang>();
+        }
+        return list;
+    }
+
+    public String getCategory(String category) {
+        ArrayList<Models.MatHang> danhsachmathang = new ArrayList<>();
+        danhsachmathang = readFromFile("MatHang.txt");
+        String categoryItem = "";
+        for (int i = 0; i < danhsachmathang.size(); i++) {
+            if(category.equalsIgnoreCase(danhsachmathang.get(i).getMa())){
+                categoryItem = danhsachmathang.get(i).getTen();
+            }
+        }
+        return categoryItem;
+    }
 
     public void updateTable() {
+        ArrayList<Models.MatHang> danhsachmathang = new ArrayList<>();
+        danhsachmathang = readFromFile("MatHang.txt");
         NumberFormat format = NumberFormat.getInstance(Locale.US);
         dtmProduct.setRowCount(0);
         for (Product product : danhsachsanpham) {
             String formattedNumber = format.format(product.getProductPrice());
             String price = formattedNumber;
-            Object[] rowData = {product.getProductID(), product.getProductName(), product.getProductCategory(), product.getProductQuantity(), price};
+            String categoryItem = product.getProductCategory();
+            String category = getCategory(categoryItem);
+            Object[] rowData = {product.getProductID(), product.getProductName(), category, product.getProductQuantity(), price};
             dtmProduct.addRow(rowData);
         }
         TableProduct.setModel(dtmProduct);
@@ -75,13 +122,13 @@ public class QLSP extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Lỗi", "Thông báo", JOptionPane.WARNING_MESSAGE);
         }
     }
-
+    
     private void deleteProduct() {
         ArrayList<Product> danhsachsauxoa = new ArrayList<>();
         int vitri = -1;
         vitri = TableProduct.getSelectedRow();
         if (vitri == -1) {
-            JOptionPane.showMessageDialog(null, "Bạn chưa chọn sản phẩm xóa", "Thông báo", JOptionPane.OK_OPTION);
+            JOptionPane.showMessageDialog(null, "Bạn chưa chọn sản phẩm xóa", "Thông báo", JOptionPane.WARNING_MESSAGE);
         } else {
             int select = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa không", "Thông báo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
             if (select == 0) {
@@ -118,24 +165,25 @@ public class QLSP extends javax.swing.JPanel {
     private void ModifyProduct() {
         index = TableProduct.getSelectedRow();
         if (index == -1) {
-            JOptionPane.showMessageDialog(null, "Bạn chưa chọn sản phẩm để sửa", "Thông báo", JOptionPane.OK_OPTION);
+            JOptionPane.showMessageDialog(null, "Bạn chưa chọn sản phẩm để sửa", "Thông báo", JOptionPane.WARNING_MESSAGE);
         } else {
             try {
                 checkFuntions = 2;
                 String id = danhsachsanpham.get(index).getProductID();
                 String name = danhsachsanpham.get(index).getProductName();
-                String category = danhsachsanpham.get(index).getProductCategory();
+                String categoryItem = danhsachsanpham.get(index).getProductCategory();
+                String category = getCategory(categoryItem);
                 int quantity = danhsachsanpham.get(index).getProductQuantity();
                 long price = danhsachsanpham.get(index).getProductPrice();
                 DienThongTInSanPham dienthongtinsanpham = new DienThongTInSanPham(index, id, name, category, quantity, price);
                 displayFunctions("Điền thông tin sản phẩm", dienthongtinsanpham);
-                
+
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -417,7 +465,7 @@ public class QLSP extends javax.swing.JPanel {
     }//GEN-LAST:event_ButtonSearchActionPerformed
 
     private void ButtonModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonModifyActionPerformed
-     ModifyProduct();
+        ModifyProduct();
     }//GEN-LAST:event_ButtonModifyActionPerformed
 
     private void ButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonAddActionPerformed
