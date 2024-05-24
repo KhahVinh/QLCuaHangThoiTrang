@@ -1,26 +1,28 @@
-2;Quần adidas;Quần nữ;100;500000
-3;Áo desque;Áo nam;250;3000000
-4;Áo Desque;Áo nam;100;150000
-5;Áo sơ mi;Áo nam;200;200000
-6;Áo vest;Áo nam;500;1000000
-8;Áo blazer ;Áo nam;600;500000
-7;Áo Tank top;Áo nam;10;400000
-10;Áo len ;Áo nam;20;123000
-11;Giày Adidas prophere;Giày nam;50;500000
-9;Quần vải;Quần nam ;25;150000
-12;Quần short;Quần nam ;100;200000
-13;Quần jean;Quần nam ;1000;430000
-14;Nón;Phụ kiện;40;20000
-15;Balo;Phụ kiện;50;200000
-16;Túi;Phụ kiện;90;200000
-17;Ví cá sấu;Phụ kiện;100;230000
-18;Chân váy nữ dài;Chân váy ;90;638000
-19;Chân váy Jean;Chân váy ;22;412000
-20;Chân váy chữ A;Chân váy ;40;490000
-21;Áo thun nữ;Áo nữ;89;245000
-22;Áo Polo nữ;Áo nữ;50;322000
-23;Đầm Midi nữ;Váy ;432;785000
-24;Đầm nữ chữ A;Váy ;130;687000
-25;Khăn;Phụ kiện;79;246000
-26;Áo black pink;Áo Unisix;20;400000
-27;Áo Gucci hồng limited;Áo Unisix;15;1000000
+2;Quần adidas;QA728;100;500000
+3;Áo desque;AOM120;250;3000000
+4;Áo Desque;AOM120;100;150000
+5;Áo sơ mi;AOM120;200;200000
+6;Áo vest;AOM120;500;1000000
+8;Áo blazer;AOM120;600;500000
+7;Áo Tank top;AOM120;10;400000
+10;Áo len;AOM120;20;123000
+11;Giày Adidas prophere;GIAYM1923;50;500000
+9;Quần vải;QA728;25;150000
+12;Quần short;QNU9349;100;200000
+13;Quần jean;QNU9349;1000;430000
+14;Nón;PK919;40;20000
+15;Balo;QA728;50;200000
+16;Túi;PK919;90;200000
+17;Ví cá sấu;QA728;100;230000
+18;Chân váy nữ dài;CHANV9129;90;638000
+19;Chân váy Jean;CHANV9129;22;412000
+20;Chân váy chữ A;QA728;40;490000
+21;Áo thun nữ;AOFM9012;89;245000
+22;Áo Polo nữ;AOFM9012;50;322000
+23;Đầm Midi nữ;QA728;432;785000
+24;Đầm nữ chữ A;VAYN123;130;687000
+25;Khăn;QNU9349;79;246000
+26;Áo black pink;AOUNS012;20;400000
+27;Áo Gucci hồng limited;AOUNS012;15;1000000
+29;Mũ đánh golf adidas;PK919;200;500000
+28;Quần sport nữ;QNU9349;200;150000
