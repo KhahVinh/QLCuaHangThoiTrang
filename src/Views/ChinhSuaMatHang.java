@@ -6,15 +6,23 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class ChinhSuaMatHang extends javax.swing.JFrame {
-    private int index = -1;
+    private MatHangView mainView;
+    private int currentIndex;
     
-    public ChinhSuaMatHang(int index, String ma, String ten) {
+    public ChinhSuaMatHang(MatHangView inputView, int inputCurrentIndex) {
         initComponents();
-        this.index = index;
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.mainView = inputView;
+        this.currentIndex = inputCurrentIndex;
+    }
+    
+    public void display() {
+        this.setVisible(true);        
+    }
+    
+    public void setInputValue(String ma, String ten) {
         inputMa.setText(ma);
         inputTen.setText(ten);
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.setVisible(true);
     }
     
     private void showMessage(String errorMessage) {
@@ -40,15 +48,18 @@ public class ChinhSuaMatHang extends javax.swing.JFrame {
         return check;
     }
     
-    public MatHang getValueEdit() {
-        MatHang value = new MatHang();
+    public void editValue() {
         if (checkInput()) {
+            MatHang value = new MatHang();
             value.setMa(inputMa.getText());
             value.setTen(inputTen.getText());
+            this.mainView.editValue(this.currentIndex, value);
+            JOptionPane.showMessageDialog(null, "Chỉnh sửa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            this.dispose();
+            this.mainView.showListData();
         } else {
-            value = null;
+            JOptionPane.showMessageDialog(null, "Chỉnh sửa không thành công", "Thông báo", JOptionPane.ERROR_MESSAGE);
         }
-        return value;
     }
 
     @SuppressWarnings("unchecked")
@@ -162,9 +173,7 @@ public class ChinhSuaMatHang extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLuuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLuuActionPerformed
-        // TODO add your handling code here:
-        MatHangView mHView = new MatHangView();
-        mHView.editValue(this.getValueEdit(), this.index, this);
+        this.editValue();
     }//GEN-LAST:event_btnLuuActionPerformed
 
 

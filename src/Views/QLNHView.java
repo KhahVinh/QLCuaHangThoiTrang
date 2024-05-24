@@ -7,7 +7,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 public class QLNHView extends javax.swing.JPanel {
@@ -95,7 +97,7 @@ public class QLNHView extends javax.swing.JPanel {
         this.showTableProduct(listProduct);
     }
     
-    private void showListSelected() {
+    public void showListSelected() {
         DefaultTableModel defaultTableModel = new DefaultTableModel(columnName, 0);
         defaultTableModel.fireTableDataChanged();
         if (!this.listSelectedProduct.isEmpty()) {
@@ -158,8 +160,24 @@ public class QLNHView extends javax.swing.JPanel {
                 this.showListSelected();
             }
         } else {
-            showMessage("Chưa chọn nhà cung cấp để xóa");
+            showMessage("Chưa chọn sản phẩm để xóa");
         }
+    }
+    
+    public void handleEditValue() {
+        int index = -1;
+        index = tableViewSelected.getSelectedRow();
+        if (index != -1) {
+            ChinhSuaSoLuongSP editView = new ChinhSuaSoLuongSP(this, index);
+            editView.setInputQuantity(this.listSelectedProduct.get(index).getProductQuantity());
+            editView.display();
+        } else {
+            showMessage("Chưa chọn mặt hàng để sửa");
+        }
+    }
+    
+    public void editValue(int index, int quantity) {
+        this.listSelectedProduct.get(index).setProductQuantity(quantity);
     }
 
     @SuppressWarnings("unchecked")
@@ -470,7 +488,7 @@ public class QLNHView extends javax.swing.JPanel {
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        
+        this.handleEditValue();
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
