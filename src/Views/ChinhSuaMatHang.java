@@ -88,6 +88,8 @@ public class ChinhSuaMatHang extends javax.swing.JFrame {
 
         jLabel1.setText("Mã mặt hàng:");
 
+        inputMa.setEditable(false);
+
         jLabel2.setText("Tên mặt hàng:");
 
         btnLuu.setBackground(new java.awt.Color(255, 185, 46));

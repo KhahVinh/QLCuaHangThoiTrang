@@ -343,6 +343,7 @@ public class QLNHView extends javax.swing.JPanel {
 
         jLabel2.setText("Mã phiếu nhập:");
 
+        jTextField3.setEditable(false);
         jTextField3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jTextField3.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
