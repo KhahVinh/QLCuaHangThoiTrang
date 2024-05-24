@@ -149,7 +149,7 @@ public class QLNHView extends javax.swing.JPanel {
         }
     }
     
-    public void handleDeleteValue() {
+    private void handleDeleteValue() {
         int index = -1;
         index = tableViewSelected.getSelectedRow();
         if (index != -1) {
@@ -164,7 +164,7 @@ public class QLNHView extends javax.swing.JPanel {
         }
     }
     
-    public void handleEditValue() {
+    private void handleEditValue() {
         int index = -1;
         index = tableViewSelected.getSelectedRow();
         if (index != -1) {

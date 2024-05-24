@@ -151,6 +151,12 @@ public class QLSP extends javax.swing.JPanel {
         }
     }
 
+    public int valueID() {
+        String getValue = danhsachsanpham.getLast().getProductID();
+        int value = Integer.parseInt(getValue);
+        return value;
+    }
+    
     private void displayFunctions(String name, DienThongTInSanPham dienthongtinsanpham) {
         JFrame newFrame = new JFrame(name);
         newFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -471,6 +477,7 @@ public class QLSP extends javax.swing.JPanel {
             checkFuntions = 1;
             DienThongTInSanPham dienThongTInSanPham = new DienThongTInSanPham();
             displayFunctions("Điền thông tin sản phẩm", dienThongTInSanPham);
+            dienThongTInSanPham.ProductID.setText(String.valueOf(valueID() + 1));
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

@@ -9,12 +9,16 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class ThemMatHang extends javax.swing.JFrame {
-    private static final String FILE_NAME = "MatHang.txt";
-    private static ArrayList<MatHang> list = new ArrayList<MatHang>();
+    private ArrayList<MatHang> list = new ArrayList<MatHang>();
+    private MatHangView mainView;
 
-    public ThemMatHang() {
+    public ThemMatHang(MatHangView inputView) {
         initComponents();
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.mainView = inputView;
+    }
+    
+    public void display() {
         this.setVisible(true);
     }
     
@@ -47,7 +51,7 @@ public class ThemMatHang extends javax.swing.JFrame {
     }
     
     private boolean listHasData() {
-        if (this.list.size() != 0) {
+        if (!this.list.isEmpty()) {
             return true;
         } 
         return false;
@@ -70,22 +74,14 @@ public class ThemMatHang extends javax.swing.JFrame {
             }
         } else {
             try {
-                FileWriter fw = new FileWriter(FILE_NAME, true);
-                BufferedWriter bw = new BufferedWriter(fw);
-                for (MatHang i : list) {
-                    bw.write(i.toString());
-                    bw.newLine();
-                }
-                bw.close();
-                fw.close();
+                this.mainView.addValues(this.list);
                 JOptionPane.showMessageDialog(null, "Thêm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+                this.mainView.showListData();
             } catch (Exception e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Thêm mới không thành công", "Thông báo", JOptionPane.WARNING_MESSAGE);
             }
-            MatHangView mHView = new MatHangView();
-            mHView.showListData();
-            this.dispose();
         }
     }
     
@@ -247,7 +243,7 @@ public class ThemMatHang extends javax.swing.JFrame {
     }//GEN-LAST:event_inputMaActionPerformed
 
     private void btnThemMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemMoiActionPerformed
-        getInfor();
+        this.getInfor();
     }//GEN-LAST:event_btnThemMoiActionPerformed
 
     private void inputMaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_inputMaFocusLost
@@ -259,11 +255,11 @@ public class ThemMatHang extends javax.swing.JFrame {
     }//GEN-LAST:event_inputTenFocusLost
 
     private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyActionPerformed
-       handleCancel();
+       this.handleCancel();
     }//GEN-LAST:event_btnHuyActionPerformed
 
     private void btnHoanThanhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHoanThanhActionPerformed
-        handleAddData();
+        this.handleAddData();
     }//GEN-LAST:event_btnHoanThanhActionPerformed
 
 

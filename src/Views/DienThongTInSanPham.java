@@ -98,6 +98,9 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
         Price.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         Price.setText("Giá bán");
 
+        ProductID.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        ProductID.setEnabled(false);
+
         ProductName.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         ProductName.setPreferredSize(new java.awt.Dimension(64, 30));
 
@@ -198,8 +201,19 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
         }
     }
 
-    public void deleteFile() {
+    private void deleteFile() {
         ProductID.setText("");
+        ProductName.setText("");
+        ProductCategory.setSelectedIndex(0);
+        ProductQuantity.setText("");
+        ProductPrice.setText("");
+        ProductID.requestFocus();
+    }
+    
+    private void fillDataID(){
+        qlsp = new QLSP();
+        int value = qlsp.valueID() +1;
+        ProductID.setText(String.valueOf(value));
         ProductName.setText("");
         ProductCategory.setSelectedIndex(0);
         ProductQuantity.setText("");
@@ -306,7 +320,7 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
             if (select == 0) {
                 rwp.writeFile(product, fileName, danhsachsanpham);
                 qlsp.addProduct(product);
-                deleteFile();
+                fillDataID();
                 JOptionPane.showMessageDialog(null, "Thêm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
         }
@@ -372,7 +386,7 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
     private javax.swing.JLabel Name;
     private javax.swing.JLabel Price;
     private javax.swing.JComboBox<String> ProductCategory;
-    private javax.swing.JTextField ProductID;
+    public javax.swing.JTextField ProductID;
     private javax.swing.JTextField ProductName;
     private javax.swing.JTextField ProductPrice;
     private javax.swing.JTextField ProductQuantity;
