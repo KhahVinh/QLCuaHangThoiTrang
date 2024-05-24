@@ -6,21 +6,30 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class ChinhSuaNhaCungCap extends javax.swing.JFrame {
-    private int index = -1;
+    private NhaCungCapView mainView;
+    
+    private int currentIndex;
 
-    public ChinhSuaNhaCungCap(int index, String ma, String ten, String sdt, String diaChi) {
+    public ChinhSuaNhaCungCap(NhaCungCapView inputView, int inputCurrentIndex) {
         initComponents();
-        this.index = index;
-        inputMaNCC.setText(ma);
-        inputTenNCC.setText(ten);
-        inputSdtNCC.setText(sdt);
-        inputDiaChiNCC.setText(diaChi);
+        this.mainView = inputView;
+        this.currentIndex = inputCurrentIndex;
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }
+    
+    public void display() {
         this.setVisible(true);
     }
     
     private void showMessage(String errorMessage) {
-        JOptionPane.showMessageDialog(inputMaNCC, errorMessage, "Cảnh báo nhập dữ liệu", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(null, errorMessage, "Cảnh báo nhập dữ liệu", JOptionPane.WARNING_MESSAGE);
+    }
+    
+    public void setValueInput(String ma, String ten, String sdt, String diaChi) {
+        inputMaNCC.setText(ma);
+        inputTenNCC.setText(ten);
+        inputSdtNCC.setText(sdt);
+        inputDiaChiNCC.setText(diaChi);
     }
     
     private boolean checkInput() {
@@ -29,7 +38,6 @@ public class ChinhSuaNhaCungCap extends javax.swing.JFrame {
             String ma = inputMaNCC.getText();
             String ten = inputTenNCC.getText();
             String dienThoai = inputSdtNCC.getText();
-            System.out.println(dienThoai);
             String diaChi = inputDiaChiNCC.getText();
             if (ma.length() == 0) {
                 showMessage("Không được để trống mã nhà cung cấp");
@@ -61,17 +69,20 @@ public class ChinhSuaNhaCungCap extends javax.swing.JFrame {
         return check;
     }
     
-    public NhaCungCap getValueEdit() {
-        NhaCungCap value = new NhaCungCap();
+    public void editValue() {
         if (checkInput()) {
+            NhaCungCap value = new NhaCungCap();
             value.setMa(inputMaNCC.getText());
             value.setTen(inputTenNCC.getText());
             value.setSoDienThoai(inputSdtNCC.getText());
             value.setDiaChi(inputDiaChiNCC.getText());
+            this.mainView.editValue(this.currentIndex, value);
+            JOptionPane.showMessageDialog(null, "Chỉnh sửa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            this.dispose();
+            this.mainView.showListData();
         } else {
-            value = null;
+            JOptionPane.showMessageDialog(null, "Chỉnh sửa không thành công", "Thông báo", JOptionPane.ERROR_MESSAGE);
         }
-        return value;
     }
 
     @SuppressWarnings("unchecked")
@@ -216,8 +227,7 @@ public class ChinhSuaNhaCungCap extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        NhaCungCapView nccView = new NhaCungCapView();
-        nccView.editValue(this.getValueEdit(), this.index, this);
+        this.editValue();
     }//GEN-LAST:event_btnEditActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -31,7 +31,7 @@ public class QLDMView extends javax.swing.JPanel {
 
         setPreferredSize(new java.awt.Dimension(770, 444));
 
-        jPanel1.setLayout(new java.awt.GridLayout(1, 2, 80, 0));
+        jPanel1.setLayout(new java.awt.GridLayout(1, 2, 30, 0));
 
         tabNCC.setBackground(new java.awt.Color(135, 143, 253));
         tabNCC.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -94,7 +94,7 @@ public class QLDMView extends javax.swing.JPanel {
                     .addComponent(viewContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 344, Short.MAX_VALUE)))
+                        .addGap(0, 394, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -111,12 +111,6 @@ public class QLDMView extends javax.swing.JPanel {
     private void setView(String name) {
         viewContent.removeAll();
         viewContent.setLayout(new BorderLayout());
-//        switch (name) {
-//            case "NhaCungCap": node = new NhaCungCapView(); break;
-//            case "KhachHang": node = new KhachHangView(); break;
-//            case "MatHang": node = new MatHang(); break;
-//            default: node = new NhaCungCapView();
-//        }
         if (name.equalsIgnoreCase("NhaCungCap")) {
             NhaCungCapView nccView = new NhaCungCapView();
             viewContent.add(nccView);

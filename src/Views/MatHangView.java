@@ -20,7 +20,7 @@ public class MatHangView extends javax.swing.JPanel {
     }
     
     private void showMessage(String errorMessage) {
-        JOptionPane.showMessageDialog(null, errorMessage, "Thông báo xóa", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(null, errorMessage, "Thông báo", JOptionPane.WARNING_MESSAGE);
     }
     
     private ArrayList<MatHang> readFromFile(String url) {
@@ -100,26 +100,19 @@ public class MatHangView extends javax.swing.JPanel {
         int index = -1;
         index = tableView.getSelectedRow();
         if (index != -1) {
-            ChinhSuaMatHang editView = new ChinhSuaMatHang(index, list.get(index).getMa(), list.get(index).getTen());
+            ChinhSuaMatHang editView = new ChinhSuaMatHang(this, index);
+            MatHang currentValue = list.get(index);
+            editView.setInputValue(currentValue.getMa(), currentValue.getTen());
+            editView.display();
         } else {
             showMessage("Chưa chọn mặt hàng để sửa");
         }
     }
     
-    public void editValue(MatHang value, int index, ChinhSuaMatHang editView) {
-        if (value != null && index != -1) {
-            this.list.clear();
-            this.list = readFromFile(FILE_NAME);
-            this.list.get(index).setMa(value.getMa());
-            this.list.get(index).setTen(value.getTen());
-            writeToFile(FILE_NAME, list);
-            JOptionPane.showMessageDialog(null, "Chỉnh sửa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-            editView.dispose();
-            showListData();
-            tableView.repaint();
-        } else {
-            JOptionPane.showMessageDialog(null, "Chỉnh sửa không thành công", "Thông báo", JOptionPane.WARNING_MESSAGE);
-        }
+    public void editValue(int index, MatHang value) {
+        this.list.get(index).setMa(value.getMa());
+        this.list.get(index).setTen(value.getTen());
+        writeToFile(FILE_NAME, list);
     }
   
     @SuppressWarnings("unchecked")

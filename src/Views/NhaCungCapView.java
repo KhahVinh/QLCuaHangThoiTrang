@@ -20,7 +20,7 @@ public class NhaCungCapView extends javax.swing.JPanel {
     }
     
     private void showMessage(String errorMessage) {
-        JOptionPane.showMessageDialog(null, errorMessage, "Thông báo xóa", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(null, errorMessage, "Thông báo", JOptionPane.WARNING_MESSAGE);
     }
     
     private ArrayList<NhaCungCap> readFromFile(String url) {
@@ -100,28 +100,22 @@ public class NhaCungCapView extends javax.swing.JPanel {
         int index = -1;
         index = tableView.getSelectedRow();
         if (index != -1) {
-            ChinhSuaNhaCungCap editView = new ChinhSuaNhaCungCap(index, list.get(index).getMa(), list.get(index).getTen(), list.get(index).getSoDienThoai(), list.get(index).getDiaChi());
+            ChinhSuaNhaCungCap editView = new ChinhSuaNhaCungCap(this, index);
+            NhaCungCap currentValue = this.list.get(index);
+            editView.setValueInput(currentValue.getMa(), currentValue.getTen(), currentValue.getSoDienThoai(), currentValue.getDiaChi());
+            editView.display();
+            
         } else {
             showMessage("Chưa chọn nhà cung cấp để sửa");
         }
     }
     
-    public void editValue(NhaCungCap value, int index, ChinhSuaNhaCungCap editView) {
-        if (value != null && index != -1) {
-            this.list.clear();
-            this.list = readFromFile(FILE_NAME);
+    public void editValue(int index, NhaCungCap value) {
             this.list.get(index).setMa(value.getMa());
             this.list.get(index).setTen(value.getTen());
             this.list.get(index).setSoDienThoai(value.getSoDienThoai());
             this.list.get(index).setDiaChi(value.getDiaChi());
             writeToFile(FILE_NAME, list);
-            JOptionPane.showMessageDialog(null, "Chỉnh sửa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-            editView.dispose();
-            showListData();
-            tableView.repaint();
-        } else {
-            JOptionPane.showMessageDialog(null, "Chỉnh sửa không thành công", "Thông báo", JOptionPane.WARNING_MESSAGE);
-        }
     }
     
     @SuppressWarnings("unchecked")

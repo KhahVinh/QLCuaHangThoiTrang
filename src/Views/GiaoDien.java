@@ -26,7 +26,7 @@ public class GiaoDien extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("QUẢN LÍ CỬA HÀNG THỜI TRANG");
-        setBackground(new java.awt.Color(26, 29, 31));
+        setBackground(new java.awt.Color(255, 255, 255));
 
         jpnMenu.setBackground(new java.awt.Color(26, 29, 31));
 
@@ -205,6 +205,8 @@ public class GiaoDien extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        jpnDisplay.setBackground(new java.awt.Color(255, 255, 255));
+
         javax.swing.GroupLayout jpnDisplayLayout = new javax.swing.GroupLayout(jpnDisplay);
         jpnDisplay.setLayout(jpnDisplayLayout);
         jpnDisplayLayout.setHorizontalGroup(
@@ -253,7 +255,7 @@ public class GiaoDien extends javax.swing.JFrame {
         ArrayList<DanhMuc> danhMuc = new ArrayList<>();
         danhMuc.add(new DanhMuc("QLSP", jpnQLSP, jlbQLSP));
         danhMuc.add(new DanhMuc("QLDM", jpnQLDM, jlbQLDM));
-//        danhMuc.add(new DanhMuc("QLNH", jpnQLNH, jlbQLNH));
+        danhMuc.add(new DanhMuc("QLNH", jpnQLNH, jlbQLNH));
         danhMuc.add(new DanhMuc("QLXH", jpnQLXH, jlbQLXH));
         danhMuc.add(new DanhMuc("QLTKhoan", jpnTKhoan, jlbTKhoan));
         
