@@ -8,13 +8,17 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class ThemNhaCungCap extends javax.swing.JFrame {
+    private ArrayList<NhaCungCap> list = new ArrayList<NhaCungCap>();
+    
+    private NhaCungCapView mainView;
 
-    private static final String FILE_NAME = "NhaCungCap.txt";
-    private static ArrayList<NhaCungCap> list = new ArrayList<NhaCungCap>();
-
-    public ThemNhaCungCap() {
+    public ThemNhaCungCap(NhaCungCapView inputView) {
         initComponents();
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.mainView = inputView;
+    }
+    
+    public void display() {
         this.setVisible(true);
     }
 
@@ -28,7 +32,6 @@ public class ThemNhaCungCap extends javax.swing.JFrame {
             String ma = inputMaNCC.getText();
             String ten = inputTenNCC.getText();
             String dienThoai = inputSdtNCC.getText();
-            System.out.println(dienThoai);
             String diaChi = inputDiaChiNCC.getText();
             if (ma.length() == 0) {
                 showMessage("Không được để trống mã nhà cung cấp");
@@ -68,7 +71,7 @@ public class ThemNhaCungCap extends javax.swing.JFrame {
     }
 
     private boolean listHasData() {
-        if (list.size() != 0) {
+        if (!this.list.isEmpty()) {
             return true;
         }
         return false;
@@ -106,22 +109,14 @@ public class ThemNhaCungCap extends javax.swing.JFrame {
             }
         } else {
             try {
-                FileWriter fw = new FileWriter(FILE_NAME, true);
-                BufferedWriter bw = new BufferedWriter(fw);
-                for (NhaCungCap i : list) {
-                    bw.write(i.toString());
-                    bw.newLine();
-                }
-                bw.close();
-                fw.close();
+                this.mainView.addValues(this.list);
                 JOptionPane.showMessageDialog(null, "Thêm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+                this.mainView.showListData();
             } catch (Exception e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Thêm mới không thành công", "Thông báo", JOptionPane.WARNING_MESSAGE);
             }
-            NhaCungCapView nccView = new NhaCungCapView();
-            nccView.showListData();
-            this.dispose();
         }
     }
 
@@ -353,15 +348,15 @@ public class ThemNhaCungCap extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyActionPerformed
-        handleCancel();
+        this.handleCancel();
     }//GEN-LAST:event_btnHuyActionPerformed
 
     private void btnThemMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemMoiActionPerformed
-        getInfor();
+        this.getInfor();
     }//GEN-LAST:event_btnThemMoiActionPerformed
 
     private void btnHoanThanhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHoanThanhActionPerformed
-        handleAddData();
+        this.handleAddData();
     }//GEN-LAST:event_btnHoanThanhActionPerformed
 
     private void inputMaNCCMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inputMaNCCMouseExited

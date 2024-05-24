@@ -4,8 +4,10 @@ package Views;
 import Models.NhaCungCap;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -76,12 +78,12 @@ public class NhaCungCapView extends javax.swing.JPanel {
         tableView.repaint();
     }    
     
-    public void deleteValue(int inputIndex) {
+    private void deleteValue(int inputIndex) {
         this.list.remove(inputIndex);
         writeToFile(FILE_NAME, list);
     }
     
-    public void handleDeleteValue() {
+    private void handleDeleteValue() {
         int index = -1;
         index = tableView.getSelectedRow();
         if (index != -1) {
@@ -96,7 +98,7 @@ public class NhaCungCapView extends javax.swing.JPanel {
         }
     }
     
-    public void handleEditValue() {
+    private void handleEditValue() {
         int index = -1;
         index = tableView.getSelectedRow();
         if (index != -1) {
@@ -116,6 +118,22 @@ public class NhaCungCapView extends javax.swing.JPanel {
             this.list.get(index).setSoDienThoai(value.getSoDienThoai());
             this.list.get(index).setDiaChi(value.getDiaChi());
             writeToFile(FILE_NAME, list);
+    }
+    
+    private void handleAddValues() {
+        ThemNhaCungCap addView = new ThemNhaCungCap(this);
+        addView.display();
+    }
+    
+    public void addValues(ArrayList<NhaCungCap> list) throws FileNotFoundException, IOException{
+        FileWriter fw = new FileWriter(FILE_NAME, true);
+        BufferedWriter bw = new BufferedWriter(fw);
+        for (NhaCungCap i : list) {
+            bw.write(i.toString());
+            bw.newLine();
+        }
+        bw.close();
+        fw.close();
     }
     
     @SuppressWarnings("unchecked")
@@ -353,11 +371,11 @@ public class NhaCungCapView extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
-        showListData();
+        this.showListData();
     }//GEN-LAST:event_refreshBtnActionPerformed
 
     private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
-        handleEditValue();
+        this.handleEditValue();
     }//GEN-LAST:event_editBtnActionPerformed
 
     private void addBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addBtnMouseClicked
@@ -366,11 +384,11 @@ public class NhaCungCapView extends javax.swing.JPanel {
     }//GEN-LAST:event_addBtnMouseClicked
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
-        ThemNhaCungCap addNewView = new ThemNhaCungCap();
+        this.handleAddValues();
     }//GEN-LAST:event_addBtnActionPerformed
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
-        handleDeleteValue();
+        this.handleDeleteValue();
     }//GEN-LAST:event_deleteBtnActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
