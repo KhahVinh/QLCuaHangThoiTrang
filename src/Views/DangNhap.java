@@ -36,6 +36,7 @@ public class DangNhap extends javax.swing.JFrame {
         setUndecorated(true);
 
         BF.setBackground(new java.awt.Color(255, 255, 255));
+        BF.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(204, 204, 204)));
 
         BC1.setBackground(new java.awt.Color(255, 255, 153));
 
@@ -77,7 +78,8 @@ public class DangNhap extends javax.swing.JFrame {
         titleDN.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titleDN.setText("ĐĂNG NHẬP HỆ THỐNG");
 
-        btnDangNhap.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        btnDangNhap.setBackground(new java.awt.Color(102, 255, 255));
+        btnDangNhap.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnDangNhap.setText("ĐĂNG NHẬP");
         btnDangNhap.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(255, 255, 255)));
         btnDangNhap.addActionListener(new java.awt.event.ActionListener() {
@@ -105,7 +107,7 @@ public class DangNhap extends javax.swing.JFrame {
         BC2Layout.setHorizontalGroup(
             BC2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(BC2Layout.createSequentialGroup()
-                .addContainerGap(122, Short.MAX_VALUE)
+                .addContainerGap(118, Short.MAX_VALUE)
                 .addComponent(Img2)
                 .addGap(97, 97, 97)
                 .addComponent(Exit, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -143,7 +145,7 @@ public class DangNhap extends javax.swing.JFrame {
                 .addComponent(txtMatKhau, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(51, 51, 51)
                 .addComponent(btnDangNhap, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(61, Short.MAX_VALUE))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout BFLayout = new javax.swing.GroupLayout(BF);
