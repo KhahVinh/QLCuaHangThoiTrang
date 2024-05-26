@@ -22,6 +22,8 @@ public class GiaoDien extends javax.swing.JFrame {
         jlbTKhoan = new javax.swing.JLabel();
         jpnQLXH = new javax.swing.JPanel();
         jlbQLXH = new javax.swing.JLabel();
+        jpnPhieuNhap = new javax.swing.JPanel();
+        jlbPhieuNhap = new javax.swing.JLabel();
         jpnDisplay = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -169,9 +171,35 @@ public class GiaoDien extends javax.swing.JFrame {
         );
         jpnQLXHLayout.setVerticalGroup(
             jpnQLXHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpnQLXHLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnQLXHLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jlbQLXH)
+                .addGap(10, 10, 10))
+        );
+
+        jpnPhieuNhap.setBackground(new java.awt.Color(26, 29, 31));
+
+        jlbPhieuNhap.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jlbPhieuNhap.setForeground(new java.awt.Color(255, 255, 255));
+        jlbPhieuNhap.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/icon/invoice (1).png"))); // NOI18N
+        jlbPhieuNhap.setText("Phiếu nhập hàng");
+        jlbPhieuNhap.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jlbPhieuNhap.setIconTextGap(20);
+
+        javax.swing.GroupLayout jpnPhieuNhapLayout = new javax.swing.GroupLayout(jpnPhieuNhap);
+        jpnPhieuNhap.setLayout(jpnPhieuNhapLayout);
+        jpnPhieuNhapLayout.setHorizontalGroup(
+            jpnPhieuNhapLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpnPhieuNhapLayout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addComponent(jlbQLXH, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                .addComponent(jlbPhieuNhap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(10, 10, 10))
+        );
+        jpnPhieuNhapLayout.setVerticalGroup(
+            jpnPhieuNhapLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnPhieuNhapLayout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jlbPhieuNhap)
                 .addGap(10, 10, 10))
         );
 
@@ -185,9 +213,10 @@ public class GiaoDien extends javax.swing.JFrame {
                     .addComponent(jpnQLDM, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jpnQLSP, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
                     .addComponent(jpnTKhoan, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jpnQLXH, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
-                    .addComponent(jpnQLNH, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(10, 10, 10))
+                    .addComponent(jpnQLNH, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jpnPhieuNhap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jpnQLXH, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
         jpnMenuLayout.setVerticalGroup(
             jpnMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -199,8 +228,10 @@ public class GiaoDien extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addComponent(jpnQLNH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
-                .addComponent(jpnQLXH, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 333, Short.MAX_VALUE)
+                .addComponent(jpnPhieuNhap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(jpnQLXH, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
                 .addComponent(jpnTKhoan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -257,6 +288,7 @@ public class GiaoDien extends javax.swing.JFrame {
         danhMuc.add(new DanhMuc("QLDM", jpnQLDM, jlbQLDM));
         danhMuc.add(new DanhMuc("QLNH", jpnQLNH, jlbQLNH));
         danhMuc.add(new DanhMuc("QLXH", jpnQLXH, jlbQLXH));
+        danhMuc.add(new DanhMuc("PhieuNhap", jpnPhieuNhap, jlbPhieuNhap));
         danhMuc.add(new DanhMuc("QLTKhoan", jpnTKhoan, jlbTKhoan));
         
         ChangeController menuController = new ChangeController(jpnDisplay);
@@ -264,6 +296,7 @@ public class GiaoDien extends javax.swing.JFrame {
         menuController.setEvent(danhMuc);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jlbPhieuNhap;
     private javax.swing.JLabel jlbQLDM;
     private javax.swing.JLabel jlbQLNH;
     private javax.swing.JLabel jlbQLSP;
@@ -271,6 +304,7 @@ public class GiaoDien extends javax.swing.JFrame {
     private javax.swing.JLabel jlbTKhoan;
     private javax.swing.JPanel jpnDisplay;
     private javax.swing.JPanel jpnMenu;
+    private javax.swing.JPanel jpnPhieuNhap;
     private javax.swing.JPanel jpnQLDM;
     private javax.swing.JPanel jpnQLNH;
     private javax.swing.JPanel jpnQLSP;
