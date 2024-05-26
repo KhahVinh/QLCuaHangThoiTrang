@@ -6,5 +6,4 @@ AOUNS012;Áo Unisix
 GIAYM1923;Giày nam
 GIAYFM192;Giày nữ
 PK919;Phụ kiện
-VAYN123;Váy
 CHANV9129;Chân váy
