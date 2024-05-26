@@ -134,11 +134,11 @@ public class QLXH extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         txtSoLuong = new javax.swing.JTextField();
         titleMaKH = new javax.swing.JLabel();
-        txtMaKH = new javax.swing.JTextField();
-        titleTenKH = new javax.swing.JLabel();
         txtTenKH = new javax.swing.JTextField();
+        titleTenKH = new javax.swing.JLabel();
+        txtSDT = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtDiaChi = new javax.swing.JTextField();
         txtTimKiem = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(153, 153, 153));
@@ -228,20 +228,20 @@ public class QLXH extends javax.swing.JPanel {
         titleMaKH.setFont(new java.awt.Font("Times New Roman", 0, 13)); // NOI18N
         titleMaKH.setText("Tên khách hàng");
 
-        txtMaKH.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        txtMaKH.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtTenKH.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        txtTenKH.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         titleTenKH.setFont(new java.awt.Font("Times New Roman", 0, 13)); // NOI18N
         titleTenKH.setText("Số điện thoại");
 
-        txtTenKH.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        txtTenKH.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtSDT.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        txtSDT.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jLabel6.setFont(new java.awt.Font("Times New Roman", 0, 13)); // NOI18N
         jLabel6.setText("Địa chỉ");
 
-        jTextField1.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtDiaChi.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        txtDiaChi.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -254,9 +254,9 @@ public class QLXH extends javax.swing.JPanel {
                     .addComponent(jSeparator1)
                     .addComponent(jScrollPane2)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -277,15 +277,15 @@ public class QLXH extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(titleMaKH, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtMaKH, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtTenKH, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(12, 12, 12)
                         .addComponent(titleTenKH, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtTenKH, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtSDT, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1)))
+                        .addComponent(txtDiaChi)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -307,11 +307,11 @@ public class QLXH extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(titleMaKH, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtMaKH, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(titleTenKH, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtTenKH, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(titleTenKH, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSDT, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDiaChi, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -384,8 +384,8 @@ public class QLXH extends javax.swing.JPanel {
             row[1] = model1.getValueAt(indexs[i], 0);
             row[2] = model1.getValueAt(indexs[i], 1);
             row[3] = model1.getValueAt(indexs[i], 2);
-            if (Integer.parseInt(soLuong) > Integer.parseInt(model1.getValueAt(indexs[i], 3).toString())) {
-                JOptionPane.showMessageDialog(this, "Số lượng vượt mức hiện có", "Thông báo", JOptionPane.ERROR_MESSAGE);
+            if (Integer.parseInt(soLuong) > 100 || Integer.parseInt(soLuong) > Integer.parseInt(tableThongTin.getValueAt(selectedRowIndex, 3).toString())) {
+                JOptionPane.showMessageDialog(this, "Số lượng vượt mức cho phép", "Thông báo", JOptionPane.ERROR_MESSAGE);
                 break;
             } else {
                 row[4] = soLuong;
@@ -400,15 +400,16 @@ public class QLXH extends javax.swing.JPanel {
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        model = (DefaultTableModel) tableXuat.getModel();
+        int selectedRowIndex = tableXuat.getSelectedRow();
         try {
-            model = (DefaultTableModel) tableXuat.getModel();
-            int selectedRowIndex = tableXuat.getSelectedRow();
             model.removeRow(selectedRowIndex);
             JOptionPane.showMessageDialog(this, "Xóa thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Chưa chọn sản phẩm cần xóa", "Thông báo lỗi", JOptionPane.ERROR_MESSAGE);
         }
         totalPriceNew();
+
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
@@ -422,7 +423,6 @@ public class QLXH extends javax.swing.JPanel {
             String newSoLuong = JOptionPane.showInputDialog(null, "Nhập lại số lượng", soLuong);
 
             StringBuilder sb = new StringBuilder();
-
             if (newSoLuong.trim().equals("")) {
                 sb.append("Số lượng không được để trống\n");
             }
@@ -435,18 +435,15 @@ public class QLXH extends javax.swing.JPanel {
                         "Thông báo", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            for (Product product : listSP) {
-                if (Integer.parseInt(newSoLuong) > 100) {
-                    JOptionPane.showMessageDialog(this, "Số lượng vượt mức cho phép", "Thông báo", JOptionPane.ERROR_MESSAGE);
-                    break;
-                } else {
-                    model.setValueAt(newSoLuong, selectedRowIndex, 4);
-                    JOptionPane.showMessageDialog(this, "Sửa thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                    break;
-                }
+
+            if (Integer.parseInt(newSoLuong) > 100) {
+                JOptionPane.showMessageDialog(this, "Số lượng vượt mức cho phép", "Thông báo", JOptionPane.ERROR_MESSAGE);
+            } else {
+                model.setValueAt(newSoLuong, selectedRowIndex, 4);
+                JOptionPane.showMessageDialog(this, "Sửa thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Chưa chọn sản phẩm cần sửa", "Thông báo", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Chưa chọn sản phẩm cần sửa", "Thông báo", JOptionPane.ERROR_MESSAGE);
         }
         totalPriceNew();
     }//GEN-LAST:event_btnSuaActionPerformed
@@ -488,12 +485,12 @@ public class QLXH extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTable tableThongTin;
     private javax.swing.JTable tableXuat;
     private javax.swing.JLabel titleMaKH;
     private javax.swing.JLabel titleTenKH;
-    private javax.swing.JTextField txtMaKH;
+    private javax.swing.JTextField txtDiaChi;
+    private javax.swing.JTextField txtSDT;
     private javax.swing.JTextField txtSoLuong;
     private javax.swing.JTextField txtTenKH;
     private javax.swing.JTextField txtTimKiem;
