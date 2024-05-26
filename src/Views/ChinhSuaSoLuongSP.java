@@ -45,7 +45,7 @@ public class ChinhSuaSoLuongSP extends javax.swing.JFrame {
             this.mainView.editValue(currentValue, Integer.parseInt(inputQuantity.getText()));
             JOptionPane.showMessageDialog(null, "Chỉnh sửa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             this.dispose();
-            this.mainView.showListSelected();
+            this.mainView.showListSelected("Edit");
         } else {
             JOptionPane.showMessageDialog(null, "Chỉnh sửa không thành công", "Thông báo", JOptionPane.ERROR_MESSAGE);
         }

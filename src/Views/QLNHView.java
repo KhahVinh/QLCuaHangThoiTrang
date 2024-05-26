@@ -1,6 +1,7 @@
 
 package Views;
 
+import Models.MatHang;
 import Models.NhaCungCap;
 import Models.Product;
 import java.io.BufferedReader;
@@ -9,36 +10,68 @@ import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 public class QLNHView extends javax.swing.JPanel {
-    private static final String FILE_NAME_PRODUCT = "QuanLySanPham.txt";
-    private static final String FILE_NAME_NHACUNGCAP = "NhaCungCap.txt";
+    private  final String FILE_NAME_PRODUCT = "QuanLySanPham.txt";
+    private final String FILE_NAME_NHACUNGCAP = "NhaCungCap.txt";
+    private final String FILE_NAME_MATHANG = "MatHang.txt";
     
-    private static String[] columnName = {"Mã sản phẩm", "Tên sản phẩm", "Loại sản phẩm", "Số lượng", "Giá"};
-
+    private String[] columnName = {"Mã sản phẩm", "Tên sản phẩm", "Loại sản phẩm", "Số lượng", "Giá"};
+    
+    private DefaultTableModel defaultTableSelectedModel = new DefaultTableModel(this.columnName, 0);
+    private DefaultTableModel defaultTableProductModel = new DefaultTableModel(this.columnName, 0);
     
     private ArrayList<Product> listProduct = new ArrayList<Product>();
     private ArrayList<NhaCungCap> listNhaCungCap = new ArrayList<NhaCungCap>();
     private ArrayList<Product> listSelectedProduct = new ArrayList<Product>();
+    private ArrayList<MatHang> listMatHang = new ArrayList<MatHang>();
     
     public QLNHView() {
         initComponents();
-        this.showListProduct();
-        this.listNhaCungCap = readFromFile(FILE_NAME_NHACUNGCAP);
+        this.listMatHang = getDataMatHang(FILE_NAME_MATHANG);
+        this.listProduct = getListProducts();
+        this.listNhaCungCap = getDataNhaCungCap(FILE_NAME_NHACUNGCAP);
+        this.showTableProduct("Get");
         this.setSelectedNhaCungCap();
-        this.showListSelected();
+        this.showListSelected("Create");
     }
     
     private void showMessage(String errorMessage) {
         JOptionPane.showMessageDialog(null, errorMessage, "Thông báo", JOptionPane.WARNING_MESSAGE);
     }
     
-    private ArrayList<NhaCungCap> readFromFile(String url) {
+    private ArrayList<MatHang> getDataMatHang(String url) {
+        ArrayList<MatHang> list = new ArrayList<MatHang>();
+        try {
+            FileReader fr = new FileReader(url);
+            BufferedReader br = new BufferedReader(fr);
+            String line = "";
+            while(true) {
+                line = br.readLine();
+                if (line == null) {
+                    break;
+                }
+                String txt[] = line.split(";");
+                list.add(new MatHang(txt[0], txt[1]));
+            }
+            br.close();
+            fr.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (list == null) {
+            list = new ArrayList<MatHang>();
+        }
+        return list;
+    }
+    
+    private ArrayList<NhaCungCap> getDataNhaCungCap(String url) {
         ArrayList<NhaCungCap> list = new ArrayList<NhaCungCap>();
         try {
-            FileReader fr = new FileReader(FILE_NAME_NHACUNGCAP);
+            FileReader fr = new FileReader(url);
             BufferedReader br = new BufferedReader(fr);
             String line = "";
             while(true) {
@@ -60,21 +93,10 @@ public class QLNHView extends javax.swing.JPanel {
         return list;
     }
     
-    private void showTableProduct(ArrayList<Product> list) {
-        DefaultTableModel defaultTableModel = new DefaultTableModel(columnName, 0);   
-        for (Product i : this.listProduct) {
-            Object[] rowData = {i.getProductID(), i.getProductName(), i.getProductCategory(), i.getProductQuantity(), i.getProductPrice()}; 
-            defaultTableModel.addRow(rowData);
-        }
-        defaultTableModel.fireTableDataChanged();
-        tableViewProduct.setModel(defaultTableModel);
-        tableViewProduct.repaint();
-    }
-    
-    public void showListProduct() {
-        this.listProduct.clear();
+    private ArrayList<Product> getDataProducts(String url) {
+        ArrayList<Product> list = new ArrayList<Product>();
         try {
-            FileReader fr = new FileReader(FILE_NAME_PRODUCT);
+            FileReader fr = new FileReader(url);
             BufferedReader br = new BufferedReader(fr);
             String line = "";
             while(true) {
@@ -83,30 +105,98 @@ public class QLNHView extends javax.swing.JPanel {
                     break;
                 }
                 String txt[] = line.split(";");
-                
-                this.listProduct.add(new Product(txt[0], txt[1], txt[2], Integer.parseInt(txt[3]), Long.parseLong(txt[4])));
+                list.add(new Product(txt[0], txt[1], txt[2], Integer.parseInt(txt[3]), Long.parseLong(txt[4])));
             }
             br.close();
             fr.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (this.listProduct == null) {
-            this.listProduct = new ArrayList<Product>();
+        if (list == null) {
+            list = new ArrayList<Product>();
         }
-        this.showTableProduct(listProduct);
+        return list;
     }
     
-    public void showListSelected() {
-        DefaultTableModel defaultTableModel = new DefaultTableModel(columnName, 0);
-        defaultTableModel.fireTableDataChanged();
-        if (!this.listSelectedProduct.isEmpty()) {
-            for (Product i : this.listSelectedProduct) {
-                Object[] rowData = {i.getProductID(), i.getProductName(), i.getProductCategory(), i.getProductQuantity(), i.getProductPrice()};
-                defaultTableModel.addRow(rowData);
+    private ArrayList<Product> getListProducts() {
+        ArrayList<Product> list = this.getDataProducts(this.FILE_NAME_PRODUCT);
+        for (int i = 0; i < list.size(); i++) {
+            int j = 0;
+            while (true && j < this.listMatHang.size()) {
+                if (list.get(i).getProductCategory().equalsIgnoreCase(this.listMatHang.get(j).getMa())) {
+                    list.get(i).setProductCategory(this.listMatHang.get(j).getTen());
+                    break;
+                }
+                j++;
             }
         }
-        tableViewSelected.setModel(defaultTableModel);
+        return list;
+    }
+    
+    private void showTableProduct(String type) {
+        if (!this.listProduct.isEmpty()) {
+            if (type.equalsIgnoreCase("Get")) {
+                this.defaultTableProductModel.setRowCount(0);
+                for (Product i : this.listProduct) {
+                    Object[] rowData = {i.getProductID(), i.getProductName(), i.getProductCategory(), i.getProductQuantity(), i.getProductPrice()}; 
+                    this.defaultTableProductModel.addRow(rowData);
+                }
+            }
+            if (type.equalsIgnoreCase("Remove")) {
+                int index = this.tableViewProduct.getSelectedRow();
+                this.defaultTableProductModel.removeRow(index);
+            }
+        }
+        tableViewProduct.setModel(this.defaultTableProductModel);
+        tableViewProduct.repaint();
+    }
+    
+    private Product getValueTable(int index, JTable table) {
+        Product value = new Product();
+        value.setProductID(table.getValueAt(index, 0).toString());
+        value.setProductName(table.getValueAt(index, 1).toString());
+        value.setProductCategory(table.getValueAt(index, 2).toString());
+        value.setProductQuantity(Integer.parseInt(table.getValueAt(index, 3).toString()));
+        value.setProductPrice(Long.parseLong(table.getValueAt(index, 4).toString()));
+        return value;
+    }
+    
+    public void showListSelected(String type) {
+        if (!this.listSelectedProduct.isEmpty()) {
+            if (type.equalsIgnoreCase("Create")) { 
+                Product value = this.listSelectedProduct.getLast();
+                Object[] rowData = {value.getProductID(), value.getProductName(), value.getProductCategory(), value.getProductQuantity(), value.getProductPrice()};
+                this.defaultTableSelectedModel.addRow(rowData);
+            }
+            if (type.equalsIgnoreCase("Edit")) {
+                this.defaultTableSelectedModel.setRowCount(0);
+                for (Product i : this.listSelectedProduct) {
+                    Object[] rowData = {i.getProductID(), i.getProductName(), i.getProductCategory(), i.getProductQuantity(), i.getProductPrice()};
+                    defaultTableSelectedModel.addRow(rowData);
+                }
+            }
+            if (type.equalsIgnoreCase("Remove")) {
+                int index = this.tableViewSelected.getSelectedRow();
+                this.listSelectedProduct.remove(index);
+                Product value = this.getValueTable(index, this.tableViewSelected);
+                for (int i = 0; i < this.listProduct.size(); i++) {
+                    if (value.getProductID().equalsIgnoreCase(this.listProduct.get(i).getProductID())) {
+                        int quantity = this.listProduct.get(i).getProductQuantity();
+                        value.setProductQuantity(quantity);
+                        break;
+                    }
+                }
+                Object[] data = {value.getProductID(), value.getProductName(), value.getProductCategory(), value.getProductQuantity(), value.getProductPrice()};
+                this.defaultTableSelectedModel.removeRow(index);
+                this.defaultTableProductModel.addRow(data);
+                this.tableViewProduct.setModel(this.defaultTableProductModel);
+                this.tableViewProduct.repaint();
+            }
+            
+        } else {
+            this.defaultTableSelectedModel.setRowCount(0);
+        }
+        tableViewSelected.setModel(defaultTableSelectedModel);
         tableViewSelected.repaint();
         this.showPrice();
     }
@@ -138,12 +228,11 @@ public class QLNHView extends javax.swing.JPanel {
         int index = -1;
         index = tableViewProduct.getSelectedRow();
         if (index != -1) {
-            Product valueSelected = this.listProduct.get(index);
+            Product valueSelected = this.getValueTable(index, this.tableViewProduct);
             valueSelected.setProductQuantity(Integer.parseInt(inputQuantity.getText()));
             this.listSelectedProduct.add(valueSelected);
-            this.listProduct.remove(index);
-            this.showTableProduct(listProduct);
-            this.showListSelected();
+            this.showTableProduct("Remove");
+            this.showListSelected("Create");
         } else {
             showMessage("Bạn chưa chọn sản phẩm để nhập");
         }
@@ -155,9 +244,8 @@ public class QLNHView extends javax.swing.JPanel {
         if (index != -1) {
             int rely = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa không?", "Thông báo", JOptionPane.YES_NO_OPTION);
             if (rely == JOptionPane.YES_NO_OPTION){
-                this.listSelectedProduct.remove(index);
+                this.showListSelected("Remove");
                 JOptionPane.showMessageDialog(null, "Xóa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                this.showListSelected();
             }
         } else {
             showMessage("Chưa chọn sản phẩm để xóa");
@@ -343,6 +431,7 @@ public class QLNHView extends javax.swing.JPanel {
 
         jLabel2.setText("Mã phiếu nhập:");
 
+        jTextField3.setEditable(false);
         jTextField3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jTextField3.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
@@ -482,9 +571,9 @@ public class QLNHView extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAddProductActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
-        this.showListProduct();
+        this.showTableProduct("Get");
         this.listSelectedProduct.clear();
-        this.showListSelected();
+        this.showListSelected("Create");
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
