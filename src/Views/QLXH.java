@@ -3,8 +3,17 @@ package Views;
 import Component.ReadWriteProduct;
 import Models.MatHang;
 import Models.Product;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Color;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -218,6 +227,11 @@ public class QLXH extends javax.swing.JPanel {
         btnXuat.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         btnXuat.setForeground(new java.awt.Color(255, 255, 255));
         btnXuat.setText("Xuất hàng");
+        btnXuat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXuatActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel3.setText("Số lượng");
@@ -468,6 +482,62 @@ public class QLXH extends javax.swing.JPanel {
         tableThongTin.setRowSorter(obj);
         obj.setRowFilter(RowFilter.regexFilter(txtTimKiem.getText(), 1));
     }//GEN-LAST:event_txtTimKiemKeyReleased
+
+    private void btnXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatActionPerformed
+        Document doc = new Document();
+        
+
+            try {
+                PdfWriter.getInstance(doc, new FileOutputStream("PhieuXuat.pdf"));
+
+                doc.open();
+
+                Font f1 = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
+                Paragraph p1 = new Paragraph("THONG TIN PHIEU XUAT\n\n", f1);
+                p1.setAlignment(Element.ALIGN_CENTER);
+                doc.add(p1);
+
+                Paragraph p2 = new Paragraph("\tTen khach hang: " + txtTenKH.getText()
+                        + "\n \tSo dien thoai: " + txtSDT.getText()
+                        + "\n \tDia chi: " + txtDiaChi.getText() + "\n\n");
+                doc.add(p2);
+
+                PdfPTable tb = new PdfPTable(6);
+
+                tb.addCell("STT");
+                tb.addCell("Ma san pham");
+                tb.addCell("Ten san pham");
+                tb.addCell("Loai");
+                tb.addCell("So luong");
+                tb.addCell("Gia ban");
+
+                for (int i = 0; i < tableXuat.getRowCount(); i++) {
+                    String STT = tableXuat.getValueAt(i, 0).toString();
+                    String Ma = tableXuat.getValueAt(i, 1).toString();
+                    String Ten = tableXuat.getValueAt(i, 2).toString();
+                    String Loai = tableXuat.getValueAt(i, 3).toString();
+                    String soLuong = tableXuat.getValueAt(i, 4).toString();
+                    String giaBan = tableXuat.getValueAt(i, 5).toString();
+
+                    tb.addCell(STT);
+                    tb.addCell(Ma);
+                    tb.addCell(Ten);
+                    tb.addCell(Loai);
+                    tb.addCell(soLuong);
+                    tb.addCell(giaBan);
+                }
+
+                doc.add(tb);
+
+                Paragraph p3 = new Paragraph("\n\tTong tien: " + txtTotalPrice.getText());
+                doc.add(p3);
+
+            } catch (FileNotFoundException | DocumentException ex) {
+                JOptionPane.showMessageDialog(this, ex);
+            }
+            doc.close();
+        
+    }//GEN-LAST:event_btnXuatActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
