@@ -214,13 +214,16 @@ public class DangNhap extends javax.swing.JFrame {
                                     "Thông báo",
                                     JOptionPane.INFORMATION_MESSAGE);
                             GiaoDien gd = new GiaoDien();
+                            gd.setSize(1100, 650);
                             gd.setVisible(true);
                             this.dispose();
                         } else {
-                            JOptionPane.showConfirmDialog(this,
-                                    "Tài khoản và mật khẩu đang sai",
+                            JOptionPane.showMessageDialog(this,
+                                    "Tài khoản hoặc mật khẩu không đúng, vui lòng nhập lại",
                                     "Thông báo",
-                                    JOptionPane.CLOSED_OPTION);
+                                    JOptionPane.OK_OPTION);
+                            txtTaiKhoan.setText("");
+                            txtMatKhau.setText("");
                         }
                         break;
                     }
