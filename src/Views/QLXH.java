@@ -12,12 +12,16 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Color;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.text.DecimalFormat;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Locale;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
@@ -30,10 +34,12 @@ public class QLXH extends javax.swing.JPanel {
 
     String fileQLSP = "QuanLySanPham.txt";
     String fileMatHang = "MatHang.txt";
+    String fileQLPX = "QuanLyPhieuXuat.txt";
+    String phieuXuat = "PhieuXuat.pdf";
 
     DefaultTableModel model;
     ReadWriteProduct rwp = new ReadWriteProduct();
-    DecimalFormat f = new DecimalFormat("###,###đ");
+    NumberFormat f = NumberFormat.getInstance(Locale.US);
 
     public QLXH() {
         initComponents();
@@ -105,7 +111,7 @@ public class QLXH extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, ex);
             }
         }
-        txtTotalPrice.setText(Integer.toString(total) + "đ");
+        txtTotalPrice.setText(f.format(total));
     }
 
     public void totalPriceNew() {
@@ -118,7 +124,7 @@ public class QLXH extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, ex);
             }
         }
-        txtTotalPrice.setText(Integer.toString(total) + "đ");
+        txtTotalPrice.setText(f.format(total));
     }
 
     @SuppressWarnings("unchecked")
@@ -220,7 +226,7 @@ public class QLXH extends javax.swing.JPanel {
         txtTotalPrice.setBackground(new java.awt.Color(242, 242, 242));
         txtTotalPrice.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         txtTotalPrice.setForeground(new java.awt.Color(204, 0, 0));
-        txtTotalPrice.setText("0đ");
+        txtTotalPrice.setText("0");
         txtTotalPrice.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
 
         btnXuat.setBackground(new java.awt.Color(0, 153, 51));
@@ -286,20 +292,20 @@ public class QLXH extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtSoLuong, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(titleMaKH, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtTenKH, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)
-                        .addComponent(titleTenKH, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtSDT, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtDiaChi)))
+                                .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(titleMaKH, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtTenKH, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(titleTenKH, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtSDT, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtDiaChi, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -308,7 +314,7 @@ public class QLXH extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -326,8 +332,8 @@ public class QLXH extends javax.swing.JPanel {
                     .addComponent(txtSDT, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtDiaChi, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -335,7 +341,7 @@ public class QLXH extends javax.swing.JPanel {
                     .addComponent(txtTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnXuat, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         txtTimKiem.setBackground(new java.awt.Color(153, 153, 153));
@@ -380,8 +386,8 @@ public class QLXH extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(7, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -398,7 +404,7 @@ public class QLXH extends javax.swing.JPanel {
             row[1] = model1.getValueAt(indexs[i], 0);
             row[2] = model1.getValueAt(indexs[i], 1);
             row[3] = model1.getValueAt(indexs[i], 2);
-            if (Integer.parseInt(soLuong) > 100 || Integer.parseInt(soLuong) > Integer.parseInt(tableThongTin.getValueAt(selectedRowIndex, 3).toString())) {
+            if (Integer.parseInt(soLuong) > 50 || Integer.parseInt(soLuong) > Integer.parseInt(tableThongTin.getValueAt(selectedRowIndex, 3).toString())) {
                 JOptionPane.showMessageDialog(this, "Số lượng vượt mức cho phép", "Thông báo", JOptionPane.ERROR_MESSAGE);
                 break;
             } else {
@@ -423,7 +429,6 @@ public class QLXH extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Chưa chọn sản phẩm cần xóa", "Thông báo lỗi", JOptionPane.ERROR_MESSAGE);
         }
         totalPriceNew();
-
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
@@ -445,12 +450,12 @@ public class QLXH extends javax.swing.JPanel {
             }
             if (sb.length() > 0) {
                 JOptionPane.showMessageDialog(this,
-                        sb.toString(),
-                        "Thông báo", JOptionPane.ERROR_MESSAGE);
+                    sb.toString(),
+                    "Thông báo", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            if (Integer.parseInt(newSoLuong) > 100) {
+            if (Integer.parseInt(newSoLuong) > 50) {
                 JOptionPane.showMessageDialog(this, "Số lượng vượt mức cho phép", "Thông báo", JOptionPane.ERROR_MESSAGE);
             } else {
                 model.setValueAt(newSoLuong, selectedRowIndex, 4);
@@ -461,6 +466,93 @@ public class QLXH extends javax.swing.JPanel {
         }
         totalPriceNew();
     }//GEN-LAST:event_btnSuaActionPerformed
+
+    private void btnXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatActionPerformed
+        Document doc = new Document();
+
+        File f = new File(phieuXuat);
+        try {
+            if (!f.exists()) {
+                f.createNewFile();
+            } else {
+                f.delete();
+                f.createNewFile();
+            }
+            PdfWriter.getInstance(doc, new FileOutputStream(f));
+
+            int xacNhan = JOptionPane.showConfirmDialog(this, "Xuất PDF?", "Thông báo", JOptionPane.YES_NO_OPTION);
+            if (xacNhan == JOptionPane.YES_NO_OPTION) {
+                doc.open();
+            }
+
+            Font f1 = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
+            Paragraph p1 = new Paragraph("THONG TIN PHIEU XUAT\n\n", f1);
+            p1.setAlignment(Element.ALIGN_CENTER);
+            doc.add(p1);
+
+            Paragraph p2 = new Paragraph("Ten khach hang: " + txtTenKH.getText()
+                + "\nSo dien thoai: " + txtSDT.getText()
+                + "\nDia chi: " + txtDiaChi.getText() + "\n\n");
+            doc.add(p2);
+
+            PdfPTable tb = new PdfPTable(6);
+
+            tb.addCell("STT");
+            tb.addCell("Ma san pham");
+            tb.addCell("Ten san pham");
+            tb.addCell("Loai");
+            tb.addCell("So luong");
+            tb.addCell("Gia ban");
+
+            for (int i = 0; i < tableXuat.getRowCount(); i++) {
+                String STT = tableXuat.getValueAt(i, 0).toString();
+                String Ma = tableXuat.getValueAt(i, 1).toString();
+                String Ten = tableXuat.getValueAt(i, 2).toString();
+                String Loai = tableXuat.getValueAt(i, 3).toString();
+                String soLuong = tableXuat.getValueAt(i, 4).toString();
+                String giaBan = tableXuat.getValueAt(i, 5).toString();
+
+                tb.addCell(STT);
+                tb.addCell(Ma);
+                tb.addCell(Ten);
+                tb.addCell(Loai);
+                tb.addCell(soLuong);
+                tb.addCell(giaBan);
+            }
+
+            doc.add(tb);
+
+            Paragraph p3 = new Paragraph("\nTong tien: " + txtTotalPrice.getText());
+            doc.add(p3);
+        } catch (FileNotFoundException | DocumentException ex) {
+            JOptionPane.showMessageDialog(this, ex);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, ex);
+        }
+        doc.close();
+        
+        try {
+            PrintWriter pw = new PrintWriter(fileQLPX);
+            for (int i = 0; i < tableXuat.getRowCount(); i++) {
+                pw.println(tableXuat.getValueAt(i, 0) +", "
+                        + tableXuat.getValueAt(i, 1) + ", "
+                        + tableXuat.getValueAt(i, 2) + ", "
+                        + tableXuat.getValueAt(i, 3) + ", "
+                        + tableXuat.getValueAt(i, 4) + ", "
+                        + tableXuat.getValueAt(i, 5));
+            }
+            pw.flush();
+            pw.close();
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
+        
+        txtTenKH.setText("");
+        txtSDT.setText("");
+        txtDiaChi.setText("");
+
+        JOptionPane.showMessageDialog(this, "Xuất thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_btnXuatActionPerformed
 
     private void txtTimKiemFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTimKiemFocusGained
         if (txtTimKiem.getText().equals("Nhập tên sản phẩm cần tìm kiếm")) {
@@ -482,62 +574,6 @@ public class QLXH extends javax.swing.JPanel {
         tableThongTin.setRowSorter(obj);
         obj.setRowFilter(RowFilter.regexFilter(txtTimKiem.getText(), 1));
     }//GEN-LAST:event_txtTimKiemKeyReleased
-
-    private void btnXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatActionPerformed
-        Document doc = new Document();
-        
-
-            try {
-                PdfWriter.getInstance(doc, new FileOutputStream("PhieuXuat.pdf"));
-
-                doc.open();
-
-                Font f1 = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
-                Paragraph p1 = new Paragraph("THONG TIN PHIEU XUAT\n\n", f1);
-                p1.setAlignment(Element.ALIGN_CENTER);
-                doc.add(p1);
-
-                Paragraph p2 = new Paragraph("\tTen khach hang: " + txtTenKH.getText()
-                        + "\n \tSo dien thoai: " + txtSDT.getText()
-                        + "\n \tDia chi: " + txtDiaChi.getText() + "\n\n");
-                doc.add(p2);
-
-                PdfPTable tb = new PdfPTable(6);
-
-                tb.addCell("STT");
-                tb.addCell("Ma san pham");
-                tb.addCell("Ten san pham");
-                tb.addCell("Loai");
-                tb.addCell("So luong");
-                tb.addCell("Gia ban");
-
-                for (int i = 0; i < tableXuat.getRowCount(); i++) {
-                    String STT = tableXuat.getValueAt(i, 0).toString();
-                    String Ma = tableXuat.getValueAt(i, 1).toString();
-                    String Ten = tableXuat.getValueAt(i, 2).toString();
-                    String Loai = tableXuat.getValueAt(i, 3).toString();
-                    String soLuong = tableXuat.getValueAt(i, 4).toString();
-                    String giaBan = tableXuat.getValueAt(i, 5).toString();
-
-                    tb.addCell(STT);
-                    tb.addCell(Ma);
-                    tb.addCell(Ten);
-                    tb.addCell(Loai);
-                    tb.addCell(soLuong);
-                    tb.addCell(giaBan);
-                }
-
-                doc.add(tb);
-
-                Paragraph p3 = new Paragraph("\n\tTong tien: " + txtTotalPrice.getText());
-                doc.add(p3);
-
-            } catch (FileNotFoundException | DocumentException ex) {
-                JOptionPane.showMessageDialog(this, ex);
-            }
-            doc.close();
-        
-    }//GEN-LAST:event_btnXuatActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
