@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
@@ -117,7 +118,6 @@ public class QLNHView extends javax.swing.JPanel {
     }
     
     private void showTableProduct(String type) {
-//        DefaultTableModel defaultTableModel = new DefaultTableModel(columnName, 0); 
         if (!this.listProduct.isEmpty()) {
             if (type.equalsIgnoreCase("Get")) {
                 this.defaultTableProductModel.setRowCount(0);
@@ -135,19 +135,19 @@ public class QLNHView extends javax.swing.JPanel {
         tableViewProduct.repaint();
     }
     
+    private Product getValueTable(int index, JTable table) {
+        Product value = new Product();
+        value.setProductID(table.getValueAt(index, 0).toString());
+        value.setProductName(table.getValueAt(index, 1).toString());
+        value.setProductCategory(table.getValueAt(index, 2).toString());
+        value.setProductQuantity(Integer.parseInt(table.getValueAt(index, 3).toString()));
+        value.setProductPrice(Long.parseLong(table.getValueAt(index, 4).toString()));
+        return value;
+    }
+    
     public void showListSelected(String type) {
-        /*
-        DefaultTableModel defaultTableModel = new DefaultTableModel(columnName, 0);
-        defaultTableModel.fireTableDataChanged();
         if (!this.listSelectedProduct.isEmpty()) {
-            for (Product i : this.listSelectedProduct) {
-                Object[] rowData = {i.getProductID(), i.getProductName(), i.getProductCategory(), i.getProductQuantity(), i.getProductPrice()};
-                defaultTableModel.addRow(rowData);
-            }
-        }
-        */
-        if (!this.listSelectedProduct.isEmpty()) {
-            if (type.equalsIgnoreCase("Create")) {
+            if (type.equalsIgnoreCase("Create")) { 
                 Product value = this.listSelectedProduct.getLast();
                 Object[] rowData = {value.getProductID(), value.getProductName(), value.getProductCategory(), value.getProductQuantity(), value.getProductPrice()};
                 this.defaultTableSelectedModel.addRow(rowData);
@@ -160,11 +160,13 @@ public class QLNHView extends javax.swing.JPanel {
                 }
             }
             if (type.equalsIgnoreCase("Remove")) {
-                int index = tableViewSelected.getSelectedRow();
-                Product value = this.listSelectedProduct.get(index);
+                int index = this.tableViewSelected.getSelectedRow();
+                this.listSelectedProduct.remove(index);
+                Product value = this.getValueTable(index, this.tableViewSelected);
                 for (int i = 0; i < this.listProduct.size(); i++) {
                     if (value.getProductID().equalsIgnoreCase(this.listProduct.get(i).getProductID())) {
-                        value = this.listProduct.get(i);
+                        int quantity = this.listProduct.get(i).getProductQuantity();
+                        value.setProductQuantity(quantity);
                         break;
                     }
                 }
@@ -210,7 +212,7 @@ public class QLNHView extends javax.swing.JPanel {
         int index = -1;
         index = tableViewProduct.getSelectedRow();
         if (index != -1) {
-            Product valueSelected = this.listProduct.get(index);
+            Product valueSelected = this.getValueTable(index, this.tableViewProduct);
             valueSelected.setProductQuantity(Integer.parseInt(inputQuantity.getText()));
             this.listSelectedProduct.add(valueSelected);
             this.showTableProduct("Remove");
@@ -226,9 +228,9 @@ public class QLNHView extends javax.swing.JPanel {
         if (index != -1) {
             int rely = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa không?", "Thông báo", JOptionPane.YES_NO_OPTION);
             if (rely == JOptionPane.YES_NO_OPTION){
-                this.listSelectedProduct.remove(index);
-                JOptionPane.showMessageDialog(null, "Xóa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+//                this.listSelectedProduct.remove(index);
                 this.showListSelected("Remove");
+                JOptionPane.showMessageDialog(null, "Xóa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
         } else {
             showMessage("Chưa chọn sản phẩm để xóa");
