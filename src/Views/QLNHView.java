@@ -27,10 +27,12 @@ public class QLNHView extends javax.swing.JPanel {
     private ArrayList<Product> listProduct = new ArrayList<Product>();
     private ArrayList<NhaCungCap> listNhaCungCap = new ArrayList<NhaCungCap>();
     private ArrayList<Product> listSelectedProduct = new ArrayList<Product>();
+    private ArrayList<MatHang> listMatHang = new ArrayList<MatHang>();
     
     public QLNHView() {
         initComponents();
-        this.listProduct = getDataProducts(FILE_NAME_PRODUCT);
+        this.listMatHang = getDataMatHang(FILE_NAME_MATHANG);
+        this.listProduct = getListProducts();
         this.listNhaCungCap = getDataNhaCungCap(FILE_NAME_NHACUNGCAP);
         this.showTableProduct("Get");
         this.setSelectedNhaCungCap();
@@ -103,7 +105,6 @@ public class QLNHView extends javax.swing.JPanel {
                     break;
                 }
                 String txt[] = line.split(";");
-                
                 list.add(new Product(txt[0], txt[1], txt[2], Integer.parseInt(txt[3]), Long.parseLong(txt[4])));
             }
             br.close();
@@ -113,6 +114,21 @@ public class QLNHView extends javax.swing.JPanel {
         }
         if (list == null) {
             list = new ArrayList<Product>();
+        }
+        return list;
+    }
+    
+    private ArrayList<Product> getListProducts() {
+        ArrayList<Product> list = this.getDataProducts(this.FILE_NAME_PRODUCT);
+        for (int i = 0; i < list.size(); i++) {
+            int j = 0;
+            while (true && j < this.listMatHang.size()) {
+                if (list.get(i).getProductCategory().equalsIgnoreCase(this.listMatHang.get(j).getMa())) {
+                    list.get(i).setProductCategory(this.listMatHang.get(j).getTen());
+                    break;
+                }
+                j++;
+            }
         }
         return list;
     }
@@ -228,7 +244,6 @@ public class QLNHView extends javax.swing.JPanel {
         if (index != -1) {
             int rely = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa không?", "Thông báo", JOptionPane.YES_NO_OPTION);
             if (rely == JOptionPane.YES_NO_OPTION){
-//                this.listSelectedProduct.remove(index);
                 this.showListSelected("Remove");
                 JOptionPane.showMessageDialog(null, "Xóa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
