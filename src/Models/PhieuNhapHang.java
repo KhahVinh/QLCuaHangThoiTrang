@@ -61,6 +61,19 @@ public class PhieuNhapHang {
         this.tien = tien;
     }
     
+    private String listProduct() {
+        String result = "";
+        for (Product i : this.sanPhamNhap) {
+            result = result + "&" + i.toString();
+        }
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return ma + "-" + maNhaCungCap + "-" + this.listProduct() + "-" + ngayTao + "-" + tien;
+    }
+    
    
    
 }

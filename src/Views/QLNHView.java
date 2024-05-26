@@ -267,6 +267,8 @@ public class QLNHView extends javax.swing.JPanel {
     public void editValue(int index, int quantity) {
         this.listSelectedProduct.get(index).setProductQuantity(quantity);
     }
+    
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -501,6 +503,11 @@ public class QLNHView extends javax.swing.JPanel {
         btnDone.setText("Nhập hàng");
         btnDone.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(15, 149, 224)));
         btnDone.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDoneActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -583,6 +590,10 @@ public class QLNHView extends javax.swing.JPanel {
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         this.handleDeleteValue();
     }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnDoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoneActionPerformed
+        
+    }//GEN-LAST:event_btnDoneActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
