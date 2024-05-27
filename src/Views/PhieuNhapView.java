@@ -24,7 +24,6 @@ public class PhieuNhapView extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(null, errorMessage, "Thông báo", JOptionPane.WARNING_MESSAGE);
     }
     
-    
     private ArrayList<PhieuNhap> readFromFile(String url) {
         ArrayList<PhieuNhap> list = new ArrayList<PhieuNhap>();
         try {

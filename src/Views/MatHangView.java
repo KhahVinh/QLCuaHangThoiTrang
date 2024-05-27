@@ -13,7 +13,6 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class MatHangView extends javax.swing.JPanel {
-    private static final String FILE_NAME = "MatHang.txt";
     private String[] columnName = {"Mã mặt hàng", "Tên mặt hàng"};
     private ArrayList<MatHang> list = new ArrayList<MatHang>();
 
@@ -25,49 +24,9 @@ public class MatHangView extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(null, errorMessage, "Thông báo", JOptionPane.WARNING_MESSAGE);
     }
     
-    private ArrayList<MatHang> readFromFile(String url) {
-        ArrayList<MatHang> list = new ArrayList<MatHang>();
-        try {
-            FileReader fr = new FileReader(FILE_NAME);
-            BufferedReader br = new BufferedReader(fr);
-            String line = "";
-            while(true) {
-                line = br.readLine();
-                if (line == null) {
-                    break;
-                }
-                String txt[] = line.split(";");
-                list.add(new MatHang(txt[0], txt[1]));
-            }
-            br.close();
-            fr.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (list == null) {
-            list = new ArrayList<MatHang>();
-        }
-        return list;
-    }
-    
-    private void writeToFile(String url, ArrayList<MatHang> list) {
-        try {
-            FileWriter fw = new FileWriter(url);
-            BufferedWriter bw = new BufferedWriter(fw);
-            for (MatHang i : list) {
-                bw.write(i.toString());
-                bw.newLine();
-            }
-            bw.close();
-            fw.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
     public void showListData() {
         this.list.clear();
-        this.list = readFromFile(FILE_NAME);
+        this.list = IO.MatHangIO.readFromFile();
         DefaultTableModel defaultTableModel = new DefaultTableModel(columnName, 0);   
         for (MatHang i : list) {
             Object[] rowData = {i.getMa(), i.getTen()}; 
@@ -80,7 +39,7 @@ public class MatHangView extends javax.swing.JPanel {
     
     private void deleteValue(int inputIndex) {
         this.list.remove(inputIndex);
-        writeToFile(FILE_NAME, list);
+        IO.MatHangIO.writeToFile(list);
     }
     
     private void handleDeleteValue() {
@@ -114,7 +73,7 @@ public class MatHangView extends javax.swing.JPanel {
     public void editValue(int index, MatHang value) {
         this.list.get(index).setMa(value.getMa());
         this.list.get(index).setTen(value.getTen());
-        writeToFile(FILE_NAME, list);
+        IO.MatHangIO.writeToFile(list);
     }
     
     private void handleAddValues() {
@@ -123,7 +82,7 @@ public class MatHangView extends javax.swing.JPanel {
     }
     
     public void addValues(ArrayList<MatHang> list) throws FileNotFoundException, IOException{
-        FileWriter fw = new FileWriter(FILE_NAME, true);
+        FileWriter fw = new FileWriter("MatHang.txt", true);
         BufferedWriter bw = new BufferedWriter(fw);
         for (MatHang i : list) {
             bw.write(i.toString());
