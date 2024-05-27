@@ -1,24 +1,27 @@
 
 package Models;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class PhieuNhapHang {
+public class PhieuNhap {
    private String ma; 
    private String maNhaCungCap;
    private ArrayList<Product> sanPhamNhap;
-   private Date ngayTao = new Date();
+   private String ngayTao;
    private Long tien;
 
-    public PhieuNhapHang(String ma, String maNhaCungCap, ArrayList<Product> sanPhamNhap, Long tien) {
+    public PhieuNhap(String ma, String maNhaCungCap, ArrayList<Product> sanPhamNhap, Long tien) {
         this.ma = ma;
         this.maNhaCungCap = maNhaCungCap;
         this.sanPhamNhap = sanPhamNhap;
         this.tien = tien;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        this.ngayTao = formatter.format(new Date());
     }
 
-    public PhieuNhapHang() {
+    public PhieuNhap() {
     }
 
     public String getMa() {
@@ -33,9 +36,6 @@ public class PhieuNhapHang {
         return sanPhamNhap;
     }
 
-    public Date getNgayTao() {
-        return ngayTao;
-    }
 
     public Long getTien() {
         return tien;
@@ -53,7 +53,11 @@ public class PhieuNhapHang {
         this.sanPhamNhap = sanPhamNhap;
     }
 
-    public void setNgayTao(Date ngayTao) {
+    public String getNgayTao() {
+        return ngayTao;
+    }
+
+    public void setNgayTao(String ngayTao) {
         this.ngayTao = ngayTao;
     }
 
@@ -63,8 +67,13 @@ public class PhieuNhapHang {
     
     private String listProduct() {
         String result = "";
-        for (Product i : this.sanPhamNhap) {
-            result = result + "&" + i.toString();
+        int size = this.sanPhamNhap.size();
+        for (int i = 0; i < size; i++) {
+            if (i != size - 1) {
+                result = result + this.sanPhamNhap.get(i).toString() + "&";
+            } else {
+                result = result + this.sanPhamNhap.get(i).toString();
+            }
         }
         return result;
     }

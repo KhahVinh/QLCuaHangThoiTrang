@@ -1,12 +1,77 @@
 
 package Views;
 
-public class PhieuNhapView extends javax.swing.JPanel {
+import Models.PhieuNhap;
+import Models.Product;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
+public class PhieuNhapView extends javax.swing.JPanel {
+    private static final String FILE_NAME = "PhieuNhap.txt";
+    private String[] columnName = {"Mã phiếu", "Mã nhà cung cấp", "Ngày tạo", "Tổng tiền"};
+    
+    private ArrayList<PhieuNhap> listPhieuNhap = new ArrayList<PhieuNhap>();
+    
     public PhieuNhapView() {
         initComponents();
+        this.showListData();
+    }
+    
+    private void showMessage(String errorMessage) {
+        JOptionPane.showMessageDialog(null, errorMessage, "Thông báo", JOptionPane.WARNING_MESSAGE);
+    }
+    
+    
+    private ArrayList<PhieuNhap> readFromFile(String url) {
+        ArrayList<PhieuNhap> list = new ArrayList<PhieuNhap>();
+        try {
+            FileReader fr = new FileReader(FILE_NAME);
+            BufferedReader br = new BufferedReader(fr);
+            String line = "";
+            while(true) {
+                line = br.readLine();
+                if (line == null) {
+                    break;
+                }
+                String txt[] = line.split("-");
+                String listProducts[] = txt[2].split("&");
+                ArrayList<Product> products = new ArrayList<Product>();
+                for (int i = 0; i < listProducts.length - 1; i++) {
+                    String value[] = listProducts[i].split(";");
+                    products.add(new Product(value[0], value[1], value[2], Integer.parseInt(value[3]), Long.parseLong(value[4])));
+                }
+                PhieuNhap value = new PhieuNhap(txt[0], txt[1], products, Long.parseLong(txt[4]));
+                value.setNgayTao(txt[3]);
+                list.add(value);
+            }
+            br.close();
+            fr.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (list == null) {
+            list = new ArrayList<PhieuNhap>();
+        }
+        return list;
+    }
+    
+    public void showListData() {
+        this.listPhieuNhap.clear();
+        this.listPhieuNhap = readFromFile(FILE_NAME);
+        DefaultTableModel defaultTableModel = new DefaultTableModel(columnName, 0);   
+        for (PhieuNhap i : this.listPhieuNhap) {
+            Object[] rowData = {i.getMa(), i.getMaNhaCungCap(), i.getNgayTao(), i.getTien()}; 
+            defaultTableModel.addRow(rowData);
+        }
+        defaultTableModel.fireTableDataChanged();
+        tableViewData.setModel(defaultTableModel);
+        tableViewData.repaint();
     }
 
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -22,7 +87,7 @@ public class PhieuNhapView extends javax.swing.JPanel {
         jPanel4 = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableViewData = new javax.swing.JTable();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -128,7 +193,7 @@ public class PhieuNhapView extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableViewData.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -139,7 +204,7 @@ public class PhieuNhapView extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tableViewData);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -188,7 +253,7 @@ public class PhieuNhapView extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable tableViewData;
     // End of variables declaration//GEN-END:variables
 }
