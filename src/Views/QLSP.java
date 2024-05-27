@@ -53,7 +53,7 @@ public class QLSP extends javax.swing.JPanel {
         updateTable();
     }
     
-    private void showMessage(String message, String title) {
+    private void showMessageWarning(String message, String title) {
         
     }
     
