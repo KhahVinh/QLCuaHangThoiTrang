@@ -53,8 +53,8 @@ public class QLSP extends javax.swing.JPanel {
         updateTable();
     }
     
-    private void showMessage(String message, String title) {
-        
+    private void showMessageWarning(String message, String title) {
+        JOptionPane.showMessageDialog(null, message, title, JOptionPane.WARNING_MESSAGE);
     }
     
     private ArrayList<Models.MatHang> readFromFile(String url) {
@@ -169,7 +169,7 @@ public class QLSP extends javax.swing.JPanel {
     private void ModifyProduct() {
         index = TableProduct.getSelectedRow();
         if (index == -1) {
-            JOptionPane.showMessageDialog(null, "Bạn chưa chọn sản phẩm để sửa", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            showMessageWarning("Bạn chưa chọn sản phẩm để xóa", "Thông báo");
         } else {
             try {
                 checkFuntions = 2;

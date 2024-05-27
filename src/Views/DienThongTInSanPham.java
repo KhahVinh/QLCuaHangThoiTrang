@@ -201,6 +201,10 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
         }
     }
 
+    private void showMessageWarning(String message, String title) {
+        JOptionPane.showMessageDialog(null, message, title, JOptionPane.WARNING_MESSAGE);
+    }
+    
     private void deleteFile() {
         ProductID.setText("");
         ProductName.setText("");
@@ -246,7 +250,7 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
         boolean check = true;
         try {
             if (id.trim().length() == 0) {
-                JOptionPane.showMessageDialog(null, "ID Không được để trống", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                showMessageWarning("Mã sản phẩm không được để trống", "Thông báo");
                 check = false;
                 ProductID.requestFocus();
             }
@@ -255,7 +259,7 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
         }
         try {
             if (name.trim().length() == 0) {
-                JOptionPane.showMessageDialog(null, "Tên Không được để trống", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                showMessageWarning("Tên sản phẩm không được để trống", "Thông báo");
                 check = false;
                 ProductName.requestFocus();
             }
@@ -266,7 +270,7 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
 
             if (quantity < 0) {
                 check = false;
-                JOptionPane.showMessageDialog(null, "Số lượng phải lớn hơn 0", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                showMessageWarning("Số lượng phải lớn hơn 0", "Thông báo");
                 ProductPrice.requestFocus();
             }
 
@@ -277,7 +281,7 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
 
             if (price <= 0) {
                 check = false;
-                JOptionPane.showMessageDialog(null, "Giá phải lớn hơn 0", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                showMessageWarning("Giá phải lớn hơn 0", "Thông báo");
                 ProductPrice.requestFocus();
             }
 
@@ -296,7 +300,7 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
         long price = 0;
         boolean check = true;
         if (listProduct.checkIDSame(id, danhsachsanpham)) {
-                JOptionPane.showMessageDialog(null, "ID đã tồn tại", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                showMessageWarning("Mã sản phẩm đã tồn tại", "Thông báo");
                 check = false;
             }
         try {
@@ -304,13 +308,13 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
             price = Long.parseLong(ProductPrice.getText());
 
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Giá tiền không đúng", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            showMessageWarning("Giá tiền không đúng", "Thông báo");
         }
         try {
             quantity = Integer.parseInt(ProductQuantity.getText());
 
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Số lượng không đúng", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            showMessageWarning("Số lượng không đúng", "Thông báo");
         }
         if (checkValue(id, name, category, quantity, price) && check) {
             qlsp = new QLSP();
@@ -337,13 +341,13 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
             price = Long.parseLong(ProductPrice.getText());
 
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Giá tiền không đúng", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            showMessageWarning("Giá tiền không đúng", "Thông báo");
         }
         try {
             quantity = Integer.parseInt(ProductQuantity.getText());
 
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Số lượng không đúng", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            showMessageWarning("Số lượng không đúng", "Thông báo");
         }
         if (checkValue(id, name, category, quantity, price)) {
             qlsp = new QLSP();
