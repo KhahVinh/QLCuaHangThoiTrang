@@ -1,5 +1,5 @@
 
-package Component;
+package IO;
 
 import Models.MatHang;
 import Models.Product;

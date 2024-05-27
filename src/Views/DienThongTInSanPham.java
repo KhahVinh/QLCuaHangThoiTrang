@@ -1,7 +1,7 @@
 package Views;
 
-import Component.ListProduct;
-import Component.ReadWriteProduct;
+import IO.ListProduct;
+import IO.ReadWriteProduct;
 import Models.Product;
 import javax.swing.JOptionPane;
 import java.util.ArrayList;
