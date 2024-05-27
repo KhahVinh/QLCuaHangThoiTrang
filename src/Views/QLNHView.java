@@ -3,9 +3,13 @@ package Views;
 
 import Models.MatHang;
 import Models.NhaCungCap;
+import Models.PhieuNhap;
 import Models.Product;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -18,6 +22,7 @@ public class QLNHView extends javax.swing.JPanel {
     private  final String FILE_NAME_PRODUCT = "QuanLySanPham.txt";
     private final String FILE_NAME_NHACUNGCAP = "NhaCungCap.txt";
     private final String FILE_NAME_MATHANG = "MatHang.txt";
+    private final String FILE_NAME_PHIEUNHAP = "PhieuNhap.txt";
     
     private String[] columnName = {"Mã sản phẩm", "Tên sản phẩm", "Loại sản phẩm", "Số lượng", "Giá"};
     
@@ -133,6 +138,39 @@ public class QLNHView extends javax.swing.JPanel {
         return list;
     }
     
+    private void writeToFile(PhieuNhap value, String url) {
+        try {
+            FileWriter fw = new FileWriter(url, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+//            for (NhaCungCap i : list) {
+//                bw.write(i.toString());
+//                bw.newLine();
+//            }
+            bw.write(value.toString());
+            bw.newLine();
+            bw.close();
+            fw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void handleCreatePhieuNhap() {
+        String maNCC = this.listNhaCungCap.get(inputNhaCungCap.getSelectedIndex()).getMa();
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        long gia = 0;
+        try {
+            gia = numberFormat.parse(this.cost.getText()).longValue();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        PhieuNhap value = new PhieuNhap(this.inputMaPhieu.getText(), maNCC, this.listSelectedProduct, gia);
+        this.writeToFile(value, this.FILE_NAME_PHIEUNHAP);
+    }
+    
+
+
+    
     private void showTableProduct(String type) {
         if (!this.listProduct.isEmpty()) {
             if (type.equalsIgnoreCase("Get")) {
@@ -210,7 +248,7 @@ public class QLNHView extends javax.swing.JPanel {
         } else {
             result = 0;
         }
-        cost.setText(Long.toString(result) + "đ");
+        cost.setText(String.format("%,d", result));
     }
     
     private void setSelectedNhaCungCap() {
@@ -286,7 +324,7 @@ public class QLNHView extends javax.swing.JPanel {
         btnAddProduct = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        inputMaPhieu = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         inputNhaCungCap = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -433,9 +471,8 @@ public class QLNHView extends javax.swing.JPanel {
 
         jLabel2.setText("Mã phiếu nhập:");
 
-        jTextField3.setEditable(false);
-        jTextField3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jTextField3.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        inputMaPhieu.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        inputMaPhieu.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
         jLabel3.setText("Nhà cung cấp:");
 
@@ -523,7 +560,7 @@ public class QLNHView extends javax.swing.JPanel {
                             .addComponent(jLabel3))
                         .addGap(67, 67, 67)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField3)
+                            .addComponent(inputMaPhieu)
                             .addComponent(inputNhaCungCap, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel4)
@@ -542,7 +579,7 @@ public class QLNHView extends javax.swing.JPanel {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(inputMaPhieu, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -592,7 +629,7 @@ public class QLNHView extends javax.swing.JPanel {
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnDoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoneActionPerformed
-        
+        this.handleCreatePhieuNhap();
     }//GEN-LAST:event_btnDoneActionPerformed
 
 
@@ -603,6 +640,7 @@ public class QLNHView extends javax.swing.JPanel {
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnRefresh;
     private javax.swing.JLabel cost;
+    private javax.swing.JTextField inputMaPhieu;
     private javax.swing.JComboBox<String> inputNhaCungCap;
     private javax.swing.JTextField inputQuantity;
     private javax.swing.JLabel jLabel1;
@@ -616,7 +654,6 @@ public class QLNHView extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JTable tableViewProduct;
     private javax.swing.JTable tableViewSelected;
     // End of variables declaration//GEN-END:variables
