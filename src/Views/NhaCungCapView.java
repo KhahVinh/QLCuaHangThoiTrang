@@ -13,7 +13,6 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class NhaCungCapView extends javax.swing.JPanel {
-    private static final String FILE_NAME = "NhaCungCap.txt";
     private String[] columnName = {"Mã NCC", "Tên nhà cung cấp", "Số điện thoại", "Địa chỉ"};
     private static ArrayList<NhaCungCap> list = new ArrayList<NhaCungCap>();
     
@@ -25,49 +24,9 @@ public class NhaCungCapView extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(null, errorMessage, "Thông báo", JOptionPane.WARNING_MESSAGE);
     }
     
-    private ArrayList<NhaCungCap> readFromFile(String url) {
-        ArrayList<NhaCungCap> list = new ArrayList<NhaCungCap>();
-        try {
-            FileReader fr = new FileReader(FILE_NAME);
-            BufferedReader br = new BufferedReader(fr);
-            String line = "";
-            while(true) {
-                line = br.readLine();
-                if (line == null) {
-                    break;
-                }
-                String txt[] = line.split(";");
-                list.add(new NhaCungCap(txt[0], txt[1], txt[2], txt[3]));
-            }
-            br.close();
-            fr.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (list == null) {
-            list = new ArrayList<NhaCungCap>();
-        }
-        return list;
-    }
-    
-    private void writeToFile(String url, ArrayList<NhaCungCap> list) {
-        try {
-            FileWriter fw = new FileWriter(url);
-            BufferedWriter bw = new BufferedWriter(fw);
-            for (NhaCungCap i : list) {
-                bw.write(i.toString());
-                bw.newLine();
-            }
-            bw.close();
-            fw.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
     public void showListData() {
         this.list.clear();
-        this.list = readFromFile(FILE_NAME);
+        this.list = IO.NhaCungCapIO.readFromFile();
         DefaultTableModel defaultTableModel = new DefaultTableModel(columnName, 0);   
         for (NhaCungCap i : list) {
             Object[] rowData = {i.getMa(), i.getTen(), i.getSoDienThoai(), i.getDiaChi()}; 
@@ -80,7 +39,7 @@ public class NhaCungCapView extends javax.swing.JPanel {
     
     private void deleteValue(int inputIndex) {
         this.list.remove(inputIndex);
-        writeToFile(FILE_NAME, list);
+        IO.NhaCungCapIO.writeToFile(list);
     }
     
     private void handleDeleteValue() {
@@ -117,7 +76,7 @@ public class NhaCungCapView extends javax.swing.JPanel {
             this.list.get(index).setTen(value.getTen());
             this.list.get(index).setSoDienThoai(value.getSoDienThoai());
             this.list.get(index).setDiaChi(value.getDiaChi());
-            writeToFile(FILE_NAME, list);
+            IO.NhaCungCapIO.writeToFile(list);
     }
     
     private void handleAddValues() {
@@ -126,7 +85,7 @@ public class NhaCungCapView extends javax.swing.JPanel {
     }
     
     public void addValues(ArrayList<NhaCungCap> list) throws FileNotFoundException, IOException{
-        FileWriter fw = new FileWriter(FILE_NAME, true);
+        FileWriter fw = new FileWriter("NhaCungCap.txt", true);
         BufferedWriter bw = new BufferedWriter(fw);
         for (NhaCungCap i : list) {
             bw.write(i.toString());

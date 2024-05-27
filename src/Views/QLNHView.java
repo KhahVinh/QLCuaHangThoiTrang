@@ -5,24 +5,13 @@ import Models.MatHang;
 import Models.NhaCungCap;
 import Models.PhieuNhap;
 import Models.Product;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 public class QLNHView extends javax.swing.JPanel {
-    private  final String FILE_NAME_PRODUCT = "QuanLySanPham.txt";
-    private final String FILE_NAME_NHACUNGCAP = "NhaCungCap.txt";
-    private final String FILE_NAME_MATHANG = "MatHang.txt";
-    private final String FILE_NAME_PHIEUNHAP = "PhieuNhap.txt";
     
     private String[] columnName = {"Mã sản phẩm", "Tên sản phẩm", "Loại sản phẩm", "Số lượng", "Giá"};
     
@@ -36,9 +25,9 @@ public class QLNHView extends javax.swing.JPanel {
     
     public QLNHView() {
         initComponents();
-        this.listMatHang = getDataMatHang(FILE_NAME_MATHANG);
+        this.listMatHang = IO.MatHangIO.readFromFile();
         this.listProduct = getListProducts();
-        this.listNhaCungCap = getDataNhaCungCap(FILE_NAME_NHACUNGCAP);
+        this.listNhaCungCap = IO.NhaCungCapIO.readFromFile();
         this.showTableProduct("Get");
         this.setSelectedNhaCungCap();
         this.showListSelected("Create");
@@ -47,84 +36,9 @@ public class QLNHView extends javax.swing.JPanel {
     private void showMessage(String errorMessage) {
         JOptionPane.showMessageDialog(null, errorMessage, "Thông báo", JOptionPane.WARNING_MESSAGE);
     }
-    
-    private ArrayList<MatHang> getDataMatHang(String url) {
-        ArrayList<MatHang> list = new ArrayList<MatHang>();
-        try {
-            FileReader fr = new FileReader(url);
-            BufferedReader br = new BufferedReader(fr);
-            String line = "";
-            while(true) {
-                line = br.readLine();
-                if (line == null) {
-                    break;
-                }
-                String txt[] = line.split(";");
-                list.add(new MatHang(txt[0], txt[1]));
-            }
-            br.close();
-            fr.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (list == null) {
-            list = new ArrayList<MatHang>();
-        }
-        return list;
-    }
-    
-    private ArrayList<NhaCungCap> getDataNhaCungCap(String url) {
-        ArrayList<NhaCungCap> list = new ArrayList<NhaCungCap>();
-        try {
-            FileReader fr = new FileReader(url);
-            BufferedReader br = new BufferedReader(fr);
-            String line = "";
-            while(true) {
-                line = br.readLine();
-                if (line == null) {
-                    break;
-                }
-                String txt[] = line.split(";");
-                list.add(new NhaCungCap(txt[0], txt[1], txt[2], txt[3]));
-            }
-            br.close();
-            fr.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (list == null) {
-            list = new ArrayList<NhaCungCap>();
-        }
-        return list;
-    }
-    
-    private ArrayList<Product> getDataProducts(String url) {
-        ArrayList<Product> list = new ArrayList<Product>();
-        try {
-            FileReader fr = new FileReader(url);
-            BufferedReader br = new BufferedReader(fr);
-            String line = "";
-            while(true) {
-                line = br.readLine();
-                if (line == null) {
-                    break;
-                }
-                String txt[] = line.split(";");
-                list.add(new Product(txt[0], txt[1], txt[2], Integer.parseInt(txt[3]), Long.parseLong(txt[4])));
-            }
-            br.close();
-            fr.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (list == null) {
-            list = new ArrayList<Product>();
-        }
-        return list;
-    }
-    
+
     private ArrayList<Product> getListProducts() {
-        ArrayList<Product> list = this.getDataProducts(this.FILE_NAME_PRODUCT);
+        ArrayList<Product> list = IO.ProductIO.readFromFile();
         for (int i = 0; i < list.size(); i++) {
             int j = 0;
             while (true && j < this.listMatHang.size()) {
@@ -138,23 +52,6 @@ public class QLNHView extends javax.swing.JPanel {
         return list;
     }
     
-    private void writeToFile(PhieuNhap value, String url) {
-        try {
-            FileWriter fw = new FileWriter(url, true);
-            BufferedWriter bw = new BufferedWriter(fw);
-//            for (NhaCungCap i : list) {
-//                bw.write(i.toString());
-//                bw.newLine();
-//            }
-            bw.write(value.toString());
-            bw.newLine();
-            bw.close();
-            fw.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
     private void handleCreatePhieuNhap() {
         String maNCC = this.listNhaCungCap.get(inputNhaCungCap.getSelectedIndex()).getMa();
         NumberFormat numberFormat = NumberFormat.getInstance();
@@ -165,11 +62,8 @@ public class QLNHView extends javax.swing.JPanel {
             e.printStackTrace();
         }
         PhieuNhap value = new PhieuNhap(this.inputMaPhieu.getText(), maNCC, this.listSelectedProduct, gia);
-        this.writeToFile(value, this.FILE_NAME_PHIEUNHAP);
+        IO.PhieuNhapIO.writeToFile(value);
     }
-    
-
-
     
     private void showTableProduct(String type) {
         if (!this.listProduct.isEmpty()) {
