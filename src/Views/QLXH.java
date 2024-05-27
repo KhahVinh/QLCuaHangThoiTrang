@@ -1,6 +1,6 @@
 package Views;
 
-import Component.ReadWriteProduct;
+import IO.ReadWriteProduct;
 import Models.MatHang;
 import Models.Product;
 import com.itextpdf.text.Document;
