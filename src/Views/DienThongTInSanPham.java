@@ -2,7 +2,9 @@ package Views;
 
 import IO.ListProduct;
 import IO.ReadWriteProduct;
-import Models.Product;
+import Views.QLSP;
+import  Models.Product;
+import Views.QLSP;
 import javax.swing.JOptionPane;
 import java.util.ArrayList;
 import static Views.QLSP.checkFuntions;

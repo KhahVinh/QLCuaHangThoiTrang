@@ -3,6 +3,7 @@ package Controllers;
 
 import Models.DanhMuc;
 import Views.PhieuNhapView;
+import Views.PhieuXuatView;
 import Views.QLDMView;
 import Views.QLNHView;
 import Views.QLSP;
@@ -108,6 +109,10 @@ public class ChangeController {
                 }
                 case "PhieuNhap": {
                     node = new PhieuNhapView();
+                    break;
+                }
+                case "PhieuXuat": {
+                    node = new PhieuXuatView();
                     break;
                 }
                 case "QLXH": {
