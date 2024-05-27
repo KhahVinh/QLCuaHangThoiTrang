@@ -22,8 +22,6 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
@@ -458,26 +456,34 @@ public class QLXH extends javax.swing.JPanel {
         model = (DefaultTableModel) tableXuat.getModel();
         model2 = (DefaultTableModel) tableThongTin.getModel();
         int selectedRowIndex = tableXuat.getSelectedRow();
-        Product value = this.getValueTable(selectedRowIndex, this.tableXuat);
         try {
-            model.removeRow(selectedRowIndex);
-            JOptionPane.showMessageDialog(this, "Xóa thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            Product value = this.getValueTable(selectedRowIndex, this.tableXuat);
+            selectedRowIndex = JOptionPane.showConfirmDialog(this, "Bạn có muốn xóa không?", "Thông báo", JOptionPane.YES_NO_OPTION);
+            if (selectedRowIndex == JOptionPane.NO_OPTION) {
+                JOptionPane.showMessageDialog(this, "Sản phẩm chưa xóa", " Thông báo", JOptionPane.OK_OPTION);
+            }
+
+            if (selectedRowIndex == JOptionPane.YES_OPTION) {
+                model.removeRow(selectedRowIndex);
+                JOptionPane.showMessageDialog(this, "Xóa thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+
+                totalPriceNew();
+
+                for (int i = 0; i < this.listSP.size(); i++) {
+                    if (value.getProductID().equalsIgnoreCase(this.listSP.get(i).getProductID())) {
+                        int quantity = this.listSP.get(i).getProductQuantity();
+                        value.setProductQuantity(quantity);
+                        break;
+                    }
+                }
+                Object[] data = {value.getProductID(), value.getProductName(), value.getProductCategory(), value.getProductQuantity(), f.format(value.getProductPrice())};
+                model2.addRow(data);
+                tableThongTin.setModel(model2);
+                tableThongTin.repaint();
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Chưa chọn sản phẩm cần xóa", "Thông báo lỗi", JOptionPane.ERROR_MESSAGE);
         }
-        totalPriceNew();
-        
-        for (int i = 0; i < this.listSP.size(); i++) {
-            if (value.getProductID().equalsIgnoreCase(this.listSP.get(i).getProductID())) {
-                int quantity = this.listSP.get(i).getProductQuantity();
-                value.setProductQuantity(quantity);
-                break;
-            }
-        }
-        Object[] data = {value.getProductID(), value.getProductName(), value.getProductCategory(), value.getProductQuantity(), f.format(value.getProductPrice())};
-        model2.addRow(data);
-        tableThongTin.setModel(model2);
-        tableThongTin.repaint();
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
@@ -517,6 +523,7 @@ public class QLXH extends javax.swing.JPanel {
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatActionPerformed
+        model = (DefaultTableModel) tableXuat.getModel();
         Document doc = new Document();
 
         File f = new File(phieuXuat);
@@ -530,53 +537,57 @@ public class QLXH extends javax.swing.JPanel {
             PdfWriter.getInstance(doc, new FileOutputStream(f));
 
             int xacNhan = JOptionPane.showConfirmDialog(this, "Xuất PDF?", "Thông báo", JOptionPane.YES_NO_OPTION);
-            if (xacNhan == JOptionPane.YES_NO_OPTION) {
+            if (xacNhan == JOptionPane.NO_OPTION) {
+                JOptionPane.showMessageDialog(this, "Bạn đã từ chối xuất phiếu", "Thông báo", JOptionPane.OK_OPTION);
+            } else {
                 doc.open();
+
+                Font f1 = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
+                Paragraph p1 = new Paragraph("THONG TIN PHIEU XUAT\n\n", f1);
+                p1.setAlignment(Element.ALIGN_CENTER);
+                doc.add(p1);
+
+                Paragraph p2 = new Paragraph("Ten khach hang: " + txtTenKH.getText()
+                        + "\nSo dien thoai: " + txtSDT.getText()
+                        + "\nDia chi: " + txtDiaChi.getText() + "\n\n");
+                doc.add(p2);
+
+                PdfPTable tb = new PdfPTable(6);
+
+                tb.addCell("Ma san pham");
+                tb.addCell("Ten san pham");
+                tb.addCell("Loai");
+                tb.addCell("So luong");
+                tb.addCell("Gia ban");
+
+                for (int i = 0; i < tableXuat.getRowCount(); i++) {
+
+                    String Ma = tableXuat.getValueAt(i, 0).toString();
+                    String Ten = tableXuat.getValueAt(i, 1).toString();
+                    String Loai = tableXuat.getValueAt(i, 2).toString();
+                    String soLuong = tableXuat.getValueAt(i, 3).toString();
+                    String giaBan = tableXuat.getValueAt(i, 4).toString();
+
+                    tb.addCell(Ma);
+                    tb.addCell(Ten);
+                    tb.addCell(Loai);
+                    tb.addCell(soLuong);
+                    tb.addCell(giaBan);
+                }
+
+                doc.add(tb);
+
+                Paragraph p3 = new Paragraph("\nTong tien: " + txtTotalPrice.getText());
+                doc.add(p3);
+
+                doc.close();
+                JOptionPane.showMessageDialog(this, "Xuất thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
-
-            Font f1 = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
-            Paragraph p1 = new Paragraph("THONG TIN PHIEU XUAT\n\n", f1);
-            p1.setAlignment(Element.ALIGN_CENTER);
-            doc.add(p1);
-
-            Paragraph p2 = new Paragraph("Ten khach hang: " + txtTenKH.getText()
-                    + "\nSo dien thoai: " + txtSDT.getText()
-                    + "\nDia chi: " + txtDiaChi.getText() + "\n\n");
-            doc.add(p2);
-
-            PdfPTable tb = new PdfPTable(6);
-
-            tb.addCell("Ma san pham");
-            tb.addCell("Ten san pham");
-            tb.addCell("Loai");
-            tb.addCell("So luong");
-            tb.addCell("Gia ban");
-
-            for (int i = 0; i < tableXuat.getRowCount(); i++) {
-
-                String Ma = tableXuat.getValueAt(i, 0).toString();
-                String Ten = tableXuat.getValueAt(i, 1).toString();
-                String Loai = tableXuat.getValueAt(i, 2).toString();
-                String soLuong = tableXuat.getValueAt(i, 3).toString();
-                String giaBan = tableXuat.getValueAt(i, 4).toString();
-
-                tb.addCell(Ma);
-                tb.addCell(Ten);
-                tb.addCell(Loai);
-                tb.addCell(soLuong);
-                tb.addCell(giaBan);
-            }
-
-            doc.add(tb);
-
-            Paragraph p3 = new Paragraph("\nTong tien: " + txtTotalPrice.getText());
-            doc.add(p3);
         } catch (FileNotFoundException | DocumentException ex) {
             JOptionPane.showMessageDialog(this, ex);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, ex);
         }
-        doc.close();
 
         try {
             PrintWriter pw = new PrintWriter(fileQLPX);
@@ -598,8 +609,9 @@ public class QLXH extends javax.swing.JPanel {
         txtTenKH.setText("");
         txtSDT.setText("");
         txtDiaChi.setText("");
+        model.setRowCount(0);
 
-        JOptionPane.showMessageDialog(this, "Xuất thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+
     }//GEN-LAST:event_btnXuatActionPerformed
 
     private void txtTimKiemFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTimKiemFocusGained
