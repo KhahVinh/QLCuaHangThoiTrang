@@ -92,7 +92,7 @@ public class QLTKhoan extends javax.swing.JPanel {
                 btnCapNhapActionPerformed(evt);
             }
         });
-        jPanel2.add(btnCapNhap, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 430, 110, 30));
+        jPanel2.add(btnCapNhap, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 430, 100, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
