@@ -3,8 +3,11 @@ package Views;
 
 import Models.NhaCungCap;
 import Models.PhieuNhap;
+import java.awt.BorderLayout;
 import java.util.ArrayList;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.OverlayLayout;
 import javax.swing.table.DefaultTableModel;
 
 public class PhieuNhapView extends javax.swing.JPanel {
@@ -54,7 +57,7 @@ public class PhieuNhapView extends javax.swing.JPanel {
         return nhaCC;
     }
     
-    private void handleXemChiTiet() {
+    private void handleDetailValue() {
         int index = -1;
         index = tableViewData.getSelectedRow();
         if (index != -1) {
@@ -86,8 +89,27 @@ public class PhieuNhapView extends javax.swing.JPanel {
                 this.showListData();
             }
         } else {
-            showMessage("Chưa chọn nhà cung cấp để xóa");
+            showMessage("Chưa chọn phiếu nhập để xóa");
         }
+    }
+    
+    private void handleEditValue() {
+        int index = -1;
+        index = tableViewData.getSelectedRow();
+        if (index != -1) {
+            JFrame frameView = new JFrame();
+            frameView.setLayout(new BorderLayout());
+            QLNHView editView = new QLNHView(this.listPhieuNhap.get(index));
+            frameView.add(editView);
+            frameView.setVisible(true);
+            frameView.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frameView.setLocationRelativeTo(null);
+            frameView.setTitle("Chỉnh sửa phiếu nhập");
+            frameView.setSize(1050, 583);
+        } else {
+            showMessage("Chưa chọn phiếu nhập để sửa");
+        }
+        
     }
     
     @SuppressWarnings("unchecked")
@@ -266,11 +288,11 @@ public class PhieuNhapView extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnChinhSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChinhSuaActionPerformed
-        // TODO add your handling code here:
+        this.handleEditValue();
     }//GEN-LAST:event_btnChinhSuaActionPerformed
 
     private void btnChiTietActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChiTietActionPerformed
-        this.handleXemChiTiet();
+        this.handleDetailValue();
     }//GEN-LAST:event_btnChiTietActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed

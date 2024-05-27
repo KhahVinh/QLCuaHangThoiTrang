@@ -2,3 +2,5 @@
 dfadf-01-10;Áo hoodie nữ;Áo nữ;1;550000&17;Quần baggy nữ;Quần nữ;1;370000&20;Chân váy xếp ly;Chân váy;1;480000-27/05/2024 16:40-1400000
 55555-1234-12;Quần kaki nam;Quần nam;1;500000&19;Phụ kiện thời trang;Phụ kiện;1;150000&22;Quần ngắn thể thao;Quần nam;1;350000&17;Quần baggy nữ;Quần nữ;12;370000-27/05/2024 22:19-5440000
 -01-9;Quần thể thao nam;Quần nam;1;400000&13;Váy công sở;;1;750000-27/05/2024 23:22-1150000
+-01-15;Giày cao gót nữ;Giày nữ;1;950000&38;Áo sơ mi tay ngắn;Áo nam;1;310000&40;Chân váy midi;Chân váy;1;500000&44;Giày chạy bộ nam;Giày nam;1;850000&42;Quần jogger nữ;Quần nữ;1;400000-28/05/2024 01:20-3010000
+Phiếu mới-01-1;Áo phông cổ tròn;Áo nam;1;250000&2;Quần jeans nam;Quần nam;1;450000&3;Áo khoác da;Áo nam;1;1200000&4;Đầm dự tiệc;;1;850000-28/05/2024 01:21-2750000

@@ -23,6 +23,8 @@ public class QLNHView extends javax.swing.JPanel {
     private ArrayList<Product> listSelectedProduct = new ArrayList<Product>();
     private ArrayList<MatHang> listMatHang = new ArrayList<MatHang>();
     
+    private PhieuNhap currentValue;
+    
     public QLNHView() {
         initComponents();
         this.listMatHang = IO.MatHangIO.readFromFile();
@@ -35,10 +37,14 @@ public class QLNHView extends javax.swing.JPanel {
     
     public QLNHView(PhieuNhap inputPhieuNhap) {
         initComponents();
+        this.currentValue = inputPhieuNhap;
         this.inputMaPhieu.setText(inputPhieuNhap.getMa());
-        
         this.listSelectedProduct = inputPhieuNhap.getSanPhamNhap();
-        this.cost.setText(String.format("%,d", inputPhieuNhap.getTien()));
+//        this.cost.setText(String.format("%,d", inputPhieuNhap.getTien()));
+        this.listMatHang = IO.MatHangIO.readFromFile();
+        this.listProduct = getListProducts();
+        this.showTableProduct("Edit");
+        this.showListSelected("Edit");
     }
     
     private void showMessage(String errorMessage) {
@@ -86,9 +92,29 @@ public class QLNHView extends javax.swing.JPanel {
                 this.defaultTableProductModel.setRowCount(0);
                 for (Product i : this.listProduct) {
                     Object[] rowData = {i.getProductID(), i.getProductName(), i.getProductCategory(), i.getProductQuantity(), i.getProductPrice()}; 
-//                    Object[] rowData = {i.getProductID(), i.getProductName(), i.getProductCategory(), i.getProductQuantity(), String.format("%,d", i.getProductPrice())}; 
                     this.defaultTableProductModel.addRow(rowData);
                 }
+            }
+            if (type.equalsIgnoreCase("Edit")) {
+                this.defaultTableProductModel.setRowCount(0);
+                for (int i = 0; i < this.listProduct.size(); i++) {
+                    boolean hasValue = false;
+                    for (int j = 0; j < this.listSelectedProduct.size(); j++) {
+                        if (this.listProduct.get(i).getProductID().equalsIgnoreCase(this.listSelectedProduct.get(j).getProductID())) {
+                            this.listProduct.remove(i);
+                            this.listSelectedProduct.remove(j);
+                            hasValue = true;
+                            break;
+                        }
+                    }
+                    if (!hasValue) {
+                        Product currentValue = this.listProduct.get(i);
+                        Object[] rowData = {currentValue.getProductID(), currentValue.getProductName(), currentValue.getProductCategory(), currentValue.getProductQuantity(), currentValue.getProductPrice()}; 
+                        this.defaultTableProductModel.addRow(rowData);
+                    }
+                }
+                this.listSelectedProduct = this.currentValue.getSanPhamNhap();
+                System.out.println("Da qua");
             }
             if (type.equalsIgnoreCase("Remove")) {
                 int index = this.tableViewProduct.getSelectedRow();
