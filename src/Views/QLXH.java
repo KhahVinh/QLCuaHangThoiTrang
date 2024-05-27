@@ -1,7 +1,10 @@
 package Views;
 
+import IO.ListProduct;
+import IO.PhieuXuatIO;
 import IO.ReadWriteProduct;
 import Models.MatHang;
+import Models.PhieuXuat;
 import Models.Product;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -21,7 +24,10 @@ import java.io.PrintWriter;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
@@ -32,12 +38,15 @@ import javax.swing.table.TableRowSorter;
 public class QLXH extends javax.swing.JPanel {
 
     ArrayList<Product> listSP = new ArrayList<>();
-
+    static ArrayList<PhieuXuat> danhsachphieuxuat = new ArrayList<>();
+    private IO.PhieuXuatIO phieuxuatIO = new PhieuXuatIO();
+    private IO.ListProduct listProduct = new ListProduct();
+    private PhieuXuatView phieuXuatView;
     String fileQLSP = "QuanLySanPham.txt";
     String fileMatHang = "MatHang.txt";
     String fileQLPX = "QuanLyPhieuXuat.txt";
     String phieuXuat = "PhieuXuat.pdf";
-
+    private Models.PhieuXuat phieuxuatsanpham;
     DefaultTableModel model;
     DefaultTableModel model2;
 
@@ -117,6 +126,7 @@ public class QLXH extends javax.swing.JPanel {
         txtTotalPrice.setText(f.format(total));
     }
 
+    
     private void totalPriceNew() {
         int total = 0;
         for (int i = 0; i < model.getRowCount(); i++) {
@@ -144,8 +154,42 @@ public class QLXH extends javax.swing.JPanel {
         }
         return value;
     }
-
-    @SuppressWarnings("unchecked")
+    
+    private void getDataFromTable() {
+        String tenKH = txtTenKH.getText();
+        String sdtKH = txtSDT.getText();
+        long gia = 0; 
+        long tongTien = 0;
+        String diaChi = txtDiaChi.getText();
+        try {
+            tongTien = (long) (f.parse((String) txtTotalPrice.getText()));
+        } catch (ParseException ex) {
+            Logger.getLogger(QLXH.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            ArrayList<Product> danhsachsanphamxuat = new ArrayList<>();
+        for (int i = 0; i < tableXuat.getRowCount(); i++) {
+            String maSP = (String) tableXuat.getValueAt(i, 0);
+            String tenSP = (String) tableXuat.getValueAt(i, 1);
+            String loaiSP = (String) tableXuat.getValueAt(i, 2);
+            String valueSOLuongString = (String) tableXuat.getValueAt(i, 3);
+            int soLuong = Integer.parseInt(valueSOLuongString);            
+            try {
+                gia = (long) f.parse((String) tableXuat.getValueAt(i, 4));
+            } catch (ParseException ex) {
+                Logger.getLogger(QLXH.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            Product product = new Product(maSP, tenSP, loaiSP, soLuong, gia);
+            danhsachsanphamxuat.add(product);
+        }       
+            phieuxuatsanpham = new PhieuXuat(tenKH, sdtKH,danhsachsanphamxuat,diaChi, tongTien);
+            phieuXuatView = new PhieuXuatView();
+            phieuXuatView.addPhieu(phieuxuatsanpham);
+            phieuxuatIO.writePhieuXuat(phieuxuatsanpham, danhsachphieuxuat);
+                   
+    }
+    
+        @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -450,6 +494,7 @@ public class QLXH extends javax.swing.JPanel {
         totalPrice();
         totalPriceNew();
         txtSoLuong.setText("1");
+        
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
@@ -523,94 +568,94 @@ public class QLXH extends javax.swing.JPanel {
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatActionPerformed
-        model = (DefaultTableModel) tableXuat.getModel();
-        Document doc = new Document();
-
-        File f = new File(phieuXuat);
-        try {
-            if (!f.exists()) {
-                f.createNewFile();
-            } else {
-                f.delete();
-                f.createNewFile();
-            }
-            PdfWriter.getInstance(doc, new FileOutputStream(f));
-
-            int xacNhan = JOptionPane.showConfirmDialog(this, "Xuất PDF?", "Thông báo", JOptionPane.YES_NO_OPTION);
-            if (xacNhan == JOptionPane.NO_OPTION) {
-                JOptionPane.showMessageDialog(this, "Bạn đã từ chối xuất phiếu", "Thông báo", JOptionPane.OK_OPTION);
-            } else {
-                doc.open();
-
-                Font f1 = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
-                Paragraph p1 = new Paragraph("THONG TIN PHIEU XUAT\n\n", f1);
-                p1.setAlignment(Element.ALIGN_CENTER);
-                doc.add(p1);
-
-                Paragraph p2 = new Paragraph("Ten khach hang: " + txtTenKH.getText()
-                        + "\nSo dien thoai: " + txtSDT.getText()
-                        + "\nDia chi: " + txtDiaChi.getText() + "\n\n");
-                doc.add(p2);
-
-                PdfPTable tb = new PdfPTable(6);
-
-                tb.addCell("Ma san pham");
-                tb.addCell("Ten san pham");
-                tb.addCell("Loai");
-                tb.addCell("So luong");
-                tb.addCell("Gia ban");
-
-                for (int i = 0; i < tableXuat.getRowCount(); i++) {
-
-                    String Ma = tableXuat.getValueAt(i, 0).toString();
-                    String Ten = tableXuat.getValueAt(i, 1).toString();
-                    String Loai = tableXuat.getValueAt(i, 2).toString();
-                    String soLuong = tableXuat.getValueAt(i, 3).toString();
-                    String giaBan = tableXuat.getValueAt(i, 4).toString();
-
-                    tb.addCell(Ma);
-                    tb.addCell(Ten);
-                    tb.addCell(Loai);
-                    tb.addCell(soLuong);
-                    tb.addCell(giaBan);
-                }
-
-                doc.add(tb);
-
-                Paragraph p3 = new Paragraph("\nTong tien: " + txtTotalPrice.getText());
-                doc.add(p3);
-
-                doc.close();
-                JOptionPane.showMessageDialog(this, "Xuất thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-            }
-        } catch (FileNotFoundException | DocumentException ex) {
-            JOptionPane.showMessageDialog(this, ex);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, ex);
-        }
-
-        try {
-            PrintWriter pw = new PrintWriter(fileQLPX);
-
-            pw.println(txtTenKH.getText() + "\n" + txtSDT.getText() + "\n" + txtDiaChi.getText());
-            for (int i = 0; i < tableXuat.getRowCount(); i++) {
-                pw.println(tableXuat.getValueAt(i, 0) + ", "
-                        + tableXuat.getValueAt(i, 1) + ", "
-                        + tableXuat.getValueAt(i, 2) + ", "
-                        + tableXuat.getValueAt(i, 3) + ", "
-                        + tableXuat.getValueAt(i, 4));
-            }
-            pw.flush();
-            pw.close();
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(this, e);
-        }
-
-        txtTenKH.setText("");
-        txtSDT.setText("");
-        txtDiaChi.setText("");
-        model.setRowCount(0);
-
+//        model = (DefaultTableModel) tableXuat.getModel();
+//        Document doc = new Document();
+//
+//        File f = new File(phieuXuat);
+//        try {
+//            if (!f.exists()) {
+//                f.createNewFile();
+//            } else {
+//                f.delete();
+//                f.createNewFile();
+//            }
+//            PdfWriter.getInstance(doc, new FileOutputStream(f));
+//
+//            int xacNhan = JOptionPane.showConfirmDialog(this, "Xuất PDF?", "Thông báo", JOptionPane.YES_NO_OPTION);
+//            if (xacNhan == JOptionPane.NO_OPTION) {
+//                JOptionPane.showMessageDialog(this, "Bạn đã từ chối xuất phiếu", "Thông báo", JOptionPane.OK_OPTION);
+//            } else {
+//                doc.open();
+//
+//                Font f1 = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
+//                Paragraph p1 = new Paragraph("THONG TIN PHIEU XUAT\n\n", f1);
+//                p1.setAlignment(Element.ALIGN_CENTER);
+//                doc.add(p1);
+//
+//                Paragraph p2 = new Paragraph("Ten khach hang: " + txtTenKH.getText()
+//                        + "\nSo dien thoai: " + txtSDT.getText()
+//                        + "\nDia chi: " + txtDiaChi.getText() + "\n\n");
+//                doc.add(p2);
+//
+//                PdfPTable tb = new PdfPTable(6);
+//
+//                tb.addCell("Ma san pham");
+//                tb.addCell("Ten san pham");
+//                tb.addCell("Loai");
+//                tb.addCell("So luong");
+//                tb.addCell("Gia ban");
+//
+//                for (int i = 0; i < tableXuat.getRowCount(); i++) {
+//
+//                    String Ma = tableXuat.getValueAt(i, 0).toString();
+//                    String Ten = tableXuat.getValueAt(i, 1).toString();
+//                    String Loai = tableXuat.getValueAt(i, 2).toString();
+//                    String soLuong = tableXuat.getValueAt(i, 3).toString();
+//                    String giaBan = tableXuat.getValueAt(i, 4).toString();
+//
+//                    tb.addCell(Ma);
+//                    tb.addCell(Ten);
+//                    tb.addCell(Loai);
+//                    tb.addCell(soLuong);
+//                    tb.addCell(giaBan);
+//                }
+//
+//                doc.add(tb);
+//
+//                Paragraph p3 = new Paragraph("\nTong tien: " + txtTotalPrice.getText());
+//                doc.add(p3);
+//
+//                doc.close();
+//                JOptionPane.showMessageDialog(this, "Xuất thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+//            }
+//        } catch (FileNotFoundException | DocumentException ex) {
+//            JOptionPane.showMessageDialog(this, ex);
+//        } catch (IOException ex) {
+//            JOptionPane.showMessageDialog(this, ex);
+//        }
+//
+//        try {
+//            PrintWriter pw = new PrintWriter(fileQLPX);
+//
+//            pw.println(txtTenKH.getText() + "\n" + txtSDT.getText() + "\n" + txtDiaChi.getText());
+//            for (int i = 0; i < tableXuat.getRowCount(); i++) {
+//                pw.println(tableXuat.getValueAt(i, 0) + ", "
+//                        + tableXuat.getValueAt(i, 1) + ", "
+//                        + tableXuat.getValueAt(i, 2) + ", "
+//                        + tableXuat.getValueAt(i, 3) + ", "
+//                        + tableXuat.getValueAt(i, 4));
+//            }
+//            pw.flush();
+//            pw.close();
+//        } catch (FileNotFoundException e) {
+//            JOptionPane.showMessageDialog(this, e);
+//        }
+//
+//        txtTenKH.setText("");
+//        txtSDT.setText("");
+//        txtDiaChi.setText("");
+//        model.setRowCount(0);
+        getDataFromTable();
 
     }//GEN-LAST:event_btnXuatActionPerformed
 
