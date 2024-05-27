@@ -1,23 +1,24 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package Views;
 
-/**
- *
- * @author T&T Center
- */
-public class PhieuNhapView extends javax.swing.JPanel {
+import javax.swing.table.DefaultTableModel;
 
-    /**
-     * Creates new form PhieuNhapView
-     */
-    public PhieuNhapView() {
+public class PhieuXuatView extends javax.swing.JPanel {
+
+    private  String [] columnName = {"Tên khách hàng","Số điện thoại","Ngày đặt","Tổng tiền"};
+    private DefaultTableModel dtmPhieuXuat = new DefaultTableModel(columnName, 0);
+    public PhieuXuatView() {
         initComponents();
+        updateTable();
     }
-
-  
+    
+    private void updateTable() {
+        Object [] rows = new Object[]{
+            "Pham Van Tung","0344508700","2022","1000000" 
+        };
+        dtmPhieuXuat.addRow(rows);
+        TablePhieuXuat.setModel(dtmPhieuXuat);
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -33,7 +34,7 @@ public class PhieuNhapView extends javax.swing.JPanel {
         jPanel4 = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        TablePhieuXuat = new javax.swing.JTable();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -139,7 +140,7 @@ public class PhieuNhapView extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        TablePhieuXuat.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -150,7 +151,7 @@ public class PhieuNhapView extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(TablePhieuXuat);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -189,6 +190,7 @@ public class PhieuNhapView extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable TablePhieuXuat;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -199,7 +201,6 @@ public class PhieuNhapView extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

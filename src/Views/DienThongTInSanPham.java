@@ -98,6 +98,9 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
         Price.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         Price.setText("Giá bán");
 
+        ProductID.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        ProductID.setEnabled(false);
+
         ProductName.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         ProductName.setPreferredSize(new java.awt.Dimension(64, 30));
 
@@ -198,8 +201,23 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
         }
     }
 
-    public void deleteFile() {
+    private void showMessageWarning(String message, String title) {
+        JOptionPane.showMessageDialog(null, message, title, JOptionPane.WARNING_MESSAGE);
+    }
+    
+    private void deleteFile() {
         ProductID.setText("");
+        ProductName.setText("");
+        ProductCategory.setSelectedIndex(0);
+        ProductQuantity.setText("");
+        ProductPrice.setText("");
+        ProductID.requestFocus();
+    }
+    
+    private void fillDataID(){
+        qlsp = new QLSP();
+        int value = qlsp.valueID() +1;
+        ProductID.setText(String.valueOf(value));
         ProductName.setText("");
         ProductCategory.setSelectedIndex(0);
         ProductQuantity.setText("");
@@ -232,7 +250,7 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
         boolean check = true;
         try {
             if (id.trim().length() == 0) {
-                JOptionPane.showMessageDialog(null, "ID Không được để trống", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                showMessageWarning("Mã sản phẩm không được để trống", "Thông báo");
                 check = false;
                 ProductID.requestFocus();
             }
@@ -241,7 +259,7 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
         }
         try {
             if (name.trim().length() == 0) {
-                JOptionPane.showMessageDialog(null, "Tên Không được để trống", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                showMessageWarning("Tên sản phẩm không được để trống", "Thông báo");
                 check = false;
                 ProductName.requestFocus();
             }
@@ -252,7 +270,7 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
 
             if (quantity < 0) {
                 check = false;
-                JOptionPane.showMessageDialog(null, "Số lượng phải lớn hơn 0", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                showMessageWarning("Số lượng phải lớn hơn 0", "Thông báo");
                 ProductPrice.requestFocus();
             }
 
@@ -263,7 +281,7 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
 
             if (price <= 0) {
                 check = false;
-                JOptionPane.showMessageDialog(null, "Giá phải lớn hơn 0", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                showMessageWarning("Giá phải lớn hơn 0", "Thông báo");
                 ProductPrice.requestFocus();
             }
 
@@ -282,7 +300,7 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
         long price = 0;
         boolean check = true;
         if (listProduct.checkIDSame(id, danhsachsanpham)) {
-                JOptionPane.showMessageDialog(null, "ID đã tồn tại", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                showMessageWarning("Mã sản phẩm đã tồn tại", "Thông báo");
                 check = false;
             }
         try {
@@ -290,13 +308,13 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
             price = Long.parseLong(ProductPrice.getText());
 
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Giá tiền không đúng", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            showMessageWarning("Giá tiền không đúng", "Thông báo");
         }
         try {
             quantity = Integer.parseInt(ProductQuantity.getText());
 
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Số lượng không đúng", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            showMessageWarning("Số lượng không đúng", "Thông báo");
         }
         if (checkValue(id, name, category, quantity, price) && check) {
             qlsp = new QLSP();
@@ -306,7 +324,7 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
             if (select == 0) {
                 rwp.writeFile(product, fileName, danhsachsanpham);
                 qlsp.addProduct(product);
-                deleteFile();
+                fillDataID();
                 JOptionPane.showMessageDialog(null, "Thêm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
         }
@@ -323,13 +341,13 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
             price = Long.parseLong(ProductPrice.getText());
 
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Giá tiền không đúng", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            showMessageWarning("Giá tiền không đúng", "Thông báo");
         }
         try {
             quantity = Integer.parseInt(ProductQuantity.getText());
 
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Số lượng không đúng", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            showMessageWarning("Số lượng không đúng", "Thông báo");
         }
         if (checkValue(id, name, category, quantity, price)) {
             qlsp = new QLSP();
@@ -372,7 +390,7 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
     private javax.swing.JLabel Name;
     private javax.swing.JLabel Price;
     private javax.swing.JComboBox<String> ProductCategory;
-    private javax.swing.JTextField ProductID;
+    public javax.swing.JTextField ProductID;
     private javax.swing.JTextField ProductName;
     private javax.swing.JTextField ProductPrice;
     private javax.swing.JTextField ProductQuantity;

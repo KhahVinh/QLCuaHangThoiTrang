@@ -53,8 +53,8 @@ public class QLSP extends javax.swing.JPanel {
         updateTable();
     }
     
-    private void showMessage(String message, String title) {
-        
+    private void showMessageWarning(String message, String title) {
+        JOptionPane.showMessageDialog(null, message, title, JOptionPane.WARNING_MESSAGE);
     }
     
     private ArrayList<Models.MatHang> readFromFile(String url) {
@@ -151,6 +151,12 @@ public class QLSP extends javax.swing.JPanel {
         }
     }
 
+    public int valueID() {
+        String getValue = danhsachsanpham.getLast().getProductID();
+        int value = Integer.parseInt(getValue);
+        return value;
+    }
+    
     private void displayFunctions(String name, DienThongTInSanPham dienthongtinsanpham) {
         JFrame newFrame = new JFrame(name);
         newFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -163,7 +169,7 @@ public class QLSP extends javax.swing.JPanel {
     private void ModifyProduct() {
         index = TableProduct.getSelectedRow();
         if (index == -1) {
-            JOptionPane.showMessageDialog(null, "Bạn chưa chọn sản phẩm để sửa", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            showMessageWarning("Bạn chưa chọn sản phẩm để xóa", "Thông báo");
         } else {
             try {
                 checkFuntions = 2;
@@ -471,6 +477,7 @@ public class QLSP extends javax.swing.JPanel {
             checkFuntions = 1;
             DienThongTInSanPham dienThongTInSanPham = new DienThongTInSanPham();
             displayFunctions("Điền thông tin sản phẩm", dienThongTInSanPham);
+            dienThongTInSanPham.ProductID.setText(String.valueOf(valueID() + 1));
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
