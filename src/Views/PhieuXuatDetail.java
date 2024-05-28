@@ -17,9 +17,10 @@ public class PhieuXuatDetail extends javax.swing.JPanel {
         initComponents();
     }
 
-    public PhieuXuatDetail (int index,String tenKH, String sdtKH, String ngayxuat, ArrayList<Product> danhsachsanphamdetail,String diachi,String tongtien) {
+    public PhieuXuatDetail (int index,String maPhieu,String tenKH, String sdtKH, String ngayxuat, ArrayList<Product> danhsachsanphamdetail,String diachi,String tongtien) {
         initComponents();
         NumberFormat format = NumberFormat.getInstance(Locale.US);
+        JtfMaphieu.setText(maPhieu);
         JtfTenkhachhang.setText(tenKH);
         JtfSodienthoai.setText(sdtKH);
         JtfTongtien.setText(tongtien + " đ");
@@ -44,6 +45,8 @@ public class PhieuXuatDetail extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
+        jPanel10 = new javax.swing.JPanel();
+        JtfMaphieu = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         JtfTenkhachhang = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
@@ -89,13 +92,42 @@ public class PhieuXuatDetail extends javax.swing.JPanel {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel4.setLayout(new java.awt.GridLayout());
+        jPanel4.setLayout(new java.awt.GridLayout(1, 0));
+
+        jPanel10.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Mã phiếu", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
+
+        JtfMaphieu.setEditable(false);
+        JtfMaphieu.setBackground(new java.awt.Color(255, 255, 255));
+        JtfMaphieu.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        JtfMaphieu.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        JtfMaphieu.setFocusable(false);
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(JtfMaphieu, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(JtfMaphieu, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(14, Short.MAX_VALUE))
+        );
+
+        jPanel4.add(jPanel10);
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tên khách hàng", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
 
         JtfTenkhachhang.setEditable(false);
         JtfTenkhachhang.setBackground(new java.awt.Color(255, 255, 255));
+        JtfTenkhachhang.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         JtfTenkhachhang.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
         JtfTenkhachhang.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         JtfTenkhachhang.setFocusable(false);
@@ -106,7 +138,7 @@ public class PhieuXuatDetail extends javax.swing.JPanel {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(JtfTenkhachhang, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
+                .addComponent(JtfTenkhachhang, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -124,6 +156,7 @@ public class PhieuXuatDetail extends javax.swing.JPanel {
 
         JtfSodienthoai.setEditable(false);
         JtfSodienthoai.setBackground(new java.awt.Color(255, 255, 255));
+        JtfSodienthoai.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         JtfSodienthoai.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
         JtfSodienthoai.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         JtfSodienthoai.setFocusable(false);
@@ -134,7 +167,7 @@ public class PhieuXuatDetail extends javax.swing.JPanel {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(JtfSodienthoai, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
+                .addComponent(JtfSodienthoai, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
@@ -152,6 +185,7 @@ public class PhieuXuatDetail extends javax.swing.JPanel {
 
         JtfDiachi.setEditable(false);
         JtfDiachi.setBackground(new java.awt.Color(255, 255, 255));
+        JtfDiachi.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         JtfDiachi.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
         JtfDiachi.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         JtfDiachi.setFocusable(false);
@@ -162,7 +196,7 @@ public class PhieuXuatDetail extends javax.swing.JPanel {
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(JtfDiachi, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
+                .addComponent(JtfDiachi, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel9Layout.setVerticalGroup(
@@ -180,6 +214,7 @@ public class PhieuXuatDetail extends javax.swing.JPanel {
 
         JtfNgaytao.setEditable(false);
         JtfNgaytao.setBackground(new java.awt.Color(255, 255, 255));
+        JtfNgaytao.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         JtfNgaytao.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
         JtfNgaytao.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         JtfNgaytao.setFocusable(false);
@@ -188,9 +223,9 @@ public class PhieuXuatDetail extends javax.swing.JPanel {
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(JtfNgaytao, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
+                .addComponent(JtfNgaytao, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
@@ -228,8 +263,11 @@ public class PhieuXuatDetail extends javax.swing.JPanel {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setText("Tổng tiền");
 
+        JtfTongtien.setEditable(false);
         JtfTongtien.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         JtfTongtien.setForeground(new java.awt.Color(255, 102, 102));
+        JtfTongtien.setDisabledTextColor(new java.awt.Color(255, 51, 51));
+        JtfTongtien.setFocusable(false);
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -238,7 +276,7 @@ public class PhieuXuatDetail extends javax.swing.JPanel {
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGap(88, 88, 88)
                 .addComponent(JlbSoluong, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 267, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(JtfTongtien, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -289,7 +327,7 @@ public class PhieuXuatDetail extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(115, 115, 115)
+                .addGap(0, 0, 0)
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -309,6 +347,7 @@ public class PhieuXuatDetail extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel JlbSoluong;
     private javax.swing.JTextField JtfDiachi;
+    private javax.swing.JTextField JtfMaphieu;
     private javax.swing.JTextField JtfNgaytao;
     private javax.swing.JTextField JtfSodienthoai;
     private javax.swing.JTextField JtfTenkhachhang;
@@ -317,6 +356,7 @@ public class PhieuXuatDetail extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;

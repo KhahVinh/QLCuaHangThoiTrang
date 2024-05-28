@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class PhieuXuat implements Serializable{
+    private String maPhieu;
     private String tenKH;
     private String sdtKH;
     private ArrayList<Product> danhsachsanphamxuat;
@@ -16,7 +17,8 @@ public class PhieuXuat implements Serializable{
     public PhieuXuat() {
     }
 
-    public PhieuXuat(String tenKH, String sdtKH, ArrayList<Product> danhsachsanphamxuat,String diaChi, long tien) {
+    public PhieuXuat(String maPhieu, String tenKH, String sdtKH, ArrayList<Product> danhsachsanphamxuat,String diaChi, long tien) {
+        this.maPhieu = maPhieu;
         this.tenKH = tenKH;
         this.sdtKH = sdtKH;
         this.danhsachsanphamxuat = danhsachsanphamxuat;
@@ -26,6 +28,14 @@ public class PhieuXuat implements Serializable{
         this.tien = tien;
     }
 
+    public String getMaPhieu() {
+        return maPhieu;
+    }
+
+    public void setMaPhieu(String maPhieu) {
+        this.maPhieu = maPhieu;
+    }
+    
     public String getTenKH() {
         return tenKH;
     }
@@ -90,7 +100,7 @@ public class PhieuXuat implements Serializable{
 
     @Override
     public String toString() {
-        return tenKH + "-" + sdtKH + "-" + this.listProduct() + "-" + ngayTao +"-"+diaChi+ "-" + tien;
+        return maPhieu+"-"+tenKH + "-" + sdtKH + "-" + this.listProduct() + "-" + ngayTao +"-"+diaChi+ "-" + tien;
     }
     
 }

@@ -39,19 +39,20 @@ public class PhieuXuatIO {
             String line;
             while ((line = br.readLine()) != null) {
                 String txt[] = line.split("-");
-                String tenKH = txt[0];
-                String sdtKH = txt[1];
-                String diaChi = txt[4];
-                String listProduct[] = txt[2].split("&");
+                String maPhieu = txt[0];
+                String tenKH = txt[1];
+                String sdtKH = txt[2];
+                String diaChi = txt[5];
+                String listProduct[] = txt[3].split("&");
                 ArrayList<Product> products = new ArrayList<>();
                 for (int i = 0; i < listProduct.length; i++) {
                     String valueProduct[] = listProduct[i].split(";");
                     Product product = new Product(valueProduct[0], valueProduct[1], valueProduct[2], Integer.parseInt(valueProduct[3]), Long.parseLong(valueProduct[4]));
                     products.add(product);
                 }
-                String tongTien = txt[5];
-                PhieuXuat phieuxuat = new PhieuXuat(tenKH, sdtKH, products, diaChi,Long.parseLong(tongTien));
-                phieuxuat.setNgayTao(txt[3]);
+                String tongTien = txt[6];
+                PhieuXuat phieuxuat = new PhieuXuat(maPhieu,tenKH, sdtKH, products, diaChi,Long.parseLong(tongTien));
+                phieuxuat.setNgayTao(txt[4]);
                 if (!danhsachphieuxuat.contains(phieuxuat)) {
                     danhsachphieuxuat.add(phieuxuat);
                 }
