@@ -91,7 +91,7 @@ public class QLNHView extends javax.swing.JPanel {
             if (type.equalsIgnoreCase("Get")) {
                 this.defaultTableProductModel.setRowCount(0);
                 for (Product i : this.listProduct) {
-                    Object[] rowData = {i.getProductID(), i.getProductName(), i.getProductCategory(), i.getProductQuantity(), i.getProductPrice()}; 
+                    Object[] rowData = {i.getProductID(), i.getProductName(), i.getProductCategory(), i.getProductQuantity(), String.format("%,d", i.getProductPrice())}; 
                     this.defaultTableProductModel.addRow(rowData);
                 }
             }
@@ -114,7 +114,6 @@ public class QLNHView extends javax.swing.JPanel {
                     }
                 }
                 this.listSelectedProduct = this.currentValue.getSanPhamNhap();
-                System.out.println("Da qua");
             }
             if (type.equalsIgnoreCase("Remove")) {
                 int index = this.tableViewProduct.getSelectedRow();
@@ -131,7 +130,15 @@ public class QLNHView extends javax.swing.JPanel {
         value.setProductName(table.getValueAt(index, 1).toString());
         value.setProductCategory(table.getValueAt(index, 2).toString());
         value.setProductQuantity(Integer.parseInt(table.getValueAt(index, 3).toString()));
-        value.setProductPrice(Long.parseLong(table.getValueAt(index, 4).toString()));
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        long gia = 0;
+        try {
+            gia = numberFormat.parse(table.getValueAt(index, 4).toString()).longValue();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        value.setProductPrice(gia);
+        
         return value;
     }
     
@@ -139,13 +146,13 @@ public class QLNHView extends javax.swing.JPanel {
         if (!this.listSelectedProduct.isEmpty()) {
             if (type.equalsIgnoreCase("Create")) { 
                 Product value = this.listSelectedProduct.getLast();
-                Object[] rowData = {value.getProductID(), value.getProductName(), value.getProductCategory(), value.getProductQuantity(), value.getProductPrice()};
+                Object[] rowData = {value.getProductID(), value.getProductName(), value.getProductCategory(), value.getProductQuantity(), String.format("%,d", value.getProductPrice())};
                 this.defaultTableSelectedModel.addRow(rowData);
             }
             if (type.equalsIgnoreCase("Edit")) {
                 this.defaultTableSelectedModel.setRowCount(0);
                 for (Product i : this.listSelectedProduct) {
-                    Object[] rowData = {i.getProductID(), i.getProductName(), i.getProductCategory(), i.getProductQuantity(), i.getProductPrice()};
+                    Object[] rowData = {i.getProductID(), i.getProductName(), i.getProductCategory(), i.getProductQuantity(), String.format("%,d", i.getProductPrice())};
                     defaultTableSelectedModel.addRow(rowData);
                 }
             }
@@ -160,7 +167,7 @@ public class QLNHView extends javax.swing.JPanel {
                         break;
                     }
                 }
-                Object[] data = {value.getProductID(), value.getProductName(), value.getProductCategory(), value.getProductQuantity(), value.getProductPrice()};
+                Object[] data = {value.getProductID(), value.getProductName(), value.getProductCategory(), value.getProductQuantity(), String.format("%,d", value.getProductPrice())};
                 this.defaultTableSelectedModel.removeRow(index);
                 this.defaultTableProductModel.addRow(data);
                 this.tableViewProduct.setModel(this.defaultTableProductModel);
