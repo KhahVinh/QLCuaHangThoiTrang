@@ -9,7 +9,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 public class MatHangView extends javax.swing.JPanel {
     private String[] columnName = {"Mã mặt hàng", "Tên mặt hàng"};
@@ -36,6 +40,41 @@ public class MatHangView extends javax.swing.JPanel {
         tableView.setModel(defaultTableModel);
         tableView.repaint();
     }    
+    
+    private void searchValue() {
+        DefaultTableModel defaultTableModel = new DefaultTableModel(columnName, 0);   
+        for (MatHang i : list) {
+            Object[] rowData = {i.getMa(), i.getTen()}; 
+            defaultTableModel.addRow(rowData);
+        }
+        TableRowSorter<DefaultTableModel> rowSorter = new TableRowSorter<>(defaultTableModel);
+        tableView.setRowSorter(rowSorter);
+        inputSearch.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                applyFilter(rowSorter);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                applyFilter(rowSorter);                
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                applyFilter(rowSorter);                
+            }
+        });
+    }
+    
+    private void applyFilter(TableRowSorter rowSorter) {
+        String text = inputSearch.getText();
+        if (text.trim().isEmpty()) {
+            rowSorter.setRowFilter(null);
+        } else {
+            rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+        }
+    }
     
     private void deleteValue(int inputIndex) {
         this.listProduct = IO.ProductIO.readFromFile();
@@ -191,6 +230,12 @@ public class MatHangView extends javax.swing.JPanel {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tìm kiếm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
 
+        inputSearch.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                inputSearchMousePressed(evt);
+            }
+        });
+
         refreshBtn.setBackground(new java.awt.Color(15, 149, 224));
         refreshBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         refreshBtn.setForeground(new java.awt.Color(255, 255, 255));
@@ -297,6 +342,11 @@ public class MatHangView extends javax.swing.JPanel {
     private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
         this.handleEditValue();
     }//GEN-LAST:event_editBtnActionPerformed
+
+    private void inputSearchMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inputSearchMousePressed
+        // TODO add your handling code here:
+        this.searchValue();
+    }//GEN-LAST:event_inputSearchMousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

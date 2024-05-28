@@ -263,6 +263,9 @@
           </Layout>
           <SubComponents>
             <Component class="javax.swing.JTextField" name="inputSearch">
+              <Events>
+                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="inputSearchMousePressed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="refreshBtn">
               <Properties>

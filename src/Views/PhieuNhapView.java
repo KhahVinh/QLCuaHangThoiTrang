@@ -8,7 +8,11 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.OverlayLayout;
+import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 public class PhieuNhapView extends javax.swing.JPanel {
     private final String[] columnName = {"Mã phiếu", "Tên nhà cung cấp", "Ngày tạo", "Lần cập nhật gần nhất", "Tổng tiền"};
@@ -44,6 +48,49 @@ public class PhieuNhapView extends javax.swing.JPanel {
         defaultTableModel.fireTableDataChanged();
         tableViewData.setModel(defaultTableModel);
         tableViewData.repaint();
+    }
+    
+     private void searchValue() {
+        DefaultTableModel defaultTableModel = new DefaultTableModel(columnName, 0);   
+        for (PhieuNhap i : this.listPhieuNhap) {
+            String tenNCC = "";
+            for (int j = 0; j < this.listNhaCungCap.size(); j++) {
+                if (i.getMaNhaCungCap().equalsIgnoreCase(this.listNhaCungCap.get(j).getMa())) {
+                    tenNCC = this.listNhaCungCap.get(j).getTen();
+                    break;
+                }
+            }
+            
+            Object[] rowData = {i.getMa(), tenNCC, i.getNgayTao(), i.getNgayCapNhat(), String.format("%,d", i.getTien())}; 
+            defaultTableModel.addRow(rowData);
+        }
+        TableRowSorter<DefaultTableModel> rowSorter = new TableRowSorter<>(defaultTableModel);
+        tableViewData.setRowSorter(rowSorter);
+        inputSearch.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                applyFilter(rowSorter);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                applyFilter(rowSorter);                
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                applyFilter(rowSorter);                
+            }
+        });
+    }
+    
+    private void applyFilter(TableRowSorter rowSorter) {
+        String text = inputSearch.getText();
+        if (text.trim().isEmpty()) {
+            rowSorter.setRowFilter(null);
+        } else {
+            rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+        }
     }
 
     private NhaCungCap getInfoNhaCungCap(String ma) {
@@ -132,7 +179,7 @@ public class PhieuNhapView extends javax.swing.JPanel {
         btnChinhSua = new javax.swing.JButton();
         btnXoa = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
+        inputSearch = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableViewData = new javax.swing.JTable();
 
@@ -212,20 +259,26 @@ public class PhieuNhapView extends javax.swing.JPanel {
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tìm kiếm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
 
+        inputSearch.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                inputSearchMousePressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField1)
+                .addComponent(inputSearch)
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField1)
+                .addComponent(inputSearch)
                 .addContainerGap())
         );
 
@@ -306,19 +359,23 @@ public class PhieuNhapView extends javax.swing.JPanel {
         this.handleDeleteValue();
     }//GEN-LAST:event_btnXoaActionPerformed
 
+    private void inputSearchMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inputSearchMousePressed
+        this.searchValue();
+    }//GEN-LAST:event_inputSearchMousePressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnChiTiet;
     private javax.swing.JButton btnChinhSua;
     private javax.swing.JButton btnXoa;
     private javax.swing.JButton btnXuatPhieu;
+    private javax.swing.JTextField inputSearch;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTable tableViewData;
     // End of variables declaration//GEN-END:variables
 }

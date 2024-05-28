@@ -79,7 +79,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jTextField1" min="-2" pref="395" max="-2" attributes="0"/>
+                      <Component id="inputSearch" min="-2" pref="395" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnRefresh" pref="84" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -91,7 +91,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jTextField1" pref="30" max="32767" attributes="0"/>
+                          <Component id="inputSearch" pref="30" max="32767" attributes="0"/>
                           <Component id="btnRefresh" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
@@ -100,7 +100,10 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JTextField" name="jTextField1">
+            <Component class="javax.swing.JTextField" name="inputSearch">
+              <Events>
+                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="inputSearchMousePressed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnRefresh">
               <Properties>
