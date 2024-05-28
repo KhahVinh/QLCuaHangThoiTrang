@@ -6,30 +6,42 @@ import Models.PhieuXuat;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import Models.Product;
-import static Views.QLSP.dtmProduct;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.File;
 import java.text.NumberFormat;
 import java.util.Locale;
 import javax.swing.JFrame;
-import static Views.QLXH.danhsachphieuxuat;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JPanel;
 import javax.swing.RowFilter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 public class PhieuXuatView extends javax.swing.JPanel {
-
-    static String[] ColumnName = {"Tên khách hàng", "Số điện thoại", "Ngày tạo","Địa chỉ", "Tổng tiền"};
+    static int checkFeature;
+    static int vitrisuaphieu;
+    static String[] ColumnName = {"Mã phiếu xuất","Tên khách hàng", "Số điện thoại", "Ngày tạo","Địa chỉ", "Tổng tiền"};
     static DefaultTableModel dtmPhieuXuat = new DefaultTableModel(ColumnName, 0);
     private PhieuXuatIO phieuxuatIO = new PhieuXuatIO();
     private String FILE_NAME_XH = "QuanLyPhieuXuat.txt";
+    private String PHIEU_XUAT_PDF = "ChiTietPhieuXuat.pdf";
     private ArrayList<PhieuXuat> listPhieuXuat = new ArrayList<>();
 
     public PhieuXuatView() {
         initComponents();
-//        Init();
-this.updateTable();
+        Init();
+        this.updateTable();
     }
 
     private void Init() {
@@ -51,22 +63,25 @@ this.updateTable();
         JOptionPane.showMessageDialog(null, message, title, JOptionPane.WARNING_MESSAGE);
     }
     
-    private void updateTable() {
+    public void updateTable() {
+        NumberFormat format = NumberFormat.getInstance(Locale.US);
         this.listPhieuXuat.clear();
         this.listPhieuXuat = phieuxuatIO.readFilePX(FILE_NAME_XH);
         dtmPhieuXuat.setRowCount(0);
         for (PhieuXuat phieuxuat : listPhieuXuat) {
-            Object[] rowData = {phieuxuat.getTenKH(), phieuxuat.getSdtKH(), phieuxuat.getNgayTao(),phieuxuat.getDiaChi(), phieuxuat.getTien()};
+            String formattedNumber = format.format(phieuxuat.getTien());
+            String price = formattedNumber;
+            Object[] rowData = {phieuxuat.getMaPhieu(),phieuxuat.getTenKH(), phieuxuat.getSdtKH(), phieuxuat.getNgayTao(),phieuxuat.getDiaChi(), price};
             dtmPhieuXuat.addRow(rowData);
         }
         TablePhieuXuat.setModel(dtmPhieuXuat);
     }
 
-    private void displayFunctions(String name, PhieuXuatDetail phieuXuatDetail) {
+    private void displayFunctions(String name, JPanel jpl,int width, int height) {
         JFrame newFrame = new JFrame(name);
         newFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        newFrame.setSize(825, 520);
-        newFrame.add(phieuXuatDetail);
+        newFrame.setSize(width, height);
+        newFrame.add(jpl);
         newFrame.setVisible(true);
         newFrame.setLocationRelativeTo(null);
     }
@@ -81,9 +96,10 @@ this.updateTable();
         }
         else {
             NumberFormat format = NumberFormat.getInstance(Locale.US);
-            String stdKH = (String) TablePhieuXuat.getValueAt(index, 1);
+            String maPhieuCheck = (String) TablePhieuXuat.getValueAt(index, 0);
             for (int i = 0; i < listPhieuXuat.size(); i++) {
-                if(listPhieuXuat.get(index).getSdtKH().equals(stdKH)){
+                if(listPhieuXuat.get(index).getMaPhieu().equals(maPhieuCheck)){
+                    String maPhieu = listPhieuXuat.get(index).getMaPhieu();
                     String tenKH = listPhieuXuat.get(index).getTenKH();
                     String sdtKH = listPhieuXuat.get(index).getSdtKH();
                     String diaChi = listPhieuXuat.get(index).getDiaChi();
@@ -91,8 +107,8 @@ this.updateTable();
                     String formattedNumber = format.format(tongtien);
                     String totalPrice = formattedNumber;
                     listDetailSP = listPhieuXuat.get(index).getDanhsachsanphamxuat();  
-                    PhieuXuatDetail phieuXuatDetail = new PhieuXuatDetail(index, tenKH, sdtKH, (String)TablePhieuXuat.getValueAt(index, 2), listDetailSP, diaChi,totalPrice);
-                    displayFunctions("Chi tiết phiếu xuất", phieuXuatDetail);                 
+                    PhieuXuatDetail phieuXuatDetail = new PhieuXuatDetail(index,maPhieu, tenKH, sdtKH, (String)TablePhieuXuat.getValueAt(index, 2), listDetailSP, diaChi,totalPrice);
+                    displayFunctions("Chi tiết phiếu xuất", phieuXuatDetail,825,520);                 
                     break;
                 }
             }
@@ -123,10 +139,10 @@ this.updateTable();
                 for (PhieuXuat phieuxuat : listphieuxuatsauxoa) {
                     phieuxuatIO.writePhieuXuat(phieuxuat, listphieuxuatsauxoa);
                 }
-            }
             index --;
             updateTable();
             JOptionPane.showMessageDialog(null,"Xóa thành công" , "Thông báo", JOptionPane.WARNING_MESSAGE);
+            }
         }
     }
     
@@ -134,12 +150,20 @@ this.updateTable();
         ArrayList<PhieuXuat> danhsachhientai = new ArrayList<>();
         danhsachhientai = phieuxuatIO.readFilePX(FILE_NAME_XH);
         ArrayList<PhieuXuat> listphieuxuatsauxoa = new ArrayList<>();
-        int index = -1;
-        index = TablePhieuXuat.getSelectedRow();
-        if(index == -1){
+        ArrayList<Product> listsanpham = new ArrayList<>();
+        vitrisuaphieu = -1;
+        vitrisuaphieu = TablePhieuXuat.getSelectedRow();
+        if(vitrisuaphieu == -1){
             showMessage("Bạn chưa chọn sản phẩm để sửa", "Thông báo");
         } else {
-            
+            String tenKH = danhsachhientai.get(vitrisuaphieu).getTenKH();
+            String sdtKH = danhsachhientai.get(vitrisuaphieu).getSdtKH();
+            String diaChi = danhsachhientai.get(vitrisuaphieu).getDiaChi();
+            long tongTien = danhsachhientai.get(vitrisuaphieu).getTien();
+            listsanpham = danhsachhientai.get(vitrisuaphieu).getDanhsachsanphamxuat();
+            QLXH qlxh = new QLXH(tenKH, sdtKH, diaChi, listsanpham, tongTien);
+            qlxh.btnXuat.setText("Cập nhật");
+            displayFunctions(FILE_NAME_XH,qlxh,1000,800 );
         }
     }
     
@@ -155,6 +179,81 @@ this.updateTable();
             JOptionPane.showMessageDialog(null, "Lỗi", "Thông báo", JOptionPane.WARNING_MESSAGE);
         }
     }
+    private void exportPDF() {
+    Document doc = new Document();
+    File f = new File(PHIEU_XUAT_PDF);
+    ArrayList<PhieuXuat> listPhieuXuat = new ArrayList<>();
+    listPhieuXuat = phieuxuatIO.readFilePX(FILE_NAME_XH);
+    int viTriXuat = -1;
+    viTriXuat = TablePhieuXuat.getSelectedRow();
+    if (viTriXuat == -1) {
+        showMessage("Bạn chưa chọn sản phẩm để in phiếu xuất", "Thông báo");
+    } else {
+        try {
+            if (!f.exists()) {
+                f.createNewFile();
+            } else {
+                f.delete();
+                f.createNewFile();
+            }
+
+            PdfWriter.getInstance(doc, new FileOutputStream(f));
+            doc.open();
+
+            // Sử dụng phông chữ hỗ trợ tiếng Việt
+            BaseFont bf = BaseFont.createFont("c:\\windows\\fonts\\times.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            Font f1 = new Font(bf, 18, Font.BOLD);
+            Font f2 = new Font(bf, 12);
+
+            Paragraph p1 = new Paragraph("THÔNG TIN PHIẾU XUẤT\n\n", f1);
+            p1.setAlignment(Element.ALIGN_CENTER);
+            doc.add(p1);
+
+            Paragraph p2 = new Paragraph("Mã phiếu: " + listPhieuXuat.get(viTriXuat).getMaPhieu()
+                    + "\nTên khách hàng: " + listPhieuXuat.get(viTriXuat).getTenKH()
+                    + "\nSố điện thoại: " + listPhieuXuat.get(viTriXuat).getSdtKH()
+                    + "\nĐịa chỉ: " + listPhieuXuat.get(viTriXuat).getDiaChi() + "\n\n", f2);
+            doc.add(p2);
+
+            PdfPTable tb = new PdfPTable(5);
+
+            tb.addCell(new Paragraph("Mã sản phẩm", f2));
+            tb.addCell(new Paragraph("Tên sản phẩm", f2));
+            tb.addCell(new Paragraph("Loại", f2));
+            tb.addCell(new Paragraph("Số lượng", f2));
+            tb.addCell(new Paragraph("Giá bán", f2));
+            ArrayList<Product> listSP = new ArrayList<>();
+            listSP = listPhieuXuat.get(viTriXuat).getDanhsachsanphamxuat();
+            for (int i = 0; i < listSP.size(); i++) {
+
+                String Ma = listSP.get(i).getProductID();
+                String Ten = listSP.get(i).getProductName();
+                String Loai = listSP.get(i).getProductCategory();
+                int soLuong = listSP.get(i).getProductQuantity();
+                long giaBan = listSP.get(i).getProductPrice();
+
+                tb.addCell(new Paragraph(Ma, f2));
+                tb.addCell(new Paragraph(Ten, f2));
+                tb.addCell(new Paragraph(Loai, f2));
+                tb.addCell(new Paragraph(String.valueOf(soLuong), f2));
+                tb.addCell(new Paragraph(String.valueOf(giaBan), f2));
+            }
+
+            doc.add(tb);
+
+            Paragraph p3 = new Paragraph("\nTổng tiền: " + listPhieuXuat.get(viTriXuat).getTien(), f2);
+            doc.add(p3);
+
+            doc.close();
+            JOptionPane.showMessageDialog(this, "Xuất thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (FileNotFoundException | DocumentException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+}
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -163,7 +262,7 @@ this.updateTable();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
-        jButton4 = new javax.swing.JButton();
+        ButtonExportPDF = new javax.swing.JButton();
         ButtonDetail = new javax.swing.JButton();
         ButtonModify = new javax.swing.JButton();
         ButtonDelete = new javax.swing.JButton();
@@ -182,13 +281,18 @@ this.updateTable();
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setLayout(new java.awt.GridLayout(1, 3, 16, 0));
 
-        jButton4.setBackground(new java.awt.Color(75, 174, 79));
-        jButton4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(255, 255, 255));
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/icon/pdf (1).png"))); // NOI18N
-        jButton4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton4.setLabel("Xuất phiếu");
-        jPanel5.add(jButton4);
+        ButtonExportPDF.setBackground(new java.awt.Color(75, 174, 79));
+        ButtonExportPDF.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        ButtonExportPDF.setForeground(new java.awt.Color(255, 255, 255));
+        ButtonExportPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/icon/pdf (1).png"))); // NOI18N
+        ButtonExportPDF.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ButtonExportPDF.setLabel("Xuất phiếu");
+        ButtonExportPDF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonExportPDFActionPerformed(evt);
+            }
+        });
+        jPanel5.add(ButtonExportPDF);
 
         ButtonDetail.setBackground(new java.awt.Color(15, 149, 224));
         ButtonDetail.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -339,7 +443,8 @@ this.updateTable();
     }// </editor-fold>//GEN-END:initComponents
 
     private void ButtonModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonModifyActionPerformed
-        // TODO add your handling code here:
+        checkFeature = 1;
+        Modify();
     }//GEN-LAST:event_ButtonModifyActionPerformed
 
     private void ButtonDetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonDetailActionPerformed
@@ -356,14 +461,18 @@ this.updateTable();
         searchPhieu();
     }//GEN-LAST:event_SearchPhieuXH
 
+    private void ButtonExportPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonExportPDFActionPerformed
+        exportPDF();
+    }//GEN-LAST:event_ButtonExportPDFActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ButtonDelete;
     private javax.swing.JButton ButtonDetail;
+    private javax.swing.JButton ButtonExportPDF;
     private javax.swing.JButton ButtonModify;
     private javax.swing.JTextField JtfSearch;
     private javax.swing.JTable TablePhieuXuat;
-    private javax.swing.JButton jButton4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

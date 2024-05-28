@@ -7,3 +7,4 @@ GIAYM1923;Giày nam
 GIAYFM192;Giày nữ
 PK919;Phụ kiện
 CHANV9129;Chân váy
+VAYN123;Váy
