@@ -11,7 +11,11 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 public class QLNHView extends javax.swing.JPanel {
     
@@ -78,6 +82,36 @@ public class QLNHView extends javax.swing.JPanel {
             list.get(i).setProductCategory(loaiSP);
         }
         return list;
+    }
+    
+     private void searchValue() {
+        TableRowSorter<DefaultTableModel> rowSorter = new TableRowSorter<>(defaultTableProductModel);
+        tableViewProduct.setRowSorter(rowSorter);
+        inputSearch.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                applyFilter(rowSorter);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                applyFilter(rowSorter);                
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                applyFilter(rowSorter);                
+            }
+        });
+    }
+    
+    private void applyFilter(TableRowSorter rowSorter) {
+        String text = inputSearch.getText();
+        if (text.trim().isEmpty()) {
+            rowSorter.setRowFilter(null);
+        } else {
+            rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+        }
     }
     
     private void chooseCreateOrEdit() {
@@ -309,7 +343,7 @@ public class QLNHView extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
+        inputSearch = new javax.swing.JTextField();
         btnRefresh = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableViewProduct = new javax.swing.JTable();
@@ -338,6 +372,12 @@ public class QLNHView extends javax.swing.JPanel {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Tìm kiếm"));
 
+        inputSearch.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                inputSearchMousePressed(evt);
+            }
+        });
+
         btnRefresh.setBackground(new java.awt.Color(15, 149, 224));
         btnRefresh.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnRefresh.setForeground(new java.awt.Color(255, 255, 255));
@@ -357,7 +397,7 @@ public class QLNHView extends javax.swing.JPanel {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(inputSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRefresh, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
                 .addContainerGap())
@@ -367,7 +407,7 @@ public class QLNHView extends javax.swing.JPanel {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                    .addComponent(inputSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
                     .addComponent(btnRefresh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -629,6 +669,10 @@ public class QLNHView extends javax.swing.JPanel {
         this.chooseCreateOrEdit();
     }//GEN-LAST:event_btnDoneActionPerformed
 
+    private void inputSearchMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inputSearchMousePressed
+        this.searchValue();
+    }//GEN-LAST:event_inputSearchMousePressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddProduct;
@@ -640,6 +684,7 @@ public class QLNHView extends javax.swing.JPanel {
     private javax.swing.JTextField inputMaPhieu;
     private javax.swing.JComboBox<String> inputNhaCungCap;
     private javax.swing.JTextField inputQuantity;
+    private javax.swing.JTextField inputSearch;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -650,7 +695,6 @@ public class QLNHView extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTable tableViewProduct;
     private javax.swing.JTable tableViewSelected;
     // End of variables declaration//GEN-END:variables

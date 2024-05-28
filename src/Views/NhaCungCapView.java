@@ -8,7 +8,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
+import javax.swing.RowSorter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 public class NhaCungCapView extends javax.swing.JPanel {
     private String[] columnName = {"Mã NCC", "Tên nhà cung cấp", "Số điện thoại", "Địa chỉ"};
@@ -20,6 +25,41 @@ public class NhaCungCapView extends javax.swing.JPanel {
     
     private void showMessage(String errorMessage) {
         JOptionPane.showMessageDialog(null, errorMessage, "Thông báo", JOptionPane.WARNING_MESSAGE);
+    }
+    
+    private void searchValue() {
+        DefaultTableModel defaultTableModel = new DefaultTableModel(columnName, 0);   
+        for (NhaCungCap i : list) {
+            Object[] rowData = {i.getMa(), i.getTen(), i.getSoDienThoai(), i.getDiaChi()}; 
+            defaultTableModel.addRow(rowData);
+        }
+        TableRowSorter<DefaultTableModel> rowSorter = new TableRowSorter<>(defaultTableModel);
+        tableView.setRowSorter(rowSorter);
+        searchInput.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                applyFilter(rowSorter);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                applyFilter(rowSorter);                
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                applyFilter(rowSorter);                
+            }
+        });
+    }
+    
+    private void applyFilter(TableRowSorter rowSorter) {
+        String text = searchInput.getText();
+        if (text.trim().isEmpty()) {
+            rowSorter.setRowFilter(null);
+        } else {
+            rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+        }
     }
     
     public void showListData() {
@@ -106,7 +146,6 @@ public class NhaCungCapView extends javax.swing.JPanel {
         boxSearch = new javax.swing.JPanel();
         searchInput = new javax.swing.JTextField();
         refreshBtn = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableView = new javax.swing.JTable();
 
@@ -196,6 +235,11 @@ public class NhaCungCapView extends javax.swing.JPanel {
 
         searchInput.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(140, 140, 140)));
         searchInput.setDisabledTextColor(new java.awt.Color(39, 43, 48));
+        searchInput.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                searchInputMousePressed(evt);
+            }
+        });
         searchInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchInputActionPerformed(evt);
@@ -217,25 +261,13 @@ public class NhaCungCapView extends javax.swing.JPanel {
             }
         });
 
-        jButton1.setBackground(new java.awt.Color(15, 149, 224));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/icon/search(2) (1).png"))); // NOI18N
-        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(15, 149, 224)));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout boxSearchLayout = new javax.swing.GroupLayout(boxSearch);
         boxSearch.setLayout(boxSearchLayout);
         boxSearchLayout.setHorizontalGroup(
             boxSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(boxSearchLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(searchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(searchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(12, Short.MAX_VALUE))
@@ -246,8 +278,7 @@ public class NhaCungCapView extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(boxSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(refreshBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(searchInput, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(searchInput, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -348,13 +379,14 @@ public class NhaCungCapView extends javax.swing.JPanel {
         this.handleDeleteValue();
     }//GEN-LAST:event_deleteBtnActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void searchInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchInputActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_searchInputActionPerformed
+
+    private void searchInputMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchInputMousePressed
+        // TODO add your handling code here:
+        this.searchValue();
+    }//GEN-LAST:event_searchInputMousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -364,7 +396,6 @@ public class NhaCungCapView extends javax.swing.JPanel {
     private javax.swing.JButton deleteBtn;
     private javax.swing.JButton editBtn;
     private javax.swing.JPanel grid;
-    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton refreshBtn;
