@@ -5,8 +5,10 @@ import Models.MatHang;
 import Models.NhaCungCap;
 import Models.PhieuNhap;
 import Models.Product;
+import java.awt.Color;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -24,6 +26,10 @@ public class QLNHView extends javax.swing.JPanel {
     private ArrayList<MatHang> listMatHang = new ArrayList<MatHang>();
     
     private PhieuNhap currentValue;
+    private int currentIndex;
+    private PhieuNhapView mainView;
+    private String type = "Create";
+    private JFrame frameView;
     
     public QLNHView() {
         initComponents();
@@ -35,16 +41,23 @@ public class QLNHView extends javax.swing.JPanel {
         this.showListSelected("Create");
     }
     
-    public QLNHView(PhieuNhap inputPhieuNhap) {
+    public QLNHView(int inputIndex, PhieuNhapView inputMainView, PhieuNhap inputPhieuNhap, JFrame inputFrameView) {
         initComponents();
+        this.currentIndex = inputIndex;
+        this.mainView = inputMainView;
+        this.frameView = inputFrameView;
         this.currentValue = inputPhieuNhap;
         this.inputMaPhieu.setText(inputPhieuNhap.getMa());
         this.listSelectedProduct = inputPhieuNhap.getSanPhamNhap();
-//        this.cost.setText(String.format("%,d", inputPhieuNhap.getTien()));
         this.listMatHang = IO.MatHangIO.readFromFile();
         this.listProduct = getListProducts();
+        this.listNhaCungCap = IO.NhaCungCapIO.readFromFile();
+        this.setSelectedNhaCungCap(inputPhieuNhap.getMaNhaCungCap());
         this.showTableProduct("Edit");
         this.showListSelected("Edit");
+        btnDone.setBackground(new Color(75,174,79));
+        btnDone.setText("Lưu chỉnh sửa");
+        this.type = "Edit";
     }
     
     private void showMessage(String errorMessage) {
@@ -67,23 +80,47 @@ public class QLNHView extends javax.swing.JPanel {
         return list;
     }
     
+    private void chooseCreateOrEdit() {
+        if (type.equalsIgnoreCase("Create")) {
+            this.handleCreatePhieuNhap();
+        }
+        if (type.equalsIgnoreCase("Edit")) {
+            this.handleEditPhieuNhap();
+        }
+    }
+    
+    private void handleEditPhieuNhap() {
+        if (!this.listSelectedProduct.isEmpty()) {
+            this.mainView.editValue(currentIndex, this.getValue());
+            JOptionPane.showMessageDialog(null, "Chỉnh sửa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            this.frameView.dispose();
+            this.mainView.showListData();
+        } else {
+            this.showMessage("Không thể cập nhật phiếu, danh sách sản phẩm nhập đang trống");
+        }
+    }
+    
     private void handleCreatePhieuNhap() {
         if (!this.listSelectedProduct.isEmpty()) {
-            String maNCC = this.listNhaCungCap.get(inputNhaCungCap.getSelectedIndex()).getMa();
-            NumberFormat numberFormat = NumberFormat.getInstance();
-            long gia = 0;
-            try {
-                gia = numberFormat.parse(this.cost.getText()).longValue();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            PhieuNhap value = new PhieuNhap(this.inputMaPhieu.getText(), maNCC, this.listSelectedProduct, gia);
-            IO.PhieuNhapIO.writeToFile(value);
+            IO.PhieuNhapIO.writeToFile(this.getValue());
             JOptionPane.showMessageDialog(null, "Tạo phiếu thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             this.handleRefresh();
         } else {
             this.showMessage("Không thể nhập hàng, danh sách sản phẩm nhập đang trống");
         }
+    }
+    
+    private PhieuNhap getValue() {
+        String maNCC = this.listNhaCungCap.get(inputNhaCungCap.getSelectedIndex()).getMa();
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        long gia = 0;
+        try {
+            gia = numberFormat.parse(this.cost.getText()).longValue();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        PhieuNhap value = new PhieuNhap(this.inputMaPhieu.getText(), maNCC, this.listSelectedProduct, gia);
+        return value;
     }
     
     private void showTableProduct(String type) {
@@ -101,19 +138,16 @@ public class QLNHView extends javax.swing.JPanel {
                     boolean hasValue = false;
                     for (int j = 0; j < this.listSelectedProduct.size(); j++) {
                         if (this.listProduct.get(i).getProductID().equalsIgnoreCase(this.listSelectedProduct.get(j).getProductID())) {
-                            this.listProduct.remove(i);
-                            this.listSelectedProduct.remove(j);
                             hasValue = true;
                             break;
                         }
                     }
                     if (!hasValue) {
                         Product currentValue = this.listProduct.get(i);
-                        Object[] rowData = {currentValue.getProductID(), currentValue.getProductName(), currentValue.getProductCategory(), currentValue.getProductQuantity(), currentValue.getProductPrice()}; 
+                        Object[] rowData = {currentValue.getProductID(), currentValue.getProductName(), currentValue.getProductCategory(), currentValue.getProductQuantity(), String.format("%,d", currentValue.getProductPrice())}; 
                         this.defaultTableProductModel.addRow(rowData);
                     }
                 }
-                this.listSelectedProduct = this.currentValue.getSanPhamNhap();
             }
             if (type.equalsIgnoreCase("Remove")) {
                 int index = this.tableViewProduct.getSelectedRow();
@@ -173,7 +207,6 @@ public class QLNHView extends javax.swing.JPanel {
                 this.tableViewProduct.setModel(this.defaultTableProductModel);
                 this.tableViewProduct.repaint();
             }
-            
         } else {
             this.defaultTableSelectedModel.setRowCount(0);
         }
@@ -198,6 +231,20 @@ public class QLNHView extends javax.swing.JPanel {
         inputNhaCungCap.removeAllItems();
         for (NhaCungCap i : listNhaCungCap) {
             inputNhaCungCap.addItem(i.getTen());
+        }
+    }
+    
+    private void setSelectedNhaCungCap(String inputMa) {
+        inputNhaCungCap.removeAllItems();
+        int index = -1;
+        for (int i = 0; i < listNhaCungCap.size(); i++) {
+            inputNhaCungCap.addItem(listNhaCungCap.get(i).getTen());
+            if (listNhaCungCap.get(i).getMa().equalsIgnoreCase(inputMa)) {
+                index = i;
+            }
+        }
+        if (index != -1) {
+            inputNhaCungCap.setSelectedIndex(index);
         }
     }
     
@@ -254,7 +301,6 @@ public class QLNHView extends javax.swing.JPanel {
     public void editValue(int index, int quantity) {
         this.listSelectedProduct.get(index).setProductQuantity(quantity);
     }
-    
     
 
     @SuppressWarnings("unchecked")
@@ -580,7 +626,7 @@ public class QLNHView extends javax.swing.JPanel {
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnDoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoneActionPerformed
-        this.handleCreatePhieuNhap();
+        this.chooseCreateOrEdit();
     }//GEN-LAST:event_btnDoneActionPerformed
 
 

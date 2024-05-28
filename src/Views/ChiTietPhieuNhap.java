@@ -28,6 +28,7 @@ public class ChiTietPhieuNhap extends javax.swing.JFrame {
     private void setValue() {
         maPhieu.setText(phieuNhap.getMa());
         ngayTao.setText(phieuNhap.getNgayTao());
+        capNhat.setText(phieuNhap.getNgayCapNhat());
         tenNhaCungCap.setText(nhaCungCap.getTen());
         diaChiNhaCungCap.setText(nhaCungCap.getDiaChi());
         sdtNhaCungCap.setText(nhaCungCap.getSoDienThoai());
@@ -61,6 +62,8 @@ public class ChiTietPhieuNhap extends javax.swing.JFrame {
         tableViewProduct = new javax.swing.JTable();
         jLabel11 = new javax.swing.JLabel();
         tongTien = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        capNhat = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Chi tiết phiếu nhập");
@@ -72,21 +75,21 @@ public class ChiTietPhieuNhap extends javax.swing.JFrame {
 
         jLabel2.setText("Ngày tạo:");
 
-        maPhieu.setText("abcd");
+        maPhieu.setText("abc");
 
-        ngayTao.setText("addc");
+        ngayTao.setText("abc");
 
         jLabel5.setText("Nhà cung cấp:");
 
-        tenNhaCungCap.setText("ddd");
+        tenNhaCungCap.setText("abc");
 
         jLabel7.setText("Địa chỉ:");
 
-        diaChiNhaCungCap.setText("adc");
+        diaChiNhaCungCap.setText("abc");
 
         jLabel9.setText("Số điện thoại:");
 
-        sdtNhaCungCap.setText("adfcd");
+        sdtNhaCungCap.setText("abc");
 
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -113,6 +116,10 @@ public class ChiTietPhieuNhap extends javax.swing.JFrame {
         tongTien.setForeground(new java.awt.Color(255, 51, 51));
         tongTien.setText("12344545");
 
+        jLabel3.setText("Cập nhật:");
+
+        capNhat.setText("abc");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -123,26 +130,30 @@ public class ChiTietPhieuNhap extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(tenNhaCungCap))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(diaChiNhaCungCap))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(maPhieu)
-                                .addGap(300, 300, 300)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(maPhieu))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel5)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(tenNhaCungCap)))
+                                .addGap(214, 214, 214)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel11)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(capNhat)
                                     .addComponent(ngayTao)
-                                    .addComponent(tongTien))
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                    .addComponent(tongTien))))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -165,7 +176,9 @@ public class ChiTietPhieuNhap extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(tenNhaCungCap))
+                    .addComponent(tenNhaCungCap)
+                    .addComponent(jLabel3)
+                    .addComponent(capNhat))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
@@ -198,10 +211,12 @@ public class ChiTietPhieuNhap extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel capNhat;
     private javax.swing.JLabel diaChiNhaCungCap;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;

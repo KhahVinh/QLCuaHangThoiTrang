@@ -58,8 +58,9 @@ public class PhieuNhapIO {
                     String value[] = listProducts[i].split(";");
                     products.add(new Product(value[0], value[1], value[2], Integer.parseInt(value[3]), Long.parseLong(value[4])));
                 }
-                PhieuNhap value = new PhieuNhap(txt[0], txt[1], products, Long.parseLong(txt[4]));
+                PhieuNhap value = new PhieuNhap(txt[0], txt[1], products, Long.parseLong(txt[5]));
                 value.setNgayTao(txt[3]);
+                value.setNgayCapNhat(txt[4]);
                 list.add(value);
             }
             br.close();

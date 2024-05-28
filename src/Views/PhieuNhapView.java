@@ -11,7 +11,7 @@ import javax.swing.OverlayLayout;
 import javax.swing.table.DefaultTableModel;
 
 public class PhieuNhapView extends javax.swing.JPanel {
-    private final String[] columnName = {"Mã phiếu", "Tên nhà cung cấp", "Ngày tạo", "Tổng tiền"};
+    private final String[] columnName = {"Mã phiếu", "Tên nhà cung cấp", "Ngày tạo", "Lần cập nhật gần nhất", "Tổng tiền"};
     
     private ArrayList<PhieuNhap> listPhieuNhap = new ArrayList<PhieuNhap>();
     private ArrayList<NhaCungCap> listNhaCungCap = IO.NhaCungCapIO.readFromFile();
@@ -38,7 +38,7 @@ public class PhieuNhapView extends javax.swing.JPanel {
                 }
             }
             
-            Object[] rowData = {i.getMa(), tenNCC, i.getNgayTao(), String.format("%,d", i.getTien())}; 
+            Object[] rowData = {i.getMa(), tenNCC, i.getNgayTao(), i.getNgayCapNhat(), String.format("%,d", i.getTien())}; 
             defaultTableModel.addRow(rowData);
         }
         defaultTableModel.fireTableDataChanged();
@@ -99,17 +99,24 @@ public class PhieuNhapView extends javax.swing.JPanel {
         if (index != -1) {
             JFrame frameView = new JFrame();
             frameView.setLayout(new BorderLayout());
-            QLNHView editView = new QLNHView(this.listPhieuNhap.get(index));
+            QLNHView editView = new QLNHView(index, this, this.listPhieuNhap.get(index), frameView);
             frameView.add(editView);
             frameView.setVisible(true);
             frameView.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            frameView.setLocationRelativeTo(null);
+            frameView.setSize(1050, 700);
+            frameView.setResizable(false);
             frameView.setTitle("Chỉnh sửa phiếu nhập");
-            frameView.setSize(1050, 583);
+            frameView.setLocationRelativeTo(null);
         } else {
             showMessage("Chưa chọn phiếu nhập để sửa");
         }
-        
+    }
+    
+    public void editValue(int index, PhieuNhap value) {
+        this.listPhieuNhap.get(index).setNgayCapNhat(value.getNgayTao());
+        this.listPhieuNhap.get(index).setSanPhamNhap(value.getSanPhamNhap());
+        this.listPhieuNhap.get(index).setTien(value.getTien());
+        IO.PhieuNhapIO.writeToFile(listPhieuNhap);
     }
     
     @SuppressWarnings("unchecked")
