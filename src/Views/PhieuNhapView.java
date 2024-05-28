@@ -1,19 +1,20 @@
 
 package Views;
 
+import Models.NhaCungCap;
 import Models.PhieuNhap;
-import Models.Product;
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.awt.BorderLayout;
 import java.util.ArrayList;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.OverlayLayout;
 import javax.swing.table.DefaultTableModel;
 
 public class PhieuNhapView extends javax.swing.JPanel {
-    private static final String FILE_NAME = "PhieuNhap.txt";
-    private String[] columnName = {"Mã phiếu", "Mã nhà cung cấp", "Ngày tạo", "Tổng tiền"};
+    private final String[] columnName = {"Mã phiếu", "Tên nhà cung cấp", "Ngày tạo", "Lần cập nhật gần nhất", "Tổng tiền"};
     
     private ArrayList<PhieuNhap> listPhieuNhap = new ArrayList<PhieuNhap>();
+    private ArrayList<NhaCungCap> listNhaCungCap = IO.NhaCungCapIO.readFromFile();
     
     public PhieuNhapView() {
         initComponents();
@@ -24,45 +25,20 @@ public class PhieuNhapView extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(null, errorMessage, "Thông báo", JOptionPane.WARNING_MESSAGE);
     }
     
-    private ArrayList<PhieuNhap> readFromFile(String url) {
-        ArrayList<PhieuNhap> list = new ArrayList<PhieuNhap>();
-        try {
-            FileReader fr = new FileReader(FILE_NAME);
-            BufferedReader br = new BufferedReader(fr);
-            String line = "";
-            while(true) {
-                line = br.readLine();
-                if (line == null) {
-                    break;
-                }
-                String txt[] = line.split("-");
-                String listProducts[] = txt[2].split("&");
-                ArrayList<Product> products = new ArrayList<Product>();
-                for (int i = 0; i < listProducts.length - 1; i++) {
-                    String value[] = listProducts[i].split(";");
-                    products.add(new Product(value[0], value[1], value[2], Integer.parseInt(value[3]), Long.parseLong(value[4])));
-                }
-                PhieuNhap value = new PhieuNhap(txt[0], txt[1], products, Long.parseLong(txt[4]));
-                value.setNgayTao(txt[3]);
-                list.add(value);
-            }
-            br.close();
-            fr.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (list == null) {
-            list = new ArrayList<PhieuNhap>();
-        }
-        return list;
-    }
-    
     public void showListData() {
         this.listPhieuNhap.clear();
-        this.listPhieuNhap = readFromFile(FILE_NAME);
+        this.listPhieuNhap = IO.PhieuNhapIO.readFromFile();
         DefaultTableModel defaultTableModel = new DefaultTableModel(columnName, 0);   
         for (PhieuNhap i : this.listPhieuNhap) {
-            Object[] rowData = {i.getMa(), i.getMaNhaCungCap(), i.getNgayTao(), i.getTien()}; 
+            String tenNCC = "";
+            for (int j = 0; j < this.listNhaCungCap.size(); j++) {
+                if (i.getMaNhaCungCap().equalsIgnoreCase(this.listNhaCungCap.get(j).getMa())) {
+                    tenNCC = this.listNhaCungCap.get(j).getTen();
+                    break;
+                }
+            }
+            
+            Object[] rowData = {i.getMa(), tenNCC, i.getNgayTao(), i.getNgayCapNhat(), String.format("%,d", i.getTien())}; 
             defaultTableModel.addRow(rowData);
         }
         defaultTableModel.fireTableDataChanged();
@@ -70,6 +46,78 @@ public class PhieuNhapView extends javax.swing.JPanel {
         tableViewData.repaint();
     }
 
+    private NhaCungCap getInfoNhaCungCap(String ma) {
+        NhaCungCap nhaCC = null;
+        for (int i = 0; i < this.listNhaCungCap.size(); i++) {
+            if (this.listNhaCungCap.get(i).getMa().equalsIgnoreCase(ma)) {
+                nhaCC = this.listNhaCungCap.get(i);
+                break;
+            }
+        }
+        return nhaCC;
+    }
+    
+    private void handleDetailValue() {
+        int index = -1;
+        index = tableViewData.getSelectedRow();
+        if (index != -1) {
+            PhieuNhap currentValue = this.listPhieuNhap.get(index);
+            String maNCC = currentValue.getMaNhaCungCap();
+            NhaCungCap nhaCungCap = this.getInfoNhaCungCap(maNCC);
+            if (nhaCungCap == null) {
+                nhaCungCap.setMa("");
+                nhaCungCap.setTen("");
+                nhaCungCap.setDiaChi("");
+                nhaCungCap.setSoDienThoai("");
+            }
+            ChiTietPhieuNhap detailView = new ChiTietPhieuNhap(currentValue, nhaCungCap);
+            detailView.display();
+        } else {
+            this.showMessage("Chưa chọn phiếu để xem chi tiết");
+        }
+    }
+    
+    private void handleDeleteValue() {
+        int index = -1;
+        index = tableViewData.getSelectedRow();
+        if (index != -1) {
+            int rely = JOptionPane.showConfirmDialog(null, "Sau khi xóa sẽ không thể hoàn tác. Tiếp tục?", "Thông báo", JOptionPane.YES_NO_OPTION);
+            if (rely == JOptionPane.YES_NO_OPTION){
+                this.listPhieuNhap.remove(index);
+                IO.PhieuNhapIO.writeToFile(this.listPhieuNhap);
+                JOptionPane.showMessageDialog(null, "Xóa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                this.showListData();
+            }
+        } else {
+            showMessage("Chưa chọn phiếu nhập để xóa");
+        }
+    }
+    
+    private void handleEditValue() {
+        int index = -1;
+        index = tableViewData.getSelectedRow();
+        if (index != -1) {
+            JFrame frameView = new JFrame();
+            frameView.setLayout(new BorderLayout());
+            QLNHView editView = new QLNHView(index, this, this.listPhieuNhap.get(index), frameView);
+            frameView.add(editView);
+            frameView.setVisible(true);
+            frameView.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frameView.setSize(1050, 700);
+            frameView.setResizable(false);
+            frameView.setTitle("Chỉnh sửa phiếu nhập");
+            frameView.setLocationRelativeTo(null);
+        } else {
+            showMessage("Chưa chọn phiếu nhập để sửa");
+        }
+    }
+    
+    public void editValue(int index, PhieuNhap value) {
+        this.listPhieuNhap.get(index).setNgayCapNhat(value.getNgayTao());
+        this.listPhieuNhap.get(index).setSanPhamNhap(value.getSanPhamNhap());
+        this.listPhieuNhap.get(index).setTien(value.getTien());
+        IO.PhieuNhapIO.writeToFile(listPhieuNhap);
+    }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -79,10 +127,10 @@ public class PhieuNhapView extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
-        jButton4 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnXuatPhieu = new javax.swing.JButton();
+        btnChiTiet = new javax.swing.JButton();
+        btnChinhSua = new javax.swing.JButton();
+        btnXoa = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -98,41 +146,51 @@ public class PhieuNhapView extends javax.swing.JPanel {
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setLayout(new java.awt.GridLayout(1, 3, 16, 0));
 
-        jButton4.setBackground(new java.awt.Color(75, 174, 79));
-        jButton4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(255, 255, 255));
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/icon/pdf (1).png"))); // NOI18N
-        jButton4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton4.setLabel("Xuất phiếu");
-        jPanel5.add(jButton4);
+        btnXuatPhieu.setBackground(new java.awt.Color(75, 174, 79));
+        btnXuatPhieu.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnXuatPhieu.setForeground(new java.awt.Color(255, 255, 255));
+        btnXuatPhieu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/icon/pdf (1).png"))); // NOI18N
+        btnXuatPhieu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnXuatPhieu.setLabel("Xuất phiếu");
+        jPanel5.add(btnXuatPhieu);
 
-        jButton1.setBackground(new java.awt.Color(15, 149, 224));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/icon/eye (1).png"))); // NOI18N
-        jButton1.setText("Chi tiết");
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel5.add(jButton1);
-
-        jButton2.setBackground(new java.awt.Color(255, 185, 46));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/icon/edit-v2 (2).png"))); // NOI18N
-        jButton2.setText("Chỉnh sửa");
-        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnChiTiet.setBackground(new java.awt.Color(15, 149, 224));
+        btnChiTiet.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnChiTiet.setForeground(new java.awt.Color(255, 255, 255));
+        btnChiTiet.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/icon/eye (1).png"))); // NOI18N
+        btnChiTiet.setText("Chi tiết");
+        btnChiTiet.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnChiTiet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnChiTietActionPerformed(evt);
             }
         });
-        jPanel5.add(jButton2);
+        jPanel5.add(btnChiTiet);
 
-        jButton3.setBackground(new java.awt.Color(225, 47, 64));
-        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/icon/rubbish-bin (1).png"))); // NOI18N
-        jButton3.setText("Xóa");
-        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel5.add(jButton3);
+        btnChinhSua.setBackground(new java.awt.Color(255, 185, 46));
+        btnChinhSua.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnChinhSua.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/icon/edit-v2 (2).png"))); // NOI18N
+        btnChinhSua.setText("Chỉnh sửa");
+        btnChinhSua.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnChinhSua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChinhSuaActionPerformed(evt);
+            }
+        });
+        jPanel5.add(btnChinhSua);
+
+        btnXoa.setBackground(new java.awt.Color(225, 47, 64));
+        btnXoa.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnXoa.setForeground(new java.awt.Color(255, 255, 255));
+        btnXoa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/icon/rubbish-bin (1).png"))); // NOI18N
+        btnXoa.setText("Xóa");
+        btnXoa.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
+        jPanel5.add(btnXoa);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -236,16 +294,24 @@ public class PhieuNhapView extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void btnChinhSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChinhSuaActionPerformed
+        this.handleEditValue();
+    }//GEN-LAST:event_btnChinhSuaActionPerformed
+
+    private void btnChiTietActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChiTietActionPerformed
+        this.handleDetailValue();
+    }//GEN-LAST:event_btnChiTietActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        this.handleDeleteValue();
+    }//GEN-LAST:event_btnXoaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton btnChiTiet;
+    private javax.swing.JButton btnChinhSua;
+    private javax.swing.JButton btnXoa;
+    private javax.swing.JButton btnXuatPhieu;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

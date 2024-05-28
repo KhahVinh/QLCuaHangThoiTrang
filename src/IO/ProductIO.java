@@ -3,7 +3,9 @@ package IO;
 
 import Models.Product;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 
 public class ProductIO {
@@ -34,7 +36,18 @@ public class ProductIO {
         return list;
     }    
     
-    public static void writeToFile() {
-        
+    public static void writeToFile(ArrayList<Product> list) {
+        try {
+            FileWriter fw = new FileWriter(FILE_NAME_PRODUCT);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (Product i : list) {
+                bw.write(i.toString());
+                bw.newLine();
+            }
+            bw.close();
+            fw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

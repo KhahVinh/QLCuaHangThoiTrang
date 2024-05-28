@@ -2,10 +2,9 @@
 package Views;
 
 import Models.MatHang;
-import java.io.BufferedReader;
+import Models.Product;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,6 +14,7 @@ import javax.swing.table.DefaultTableModel;
 public class MatHangView extends javax.swing.JPanel {
     private String[] columnName = {"Mã mặt hàng", "Tên mặt hàng"};
     private ArrayList<MatHang> list = new ArrayList<MatHang>();
+    private ArrayList<Product> listProduct = new ArrayList<Product>();
 
     public MatHangView() {
         initComponents();
@@ -38,6 +38,14 @@ public class MatHangView extends javax.swing.JPanel {
     }    
     
     private void deleteValue(int inputIndex) {
+        this.listProduct = IO.ProductIO.readFromFile();
+        String maMatHang = this.list.get(inputIndex).getMa();
+        for (int i = 0; i < listProduct.size(); i++) {
+            if (listProduct.get(i).getProductCategory().equalsIgnoreCase(maMatHang)) {
+                listProduct.remove(i);
+            }
+        }
+        IO.ProductIO.writeToFile(this.listProduct);
         this.list.remove(inputIndex);
         IO.MatHangIO.writeToFile(list);
     }
@@ -46,7 +54,7 @@ public class MatHangView extends javax.swing.JPanel {
         int index = -1;
         index = tableView.getSelectedRow();
         if (index != -1) {
-            int rely = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa không?", "Thông báo", JOptionPane.YES_NO_OPTION);
+            int rely = JOptionPane.showConfirmDialog(null, "Thao tác này sẽ xóa tất cả các sản phẩm thuộc mặt hàng này và không thể hoàn tác.\nBạn có muốn tiếp tục không?", "Thông báo", JOptionPane.YES_NO_OPTION);
             if (rely == JOptionPane.YES_NO_OPTION){
                 deleteValue(index);
                 JOptionPane.showMessageDialog(null, "Xóa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);

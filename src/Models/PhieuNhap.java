@@ -10,6 +10,7 @@ public class PhieuNhap {
    private String maNhaCungCap;
    private ArrayList<Product> sanPhamNhap;
    private String ngayTao;
+   private String ngayCapNhat;
    private Long tien;
 
     public PhieuNhap(String ma, String maNhaCungCap, ArrayList<Product> sanPhamNhap, Long tien) {
@@ -19,6 +20,7 @@ public class PhieuNhap {
         this.tien = tien;
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         this.ngayTao = formatter.format(new Date());
+        this.ngayCapNhat = formatter.format(new Date());
     }
 
     public PhieuNhap() {
@@ -26,6 +28,14 @@ public class PhieuNhap {
 
     public String getMa() {
         return ma;
+    }
+
+    public void setNgayCapNhat(String ngayCapNhat) {
+        this.ngayCapNhat = ngayCapNhat;
+    }
+
+    public String getNgayCapNhat() {
+        return ngayCapNhat;
     }
 
     public String getMaNhaCungCap() {
@@ -80,7 +90,7 @@ public class PhieuNhap {
 
     @Override
     public String toString() {
-        return ma + "-" + maNhaCungCap + "-" + this.listProduct() + "-" + ngayTao + "-" + tien;
+        return ma + "-" + maNhaCungCap + "-" + this.listProduct() + "-" + ngayTao + "-" + ngayCapNhat + "-" + tien;
     }
     
    

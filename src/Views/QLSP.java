@@ -37,6 +37,7 @@ public class QLSP extends javax.swing.JPanel {
     public QLSP() {
         initComponents();
         Init();
+        updateTable();
     }
 
     private void Init() {
