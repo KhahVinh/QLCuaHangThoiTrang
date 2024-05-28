@@ -37,10 +37,10 @@ public class QLSP extends javax.swing.JPanel {
     public QLSP() {
         initComponents();
         Init();
-        updateTable();
     }
 
     private void Init() {
+        danhsachsanpham = IO.ProductIO.readFromFile();
         try {
             rwp.readFile(fileName, danhsachsanpham);
         } catch (Exception e) {
