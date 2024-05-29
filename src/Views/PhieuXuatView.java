@@ -35,7 +35,7 @@ public class PhieuXuatView extends javax.swing.JPanel {
     static DefaultTableModel dtmPhieuXuat = new DefaultTableModel(ColumnName, 0);
     private PhieuXuatIO phieuxuatIO = new PhieuXuatIO();
     private String FILE_NAME_XH = "QuanLyPhieuXuat.txt";
-    private String PHIEU_XUAT_PDF = "ChiTietPhieuXuat.pdf";
+    private String PHIEU_XUAT_PDF = "PhieuXuat.pdf";
     private ArrayList<PhieuXuat> listPhieuXuat = new ArrayList<>();
 
     public PhieuXuatView() {
@@ -156,29 +156,31 @@ public class PhieuXuatView extends javax.swing.JPanel {
         if(vitrisuaphieu == -1){
             showMessage("Bạn chưa chọn sản phẩm để sửa", "Thông báo");
         } else {
+            String maPhieu = danhsachhientai.get(vitrisuaphieu).getMaPhieu();
             String tenKH = danhsachhientai.get(vitrisuaphieu).getTenKH();
             String sdtKH = danhsachhientai.get(vitrisuaphieu).getSdtKH();
             String diaChi = danhsachhientai.get(vitrisuaphieu).getDiaChi();
             long tongTien = danhsachhientai.get(vitrisuaphieu).getTien();
             listsanpham = danhsachhientai.get(vitrisuaphieu).getDanhsachsanphamxuat();
-            QLXH qlxh = new QLXH(tenKH, sdtKH, diaChi, listsanpham, tongTien);
+            QLXH qlxh = new QLXH(maPhieu,tenKH, sdtKH, diaChi, listsanpham, tongTien);
             qlxh.btnXuat.setText("Cập nhật");
             displayFunctions(FILE_NAME_XH,qlxh,1000,800 );
         }
     }
     
     private void searchPhieu() {
-         ArrayList<Product> danhsachsanphamtimkiem = new ArrayList<>();
-         danhsachsanphamtimkiem = phieuxuatIO.readFilePX(FILE_NAME_XH);
-        String name = JtfSearch.getText();
-        try {
-            TableRowSorter<TableModel> sorter = new TableRowSorter<>(dtmPhieuXuat);
-            TablePhieuXuat.setRowSorter(sorter);
-            sorter.setRowFilter(RowFilter.regexFilter(name,0));
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Lỗi", "Thông báo", JOptionPane.WARNING_MESSAGE);
-        }
+    ArrayList<Product> danhsachsanphamtimkiem = new ArrayList<>();
+    danhsachsanphamtimkiem = phieuxuatIO.readFilePX(FILE_NAME_XH);
+    String name = JtfSearch.getText();
+    try {
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(dtmPhieuXuat);
+        TablePhieuXuat.setRowSorter(sorter);
+        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + name, 1));
+    } catch (Exception e) {
+        showMessage("Lỗi", "Thông báo");
     }
+}
+
     private void exportPDF() {
     Document doc = new Document();
     File f = new File(PHIEU_XUAT_PDF);
@@ -200,7 +202,6 @@ public class PhieuXuatView extends javax.swing.JPanel {
             PdfWriter.getInstance(doc, new FileOutputStream(f));
             doc.open();
 
-            // Sử dụng phông chữ hỗ trợ tiếng Việt
             BaseFont bf = BaseFont.createFont("c:\\windows\\fonts\\times.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             Font f1 = new Font(bf, 18, Font.BOLD);
             Font f2 = new Font(bf, 12);

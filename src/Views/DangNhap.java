@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class DangNhap extends javax.swing.JFrame {
@@ -14,7 +15,13 @@ public class DangNhap extends javax.swing.JFrame {
     public DangNhap() {
         initComponents();
     }
-
+    private void displayUI() {
+        GiaoDien gd = new GiaoDien();
+        gd.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        gd.setVisible(true);
+        gd.setVisible(true);
+        gd.setLocationRelativeTo(null);
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -213,9 +220,7 @@ public class DangNhap extends javax.swing.JFrame {
                                     "Đăng nhập thành công",
                                     "Thông báo",
                                     JOptionPane.INFORMATION_MESSAGE);
-                            GiaoDien gd = new GiaoDien();
-                            gd.setSize(1100, 650);
-                            gd.setVisible(true);
+                            displayUI();
                             this.dispose();
                         } else {
                             JOptionPane.showMessageDialog(this,
