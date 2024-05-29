@@ -301,9 +301,17 @@ public class QLNHView extends javax.swing.JPanel {
     }
     
     private void handleRefresh() {
-        this.showTableProduct("Get");
-        this.listSelectedProduct.clear();
-        this.showListSelected("Create");
+        if (this.type.equalsIgnoreCase("Create")) {
+            this.showTableProduct("Get");
+            this.listSelectedProduct.clear();
+            this.showListSelected("Create");
+        } else {
+            this.listSelectedProduct = this.currentValue.getSanPhamNhap();
+            this.setSelectedNhaCungCap(this.currentValue.getMaNhaCungCap());
+            this.showTableProduct("Edit");
+            this.showListSelected("Edit");
+            System.out.println("Da qua");
+        }
     }
     
     private void handleDeleteValue() {
