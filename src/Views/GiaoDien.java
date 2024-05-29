@@ -303,15 +303,6 @@ public class GiaoDien extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jpnQLSPFocusGained
 
-    public static void main(String args[]) {
-
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GiaoDien().setVisible(true);
-                new GiaoDien().setDefaultCloseOperation(EXIT_ON_CLOSE);
-            }
-        });
-    }
     public void changeController() {
         ChangeController controller = new ChangeController(jpnDisplay);
         ArrayList<DanhMuc> danhMuc = new ArrayList<>();

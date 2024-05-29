@@ -332,6 +332,7 @@ public class PhieuNhapView extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tableViewData.setShowGrid(true);
         jScrollPane1.setViewportView(tableViewData);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
