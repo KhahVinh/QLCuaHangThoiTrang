@@ -187,10 +187,9 @@ public class QLSP extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        HOME = new javax.swing.JPanel();
         Header = new javax.swing.JPanel();
         Title = new javax.swing.JLabel();
-        JDisplayProduct = new javax.swing.JPanel();
         JFeature = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         JSearch = new javax.swing.JPanel();
@@ -204,10 +203,9 @@ public class QLSP extends javax.swing.JPanel {
         ButtonDelete = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         ButtonModify = new javax.swing.JButton();
+        JDisplayProduct = new javax.swing.JPanel();
         Products = new javax.swing.JScrollPane();
         TableProduct = new javax.swing.JTable();
-
-        jButton1.setText("jButton1");
 
         setBackground(new java.awt.Color(255, 255, 255));
         setForeground(new java.awt.Color(204, 204, 204));
@@ -225,7 +223,7 @@ public class QLSP extends javax.swing.JPanel {
             .addGroup(HeaderLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(Title)
-                .addContainerGap(629, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         HeaderLayout.setVerticalGroup(
             HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -234,9 +232,6 @@ public class QLSP extends javax.swing.JPanel {
                 .addComponent(Title, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
-
-        JDisplayProduct.setBackground(new java.awt.Color(255, 255, 255));
-        JDisplayProduct.setBorder(getBorder());
 
         JFeature.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -268,13 +263,13 @@ public class QLSP extends javax.swing.JPanel {
         JSearchLayout.setHorizontalGroup(
             JSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JSearchLayout.createSequentialGroup()
-                .addComponent(SearchText)
+                .addComponent(SearchText, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ButtonSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         JSearchLayout.setVerticalGroup(
             JSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ButtonSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+            .addComponent(ButtonSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
             .addComponent(SearchText, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
@@ -291,7 +286,7 @@ public class QLSP extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(JSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
@@ -328,7 +323,7 @@ public class QLSP extends javax.swing.JPanel {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(ButtonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(ButtonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37))
         );
 
@@ -337,7 +332,7 @@ public class QLSP extends javax.swing.JPanel {
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
 
         ButtonDelete.setBackground(new java.awt.Color(255, 102, 102));
-        ButtonDelete.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        ButtonDelete.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         ButtonDelete.setForeground(new java.awt.Color(255, 255, 255));
         ButtonDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/icon/rubbish-bin (1).png"))); // NOI18N
         ButtonDelete.setText("Xóa");
@@ -362,8 +357,8 @@ public class QLSP extends javax.swing.JPanel {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(ButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38))
+                .addComponent(ButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46))
         );
 
         jPanel2.add(jPanel5);
@@ -371,7 +366,7 @@ public class QLSP extends javax.swing.JPanel {
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
 
         ButtonModify.setBackground(new java.awt.Color(255, 185, 46));
-        ButtonModify.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        ButtonModify.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         ButtonModify.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/icon/edit-v2 (2).png"))); // NOI18N
         ButtonModify.setText("Sửa");
         ButtonModify.setMaximumSize(new java.awt.Dimension(70, 32));
@@ -396,8 +391,8 @@ public class QLSP extends javax.swing.JPanel {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(ButtonModify, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(ButtonModify, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(8, Short.MAX_VALUE))
         );
 
         jPanel2.add(jPanel6);
@@ -414,7 +409,7 @@ public class QLSP extends javax.swing.JPanel {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout JFeatureLayout = new javax.swing.GroupLayout(JFeature);
@@ -424,17 +419,28 @@ public class QLSP extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JFeatureLayout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE))
         );
         JFeatureLayout.setVerticalGroup(
             JFeatureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JFeatureLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(JFeatureLayout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE))
+            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
+        JDisplayProduct.setBackground(new java.awt.Color(255, 255, 255));
+        JDisplayProduct.setBorder(getBorder());
+
+        javax.swing.GroupLayout JDisplayProductLayout = new javax.swing.GroupLayout(JDisplayProduct);
+        JDisplayProduct.setLayout(JDisplayProductLayout);
+        JDisplayProductLayout.setHorizontalGroup(
+            JDisplayProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 798, Short.MAX_VALUE)
+        );
+        JDisplayProductLayout.setVerticalGroup(
+            JDisplayProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 203, Short.MAX_VALUE)
         );
 
         Products.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -461,41 +467,49 @@ public class QLSP extends javax.swing.JPanel {
         TableProduct.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         Products.setViewportView(TableProduct);
 
-        javax.swing.GroupLayout JDisplayProductLayout = new javax.swing.GroupLayout(JDisplayProduct);
-        JDisplayProduct.setLayout(JDisplayProductLayout);
-        JDisplayProductLayout.setHorizontalGroup(
-            JDisplayProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(JDisplayProductLayout.createSequentialGroup()
+        javax.swing.GroupLayout HOMELayout = new javax.swing.GroupLayout(HOME);
+        HOME.setLayout(HOMELayout);
+        HOMELayout.setHorizontalGroup(
+            HOMELayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(HOMELayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(JFeature, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addComponent(Products)
+                .addGroup(HOMELayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Header, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HOMELayout.createSequentialGroup()
+                        .addGroup(HOMELayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(JFeature, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Products, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 792, Short.MAX_VALUE))
+                        .addContainerGap())))
+            .addGroup(HOMELayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(HOMELayout.createSequentialGroup()
+                    .addGap(3, 3, 3)
+                    .addComponent(JDisplayProduct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGap(3, 3, 3)))
         );
-        JDisplayProductLayout.setVerticalGroup(
-            JDisplayProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(JDisplayProductLayout.createSequentialGroup()
-                .addGap(5, 5, 5)
-                .addComponent(JFeature, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        HOMELayout.setVerticalGroup(
+            HOMELayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(HOMELayout.createSequentialGroup()
+                .addComponent(Header, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Products, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE))
+                .addComponent(JFeature, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(Products, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE))
+            .addGroup(HOMELayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HOMELayout.createSequentialGroup()
+                    .addContainerGap(323, Short.MAX_VALUE)
+                    .addComponent(JDisplayProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap()))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Header, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(JDisplayProduct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(HOME, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(Header, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(5, 5, 5)
-                .addComponent(JDisplayProduct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(HOME, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -552,6 +566,7 @@ public class QLSP extends javax.swing.JPanel {
     private javax.swing.JButton ButtonDelete;
     private javax.swing.JButton ButtonModify;
     private javax.swing.JButton ButtonSearch;
+    private javax.swing.JPanel HOME;
     private javax.swing.JPanel Header;
     private javax.swing.JPanel JDisplayProduct;
     private javax.swing.JPanel JFeature;
@@ -560,7 +575,6 @@ public class QLSP extends javax.swing.JPanel {
     private javax.swing.JTextField SearchText;
     private javax.swing.JTable TableProduct;
     private javax.swing.JLabel Title;
-    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

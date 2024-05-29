@@ -141,12 +141,15 @@ public class PhieuXuatView extends javax.swing.JPanel {
                 }
             index --;
             updateTable();
-            JOptionPane.showMessageDialog(null,"Xóa thành công" , "Thông báo", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Xóa thành công" , "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
     
     private void Modify () {
+        DefaultTableModel dtmThongTin;
+        DefaultTableModel dtmXuat;
+        
         ArrayList<PhieuXuat> danhsachhientai = new ArrayList<>();
         danhsachhientai = phieuxuatIO.readFilePX(FILE_NAME_XH);
         ArrayList<PhieuXuat> listphieuxuatsauxoa = new ArrayList<>();
@@ -164,6 +167,7 @@ public class PhieuXuatView extends javax.swing.JPanel {
             listsanpham = danhsachhientai.get(vitrisuaphieu).getDanhsachsanphamxuat();
             QLXH qlxh = new QLXH(maPhieu,tenKH, sdtKH, diaChi, listsanpham, tongTien);
             qlxh.btnXuat.setText("Cập nhật");
+            qlxh.updateTableModifyPX();
             displayFunctions(FILE_NAME_XH,qlxh,1000,800 );
         }
     }
