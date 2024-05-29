@@ -97,4 +97,3 @@
 97;Quần jean dáng suông;QA728;110;430000
 98;Áo khoác hoodie;AOUNS012;140;600000
 99;Chân váy xòe;CHANV9129;120;460000
-100;Áo ba lỗ nam;AOM120;180;200000
