@@ -156,6 +156,9 @@
                         </Property>
                         <Property name="label" type="java.lang.String" value="Xu&#x1ea5;t phi&#x1ebf;u"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnXuatPhieuActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JButton" name="btnChiTiet">
                       <Properties>

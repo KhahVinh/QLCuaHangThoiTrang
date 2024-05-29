@@ -1,6 +1,7 @@
 
 package Views;
 
+import IO.PdfIO;
 import Models.NhaCungCap;
 import Models.PhieuNhap;
 import java.awt.BorderLayout;
@@ -166,6 +167,18 @@ public class PhieuNhapView extends javax.swing.JPanel {
         IO.PhieuNhapIO.writeToFile(listPhieuNhap);
     }
     
+    private void handleExportPdfFile() {
+        int index = -1;
+        index = tableViewData.getSelectedRow();
+        if (index != -1) {
+            PhieuNhap currentValue = this.listPhieuNhap.get(index);
+            NhaCungCap nCC = this.getInfoNhaCungCap(currentValue.getMaNhaCungCap());
+            PdfIO.handleExportPdfFile(this, currentValue, nCC);
+        } else {
+            showMessage("Chưa chọn phiếu nhập để xuất PDF");
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -199,6 +212,11 @@ public class PhieuNhapView extends javax.swing.JPanel {
         btnXuatPhieu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/icon/pdf (1).png"))); // NOI18N
         btnXuatPhieu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnXuatPhieu.setLabel("Xuất phiếu");
+        btnXuatPhieu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXuatPhieuActionPerformed(evt);
+            }
+        });
         jPanel5.add(btnXuatPhieu);
 
         btnChiTiet.setBackground(new java.awt.Color(15, 149, 224));
@@ -362,6 +380,11 @@ public class PhieuNhapView extends javax.swing.JPanel {
     private void inputSearchMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inputSearchMousePressed
         this.searchValue();
     }//GEN-LAST:event_inputSearchMousePressed
+
+    private void btnXuatPhieuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatPhieuActionPerformed
+        // TODO add your handling code here:
+        this.handleExportPdfFile();
+    }//GEN-LAST:event_btnXuatPhieuActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
