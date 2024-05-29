@@ -257,11 +257,6 @@ public class QLSP extends javax.swing.JPanel {
         });
 
         SearchText.setBorder(null);
-        SearchText.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SearchTextActionPerformed(evt);
-            }
-        });
         SearchText.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 SearchTextKeyReleased(evt);
@@ -503,10 +498,6 @@ public class QLSP extends javax.swing.JPanel {
                 .addComponent(JDisplayProduct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void SearchTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchTextActionPerformed
-
-    }//GEN-LAST:event_SearchTextActionPerformed
 
     private void ButtonSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonSearchActionPerformed
         searchProduct();
