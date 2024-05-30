@@ -36,6 +36,31 @@ public class MatHangIO {
         return list;
     }
     
+    public static String getNameById(String id) {
+        String result = "";
+        try {
+            FileReader fr = new FileReader(FILE_NAME_MATHANG);
+            BufferedReader br = new BufferedReader(fr);
+            String line = "";
+            while(true) {
+                line = br.readLine();
+                if (line == null) {
+                    break;
+                }
+                String txt[] = line.split(";");
+                if (txt[0].equalsIgnoreCase(id)) {
+                    result = txt[1];
+                    break;
+                }
+            }
+            br.close();
+            fr.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+    
     public static void writeToFile(ArrayList<MatHang> list) {
         try {
             FileWriter fw = new FileWriter(FILE_NAME_MATHANG);

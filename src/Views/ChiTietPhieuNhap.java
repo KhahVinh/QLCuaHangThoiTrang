@@ -4,6 +4,8 @@ package Views;
 import Models.NhaCungCap;
 import Models.PhieuNhap;
 import Models.Product;
+import Models.SanPhamNhap;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 
@@ -11,7 +13,7 @@ public class ChiTietPhieuNhap extends javax.swing.JFrame {
     private NhaCungCap nhaCungCap;
     private PhieuNhap phieuNhap;
     
-    private String[] columnName = {"Mã sản phẩm", "Tên sản phẩm", "Loại sản phẩm", "Số lượng", "Giá"};
+    private String[] columnName = {"Mã sản phẩm", "Tên sản phẩm", "Loại sản phẩm", "Số lượng", "Giá", "Thành tiền"};
 
     public ChiTietPhieuNhap(PhieuNhap inputPhieuNhap, NhaCungCap inputNhaCungCap) {
         initComponents();
@@ -33,9 +35,12 @@ public class ChiTietPhieuNhap extends javax.swing.JFrame {
         diaChiNhaCungCap.setText(nhaCungCap.getDiaChi());
         sdtNhaCungCap.setText(nhaCungCap.getSoDienThoai());
         tongTien.setText(String.format("%,d", phieuNhap.getTien()));
+        ArrayList<SanPhamNhap> dsSanPhamNhap = IO.SanPhamNhapIO.getListById(maPhieu.getText());
         DefaultTableModel defaultTableModel = new DefaultTableModel(columnName, 0);   
-        for (Product i : phieuNhap.getSanPhamNhap()) {
-            Object[] rowData = {i.getProductID(), i.getProductName(), i.getProductCategory(), i.getProductQuantity(), String.format("%,d", i.getProductPrice())};
+        for (SanPhamNhap i : dsSanPhamNhap) {
+            Product value = IO.SanPhamNhapIO.getInfoProductById(i.getMaSanPham());
+            String category = IO.MatHangIO.getNameById(value.getProductCategory());
+            Object[] rowData = {i.getMaSanPham(), value.getProductName(), category, i.getSoLuong(), String.format("%,d", value.getProductPrice()), String.format("%,d", i.getThanhTien())};
             defaultTableModel.addRow(rowData);
         }
         defaultTableModel.fireTableDataChanged();

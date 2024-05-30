@@ -5,6 +5,7 @@ import Models.MatHang;
 import Models.NhaCungCap;
 import Models.PhieuNhap;
 import Models.Product;
+import Models.SanPhamNhap;
 import java.awt.Color;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -27,7 +28,6 @@ public class QLNHView extends javax.swing.JPanel {
     private ArrayList<Product> listProduct = new ArrayList<Product>();
     private ArrayList<NhaCungCap> listNhaCungCap = new ArrayList<NhaCungCap>();
     private ArrayList<Product> listSelectedProduct = new ArrayList<Product>();
-    private ArrayList<MatHang> listMatHang = new ArrayList<MatHang>();
     
     private PhieuNhap currentValue = new PhieuNhap();
     private int currentIndex;
@@ -37,7 +37,6 @@ public class QLNHView extends javax.swing.JPanel {
     
     public QLNHView() {
         initComponents();
-        this.listMatHang = IO.MatHangIO.readFromFile();
         this.listProduct = getListProducts();
         this.listNhaCungCap = IO.NhaCungCapIO.readFromFile();
         inputMaPhieu.setText("PN" + System.currentTimeMillis());
@@ -54,19 +53,14 @@ public class QLNHView extends javax.swing.JPanel {
     }
     
     public void setValue(String maPhieuNhap) {
-         ArrayList<PhieuNhap> dsPhieuNhap = IO.PhieuNhapIO.readFromFile();
-        for (PhieuNhap i : dsPhieuNhap) {
-            if (maPhieuNhap.equalsIgnoreCase(i.getMa())) {
-                this.currentValue = i;
-                break;
-            }
-        }
+        this.currentValue = IO.PhieuNhapIO.getInfoById(maPhieuNhap);
         this.inputMaPhieu.setText(this.currentValue.getMa());
-        ArrayList<Product> sanPham = new ArrayList<Product>();
-        for (int i = 0; i < this.currentValue.getSanPhamNhap().size(); i++) {
-            this.listSelectedProduct.add(this.currentValue.getSanPhamNhap().get(i));
+        ArrayList<SanPhamNhap> listSPNhap = IO.SanPhamNhapIO.getListById(maPhieuNhap);
+        for (int i = 0; i < listSPNhap.size(); i++) {
+            Product value = IO.SanPhamNhapIO.getInfoProductById(listSPNhap.get(i).getMaSanPham());
+            String category = IO.MatHangIO.getNameById(value.getProductCategory());
+            this.listSelectedProduct.add(new Product(value.getProductID(), value.getProductName(), category, listSPNhap.get(i).getSoLuong(), value.getProductPrice()));
         }
-        this.listMatHang = IO.MatHangIO.readFromFile();
         this.listProduct = getListProducts();
         this.listNhaCungCap = IO.NhaCungCapIO.readFromFile();
         this.setSelectedNhaCungCap(this.currentValue.getMaNhaCungCap());
@@ -77,6 +71,7 @@ public class QLNHView extends javax.swing.JPanel {
         this.type = "Edit";
     }
     
+    
     private void showMessage(String errorMessage) {
         JOptionPane.showMessageDialog(null, errorMessage, "Thông báo", JOptionPane.WARNING_MESSAGE);
     }
@@ -84,14 +79,7 @@ public class QLNHView extends javax.swing.JPanel {
     private ArrayList<Product> getListProducts() {
         ArrayList<Product> list = IO.ProductIO.readFromFile();
         for (int i = 0; i < list.size(); i++) {
-            String loaiSP = "";
-            for (int j = 0; j < this.listMatHang.size(); j++) {
-                loaiSP = "";
-                if (list.get(i).getProductCategory().equalsIgnoreCase(this.listMatHang.get(j).getMa())) {
-                    loaiSP = this.listMatHang.get(j).getTen();
-                    break;
-                }
-            }
+            String loaiSP = IO.MatHangIO.getNameById(list.get(i).getProductCategory());
             list.get(i).setProductCategory(loaiSP);
         }
         return list;
@@ -138,7 +126,13 @@ public class QLNHView extends javax.swing.JPanel {
     
     private void handleEditPhieuNhap() {
         if (!this.listSelectedProduct.isEmpty()) {
-            this.mainView.editValue(currentIndex, this.getValue());
+            String maPhieuNhap = this.inputMaPhieu.getText();            
+            ArrayList<SanPhamNhap> dsSanPhamNhap = new ArrayList<SanPhamNhap>();
+            for (int i = 0; i < this.listSelectedProduct.size(); i++) {
+                long gia = this.listSelectedProduct.get(i).getProductPrice() * this.listSelectedProduct.get(i).getProductQuantity();
+                dsSanPhamNhap.add(new SanPhamNhap(this.listSelectedProduct.get(i).getProductID(), this.listSelectedProduct.get(i).getProductQuantity(), gia, maPhieuNhap));
+            }
+            this.mainView.editValue(currentIndex, this.getValue(), dsSanPhamNhap);
             JOptionPane.showMessageDialog(null, "Chỉnh sửa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             this.frameView.dispose();
             this.mainView.showListData();
@@ -149,7 +143,14 @@ public class QLNHView extends javax.swing.JPanel {
     
     private void handleCreatePhieuNhap() {
         if (!this.listSelectedProduct.isEmpty()) {
+            String maPhieuNhap = this.inputMaPhieu.getText();
             IO.PhieuNhapIO.writeToFile(this.getValue());
+            ArrayList<SanPhamNhap> dsSanPhamNhap = new ArrayList<SanPhamNhap>();
+            for (int i = 0; i < this.listSelectedProduct.size(); i++) {
+                long gia = this.listSelectedProduct.get(i).getProductPrice() * this.listSelectedProduct.get(i).getProductQuantity();
+                dsSanPhamNhap.add(new SanPhamNhap(this.listSelectedProduct.get(i).getProductID(), this.listSelectedProduct.get(i).getProductQuantity(), gia, maPhieuNhap));
+            }
+            IO.SanPhamNhapIO.writeToFile(dsSanPhamNhap, true);
             JOptionPane.showMessageDialog(null, "Tạo phiếu thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             this.handleRefresh();
         } else {
@@ -166,7 +167,7 @@ public class QLNHView extends javax.swing.JPanel {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        PhieuNhap value = new PhieuNhap(this.inputMaPhieu.getText(), maNCC, this.listSelectedProduct, gia);
+        PhieuNhap value = new PhieuNhap(this.inputMaPhieu.getText(), maNCC, gia);
         return value;
     }
     
@@ -316,15 +317,19 @@ public class QLNHView extends javax.swing.JPanel {
     
     private void handleRefresh() {
         if (this.type.equalsIgnoreCase("Create")) {
+            inputMaPhieu.setText("PN" + System.currentTimeMillis());
             this.showTableProduct("Get");
             this.listSelectedProduct.clear();
             this.showListSelected("Create");
         } else {
             this.listSelectedProduct.clear();
-            for (int i = 0; i < this.currentValue.getSanPhamNhap().size(); i++) {
-                this.listSelectedProduct.add(this.currentValue.getSanPhamNhap().get(i));
+            String maPhieuNhap = inputMaPhieu.getText();
+            ArrayList<SanPhamNhap> listSPNhap = IO.SanPhamNhapIO.getListById(maPhieuNhap);
+            for (int i = 0; i < listSPNhap.size(); i++) {
+                Product value = IO.SanPhamNhapIO.getInfoProductById(listSPNhap.get(i).getMaSanPham());
+                String category = IO.MatHangIO.getNameById(value.getProductCategory());
+                this.listSelectedProduct.add(new Product(value.getProductID(), value.getProductName(), category, listSPNhap.get(i).getSoLuong(), value.getProductPrice()));
             }
-            System.out.println("size: " + this.currentValue.getSanPhamNhap().size());
             this.showTableProduct("Edit");
             this.showListSelected("Edit");
         }

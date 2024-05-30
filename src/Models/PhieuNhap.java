@@ -2,21 +2,18 @@
 package Models;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class PhieuNhap {
    private String ma; 
    private String maNhaCungCap;
-   private ArrayList<Product> sanPhamNhap;
    private String ngayTao;
    private String ngayCapNhat;
    private Long tien;
 
-    public PhieuNhap(String ma, String maNhaCungCap, ArrayList<Product> sanPhamNhap, Long tien) {
+    public PhieuNhap(String ma, String maNhaCungCap, Long tien) {
         this.ma = ma;
         this.maNhaCungCap = maNhaCungCap;
-        this.sanPhamNhap = sanPhamNhap;
         this.tien = tien;
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         this.ngayTao = formatter.format(new Date());
@@ -42,11 +39,6 @@ public class PhieuNhap {
         return maNhaCungCap;
     }
 
-    public ArrayList<Product> getSanPhamNhap() {
-        return sanPhamNhap;
-    }
-
-
     public Long getTien() {
         return tien;
     }
@@ -57,10 +49,6 @@ public class PhieuNhap {
 
     public void setMaNhaCungCap(String maNhaCungCap) {
         this.maNhaCungCap = maNhaCungCap;
-    }
-
-    public void setSanPhamNhap(ArrayList<Product> sanPhamNhap) {
-        this.sanPhamNhap = sanPhamNhap;
     }
 
     public String getNgayTao() {
@@ -74,23 +62,10 @@ public class PhieuNhap {
     public void setTien(Long tien) {
         this.tien = tien;
     }
-    
-    private String listProduct() {
-        String result = "";
-        int size = this.sanPhamNhap.size();
-        for (int i = 0; i < size; i++) {
-            if (i != size - 1) {
-                result = result + this.sanPhamNhap.get(i).toString() + "&";
-            } else {
-                result = result + this.sanPhamNhap.get(i).toString();
-            }
-        }
-        return result;
-    }
 
     @Override
     public String toString() {
-        return ma + "-" + maNhaCungCap + "-" + this.listProduct() + "-" + ngayTao + "-" + ngayCapNhat + "-" + tien;
+        return ma + "-" + maNhaCungCap + "-" + ngayTao + "-" + ngayCapNhat + "-" + tien;
     }
     
    
