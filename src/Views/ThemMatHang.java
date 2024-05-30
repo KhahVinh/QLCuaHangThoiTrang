@@ -26,6 +26,15 @@ public class ThemMatHang extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, errorMessage, "Cảnh báo nhập dữ liệu", JOptionPane.WARNING_MESSAGE);
     }
     
+    private boolean hasId(String id) {
+        for (int i = 0; i < IO.MatHangIO.readFromFile().size(); i++) {
+            if (IO.MatHangIO.readFromFile().get(i).getMa().equalsIgnoreCase(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     private boolean checkInput() {
         boolean check = true;
         try {
@@ -34,8 +43,7 @@ public class ThemMatHang extends javax.swing.JFrame {
             if (ma.length() == 0) {
                 showMessage("Không được để trống mã nhà cung cấp");
                 check = false;
-            }
-            if (hasId(ma)) {
+            } else if (this.hasId(ma)) {
                 showMessage("Mã mặt hàng đã tồn tại");
                 check = false;
             }
@@ -49,17 +57,7 @@ public class ThemMatHang extends javax.swing.JFrame {
         return check;
     }
     
-    private boolean hasId(String id) {
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getMa().equalsIgnoreCase(id)) {
-                return true;
-            }
-            if (IO.MatHangIO.readFromFile().get(i).getMa().equalsIgnoreCase(id)) {
-                return true;
-            }
-        }
-        return false;
-    }
+    
     
     private void resetInput() {
         inputMa.setText("");
