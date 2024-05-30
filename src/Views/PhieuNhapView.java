@@ -8,7 +8,6 @@ import java.awt.BorderLayout;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.OverlayLayout;
 import javax.swing.RowFilter;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -147,7 +146,8 @@ public class PhieuNhapView extends javax.swing.JPanel {
         if (index != -1) {
             JFrame frameView = new JFrame();
             frameView.setLayout(new BorderLayout());
-            QLNHView editView = new QLNHView(index, this, this.listPhieuNhap.get(index), frameView);
+            QLNHView editView = new QLNHView(index, this, frameView);
+            editView.setValue(this.listPhieuNhap.get(index).getMa());
             frameView.add(editView);
             frameView.setVisible(true);
             frameView.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
