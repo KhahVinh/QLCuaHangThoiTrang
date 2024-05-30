@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -15,14 +17,15 @@ public class DangNhap extends javax.swing.JFrame {
     public DangNhap() {
         initComponents();
     }
+
     private void displayUI() {
         GiaoDien gd = new GiaoDien();
         gd.setExtendedState(JFrame.MAXIMIZED_BOTH);
         gd.setVisible(true);
-        gd.setVisible(true);
         gd.setLocationRelativeTo(null);
-       
+
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -210,32 +213,36 @@ public class DangNhap extends javax.swing.JFrame {
         }
 
         try {
-            FileInputStream fis = new FileInputStream(f);
-            try (ObjectInputStream ois = new ObjectInputStream(fis)) {
-                String passWord = ois.readObject().toString();
+            byte[] savedHash;
+            try (FileInputStream fis = new FileInputStream(f); ObjectInputStream ois = new ObjectInputStream(fis)) {
+                savedHash = (byte[]) ois.readObject();
+            }
 
-                if (evt.getSource() == btnDangNhap) {
-                    while (passWord != null) {
-                        if (taiKhoan.equals("admin") && matKhau.equals(passWord)) {
-                            JOptionPane.showMessageDialog(this,
-                                    "Đăng nhập thành công",
-                                    "Thông báo",
-                                    JOptionPane.INFORMATION_MESSAGE);
-                            displayUI();
-                            this.dispose();
-                        } else {
-                            JOptionPane.showMessageDialog(this,
-                                    "Tài khoản hoặc mật khẩu không đúng, vui lòng nhập lại",
-                                    "Thông báo",
-                                    JOptionPane.OK_OPTION);
-                            txtTaiKhoan.setText("");
-                            txtMatKhau.setText("");
-                        }
-                        break;
+            // Mã hóa mật khẩu nhập liệu
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] enteredHash = digest.digest(matKhau.getBytes());
+
+            if (evt.getSource() == btnDangNhap) {
+                while (savedHash != null) {
+                    if (taiKhoan.equals("admin") && MessageDigest.isEqual(savedHash, enteredHash)) {
+                        JOptionPane.showMessageDialog(this,
+                                "Đăng nhập thành công",
+                                "Thông báo",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        displayUI();
+                        this.dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(this,
+                                "Tài khoản hoặc mật khẩu không đúng, vui lòng nhập lại",
+                                "Thông báo",
+                                JOptionPane.OK_OPTION);
+                        txtTaiKhoan.setText("");
+                        txtMatKhau.setText("");
                     }
+                    break;
                 }
             }
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException | NoSuchAlgorithmException e) {
             JOptionPane.showMessageDialog(this, e);
         }
     }//GEN-LAST:event_btnDangNhapActionPerformed
