@@ -1,7 +1,9 @@
 package Views;
 
+import IO.SanPhamXuatIO;
 import Models.PhieuXuat;
 import Models.Product;
+import Models.SanPhamXuat;
 import static java.awt.image.ImageObserver.ABORT;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -9,16 +11,20 @@ import java.util.Locale;
 import javax.swing.table.DefaultTableModel;
 
 public class PhieuXuatDetail extends javax.swing.JPanel {
-    String [] columnNames = {"Mã sản phẩm","Tên sản phẩm","Loại","Số lượng","Giá bán"};
-    private  DefaultTableModel dtmDetailPX = new DefaultTableModel(columnNames, ABORT);
-    private ArrayList <PhieuXuat>phieuxuat = new ArrayList<>();
-    private PhieuXuatView phieuXuatView = new  PhieuXuatView();
+
+    String[] columnNames = {"Mã sản phẩm", "Tên sản phẩm", "Loại", "Số lượng", "Giá bán"};
+    private DefaultTableModel dtmDetailPX = new DefaultTableModel(columnNames, 0);
+    private ArrayList<PhieuXuat> phieuxuat = new ArrayList<>();
+    private PhieuXuatView phieuXuatView = new PhieuXuatView();
+    private SanPhamXuatIO sanPhamXuatIO = new SanPhamXuatIO();
+
     public PhieuXuatDetail() {
         initComponents();
     }
 
-    public PhieuXuatDetail (int index,String maPhieu,String tenKH, String sdtKH, String ngayxuat, ArrayList<Product> danhsachsanphamdetail,String diachi,String tongtien) {
+    public PhieuXuatDetail(int index, String maPhieu, String tenKH, String sdtKH, String ngayxuat, String diachi, String tongtien) {
         initComponents();
+        ArrayList<SanPhamXuat> danhsachsanphamdetail = sanPhamXuatIO.getListByID(maPhieu);
         NumberFormat format = NumberFormat.getInstance(Locale.US);
         JtfMaphieu.setText(maPhieu);
         JtfTenkhachhang.setText(tenKH);
@@ -27,15 +33,17 @@ public class PhieuXuatDetail extends javax.swing.JPanel {
         JtfNgaytao.setText(ngayxuat);
         JtfDiachi.setText(diachi);
         dtmDetailPX.setRowCount(0);
-        JlbSoluong.setText("Số lượng: " + danhsachsanphamdetail.size()  );
-        for (Product product : danhsachsanphamdetail) {
-             String formattedPrice = format.format(product.getProductPrice());
+        JlbSoluong.setText("Số lượng: " + danhsachsanphamdetail.size());
+        for (SanPhamXuat spx : danhsachsanphamdetail) {
+            Product product = sanPhamXuatIO.getInfoProductById(spx.getMaSanPham(), spx.getSoLuong(), spx.getThanhTien());
+            String formattedPrice = format.format(product.getProductPrice());
             String price = formattedPrice;
-            Object [] rowdatas = {product.getProductID(),product.getProductName(),product.getProductCategory(),product.getProductQuantity(),price};
+            Object[] rowdatas = {product.getProductID(), product.getProductName(), product.getProductCategory(), product.getProductQuantity(), price};
             dtmDetailPX.addRow(rowdatas);
         }
         TableDetail.setModel(dtmDetailPX);
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
