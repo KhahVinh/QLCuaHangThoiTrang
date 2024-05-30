@@ -4,6 +4,7 @@ package Views;
 import IO.PdfIO;
 import Models.NhaCungCap;
 import Models.PhieuNhap;
+import Models.SanPhamNhap;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
 import javax.swing.JFrame;
@@ -18,7 +19,6 @@ public class PhieuNhapView extends javax.swing.JPanel {
     private final String[] columnName = {"Mã phiếu", "Tên nhà cung cấp", "Ngày tạo", "Lần cập nhật gần nhất", "Tổng tiền"};
     
     private ArrayList<PhieuNhap> listPhieuNhap = new ArrayList<PhieuNhap>();
-    private ArrayList<NhaCungCap> listNhaCungCap = IO.NhaCungCapIO.readFromFile();
     
     public PhieuNhapView() {
         initComponents();
@@ -33,16 +33,11 @@ public class PhieuNhapView extends javax.swing.JPanel {
         this.listPhieuNhap.clear();
         this.listPhieuNhap = IO.PhieuNhapIO.readFromFile();
         DefaultTableModel defaultTableModel = new DefaultTableModel(columnName, 0);   
-        for (PhieuNhap i : this.listPhieuNhap) {
-            String tenNCC = "";
-            for (int j = 0; j < this.listNhaCungCap.size(); j++) {
-                if (i.getMaNhaCungCap().equalsIgnoreCase(this.listNhaCungCap.get(j).getMa())) {
-                    tenNCC = this.listNhaCungCap.get(j).getTen();
-                    break;
-                }
-            }
-            
-            Object[] rowData = {i.getMa(), tenNCC, i.getNgayTao(), i.getNgayCapNhat(), String.format("%,d", i.getTien())}; 
+        for (int i = 0; i < this.listPhieuNhap.size(); i++) {
+            PhieuNhap value = this.listPhieuNhap.get(i);
+            NhaCungCap nhaCungCap = IO.NhaCungCapIO.getInfoById(value.getMaNhaCungCap());
+            String tenNCC = nhaCungCap.getTen();
+            Object[] rowData = {value.getMa(), tenNCC, value.getNgayTao(), value.getNgayCapNhat(), String.format("%,d", value.getTien())}; 
             defaultTableModel.addRow(rowData);
         }
         defaultTableModel.fireTableDataChanged();
@@ -53,14 +48,8 @@ public class PhieuNhapView extends javax.swing.JPanel {
      private void searchValue() {
         DefaultTableModel defaultTableModel = new DefaultTableModel(columnName, 0);   
         for (PhieuNhap i : this.listPhieuNhap) {
-            String tenNCC = "";
-            for (int j = 0; j < this.listNhaCungCap.size(); j++) {
-                if (i.getMaNhaCungCap().equalsIgnoreCase(this.listNhaCungCap.get(j).getMa())) {
-                    tenNCC = this.listNhaCungCap.get(j).getTen();
-                    break;
-                }
-            }
-            
+            NhaCungCap nhaCungCap = IO.NhaCungCapIO.getInfoById(i.getMaNhaCungCap());
+            String tenNCC = nhaCungCap.getTen();
             Object[] rowData = {i.getMa(), tenNCC, i.getNgayTao(), i.getNgayCapNhat(), String.format("%,d", i.getTien())}; 
             defaultTableModel.addRow(rowData);
         }
@@ -92,25 +81,14 @@ public class PhieuNhapView extends javax.swing.JPanel {
             rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
         }
     }
-
-    private NhaCungCap getInfoNhaCungCap(String ma) {
-        NhaCungCap nhaCC = null;
-        for (int i = 0; i < this.listNhaCungCap.size(); i++) {
-            if (this.listNhaCungCap.get(i).getMa().equalsIgnoreCase(ma)) {
-                nhaCC = this.listNhaCungCap.get(i);
-                break;
-            }
-        }
-        return nhaCC;
-    }
     
     private void handleDetailValue() {
         int index = -1;
         index = tableViewData.getSelectedRow();
         if (index != -1) {
-            PhieuNhap currentValue = this.listPhieuNhap.get(index);
+            PhieuNhap currentValue = IO.PhieuNhapIO.getInfoById(this.listPhieuNhap.get(index).getMa());
             String maNCC = currentValue.getMaNhaCungCap();
-            NhaCungCap nhaCungCap = this.getInfoNhaCungCap(maNCC);
+            NhaCungCap nhaCungCap = IO.NhaCungCapIO.getInfoById(maNCC);
             if (nhaCungCap == null) {
                 nhaCungCap.setMa("");
                 nhaCungCap.setTen("");
@@ -130,8 +108,9 @@ public class PhieuNhapView extends javax.swing.JPanel {
         if (index != -1) {
             int rely = JOptionPane.showConfirmDialog(null, "Sau khi xóa sẽ không thể hoàn tác. Tiếp tục?", "Thông báo", JOptionPane.YES_NO_OPTION);
             if (rely == JOptionPane.YES_NO_OPTION){
-                this.listPhieuNhap.remove(index);
-                IO.PhieuNhapIO.writeToFile(this.listPhieuNhap);
+                String maPhieu = this.listPhieuNhap.get(index).getMa();
+                IO.SanPhamNhapIO.deleteByIdMaPhieuNhap(maPhieu);
+                IO.PhieuNhapIO.deleteById(maPhieu);
                 JOptionPane.showMessageDialog(null, "Xóa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 this.showListData();
             }
@@ -160,20 +139,21 @@ public class PhieuNhapView extends javax.swing.JPanel {
         }
     }
     
-    public void editValue(int index, PhieuNhap value) {
-        this.listPhieuNhap.get(index).setNgayCapNhat(value.getNgayTao());
-        this.listPhieuNhap.get(index).setSanPhamNhap(value.getSanPhamNhap());
-        this.listPhieuNhap.get(index).setTien(value.getTien());
-        IO.PhieuNhapIO.writeToFile(listPhieuNhap);
+    public void editValue(int index, PhieuNhap value, ArrayList<SanPhamNhap> data) {
+//        this.listPhieuNhap.get(index).setNgayCapNhat(value.getNgayTao());
+//        this.listPhieuNhap.get(index).setTien(value.getTien());
+//        IO.PhieuNhapIO.writeToFile(listPhieuNhap);
+        IO.PhieuNhapIO.updateInfoById(value);
+        String maPhieuNhap = this.listPhieuNhap.get(index).getMa();
+        IO.SanPhamNhapIO.updateDataByIdMaPhieu(maPhieuNhap, data);
     }
     
     private void handleExportPdfFile() {
         int index = -1;
         index = tableViewData.getSelectedRow();
         if (index != -1) {
-            PhieuNhap currentValue = this.listPhieuNhap.get(index);
-            NhaCungCap nCC = this.getInfoNhaCungCap(currentValue.getMaNhaCungCap());
-            PdfIO.handleExportPdfFile(this, currentValue, nCC);
+            String maPhieu = this.listPhieuNhap.get(index).getMa();
+            PdfIO.handleExportPdfFile(this, maPhieu);
         } else {
             showMessage("Chưa chọn phiếu nhập để xuất PDF");
         }

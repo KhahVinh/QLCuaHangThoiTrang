@@ -40,6 +40,89 @@ public class PhieuNhapIO {
         }
     }
     
+    public static void updateInfoById(PhieuNhap data) {
+        try {
+            ArrayList<PhieuNhap> list = IO.PhieuNhapIO.readFromFile();
+            for (int i = 0; i < list.size(); i++) {
+                if (data.getMa().equalsIgnoreCase(list.get(i).getMa())) {
+                    list.get(i).setNgayCapNhat(data.getNgayCapNhat());
+                    list.get(i).setTien(data.getTien());
+                    break;
+                }
+            }
+            FileWriter fw = new FileWriter(FILE_NAME_PHIEUNHAP);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (PhieuNhap i : list) {
+                bw.write(i.toString());
+                bw.newLine();
+            }
+            bw.close();
+            fw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static PhieuNhap getInfoById(String id) {
+        PhieuNhap data = new PhieuNhap();
+        try {
+            FileReader fr = new FileReader(FILE_NAME_PHIEUNHAP);
+            BufferedReader br = new BufferedReader(fr);
+            String line = "";
+            while(true) {
+                line = br.readLine();
+                if (line == null) {
+                    break;
+                }
+                String txt[] = line.split("-");
+                if (txt[0].equalsIgnoreCase(id)) {
+                    data.setMa(txt[0]);
+                    data.setMaNhaCungCap(txt[1]);
+                    data.setNgayCapNhat(txt[2]);
+                    data.setNgayTao(txt[3]);
+                    data.setTien(Long.parseLong(txt[4]));
+                    break;
+                }
+            }
+            br.close();
+            fr.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
+    
+    public static void deleteById(String id) {
+        try {
+            ArrayList<PhieuNhap> list = IO.PhieuNhapIO.readFromFile();
+            int index = 0;
+            int size = list.size();
+            while (index < size) {
+                if (list.get(index).getMa().equalsIgnoreCase(id)) {
+                    list.remove(index);
+                    if (index == 0) {
+                        index = 0;
+                    } else {
+                        index = index - 1;
+                    }
+                    size = list.size();
+                } else {
+                    index = index + 1;
+                }
+            }
+            FileWriter fw = new FileWriter(FILE_NAME_PHIEUNHAP);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (PhieuNhap i : list) {
+                bw.write(i.toString());
+                bw.newLine();
+            }
+            bw.close();
+            fw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    } 
+    
     public static ArrayList<PhieuNhap> readFromFile() {
         ArrayList<PhieuNhap> list = new ArrayList<PhieuNhap>();
         try {
@@ -52,15 +135,9 @@ public class PhieuNhapIO {
                     break;
                 }
                 String txt[] = line.split("-");
-                String listProducts[] = txt[2].split("&");
-                ArrayList<Product> products = new ArrayList<Product>();
-                for (int i = 0; i < listProducts.length; i++) {
-                    String value[] = listProducts[i].split(";");
-                    products.add(new Product(value[0], value[1], value[2], Integer.parseInt(value[3]), Long.parseLong(value[4])));
-                }
-                PhieuNhap value = new PhieuNhap(txt[0], txt[1], products, Long.parseLong(txt[5]));
-                value.setNgayTao(txt[3]);
-                value.setNgayCapNhat(txt[4]);
+                PhieuNhap value = new PhieuNhap(txt[0], txt[1], Long.parseLong(txt[4]));
+                value.setNgayTao(txt[2]);
+                value.setNgayCapNhat(txt[3]);
                 list.add(value);
             }
             br.close();

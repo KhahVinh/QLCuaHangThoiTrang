@@ -36,6 +36,32 @@ public class NhaCungCapIO {
         return list;
     }
     
+    public static NhaCungCap getInfoById(String id) {
+        NhaCungCap data = new NhaCungCap();
+        try {
+            FileReader fr = new FileReader(FILE_NAME_NHACUNGCAP);
+            BufferedReader br = new BufferedReader(fr);
+            String line = "";
+            while(true) {
+                line = br.readLine();
+                if (line == null) {
+                    break;
+                }
+                String txt[] = line.split(";");
+                NhaCungCap value = new NhaCungCap(txt[0], txt[1], txt[2], txt[3]);
+                if (value.getMa().equalsIgnoreCase(id)) {
+                    data = value;
+                    break;
+                }
+            }
+            br.close();
+            fr.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
+    
     public static void writeToFile(ArrayList<NhaCungCap> list) {
         try {
             FileWriter fw = new FileWriter(FILE_NAME_NHACUNGCAP);

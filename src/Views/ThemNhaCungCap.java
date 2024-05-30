@@ -37,6 +37,11 @@ public class ThemNhaCungCap extends javax.swing.JFrame {
                 showMessage("Không được để trống mã nhà cung cấp");
                 check = false;
             }
+            if (this.hasId(ma)) {
+                System.out.println("1");
+                showMessage("Mã nhà cung cấp đã tồn tại");
+                check = false;
+            }
             if (ten.length() == 0) {
                 showMessage("Không được để trống tên nhà cung cấp");
                 check = false;
@@ -61,6 +66,18 @@ public class ThemNhaCungCap extends javax.swing.JFrame {
             System.out.println(e.getMessage());
         }
         return check;
+    }
+    
+    private boolean hasId(String id) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getMa().equalsIgnoreCase(id)) {
+                return true;
+            }
+            if (IO.NhaCungCapIO.readFromFile().get(i).getMa().equalsIgnoreCase(id)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void resetInput() {
