@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import javax.swing.JOptionPane;
 
 public class QLTKhoan extends javax.swing.JPanel {
@@ -46,9 +48,9 @@ public class QLTKhoan extends javax.swing.JPanel {
         HeaderLayout.setHorizontalGroup(
             HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(HeaderLayout.createSequentialGroup()
-                .addGap(306, 306, 306)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         HeaderLayout.setVerticalGroup(
             HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -61,30 +63,30 @@ public class QLTKhoan extends javax.swing.JPanel {
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         titleTK.setText("TÀI KHOẢN");
-        jPanel2.add(titleTK, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 70, 170, 28));
+        jPanel2.add(titleTK, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 90, 170, 28));
 
         jTextField5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jTextField5.setText("admin");
         jTextField5.setToolTipText("");
-        jPanel2.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 100, 245, 30));
+        jPanel2.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 120, 245, 30));
 
         titleMKCu.setText("MẬT KHẨU CŨ");
-        jPanel2.add(titleMKCu, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 160, 170, 28));
+        jPanel2.add(titleMKCu, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 180, 170, 28));
 
         txtMKC.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jPanel2.add(txtMKC, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 190, 245, 30));
+        jPanel2.add(txtMKC, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 210, 245, 30));
 
         titleMKMoi.setText("MẬT KHẨU MỚI");
-        jPanel2.add(titleMKMoi, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 250, 170, 28));
+        jPanel2.add(titleMKMoi, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 270, 170, 28));
 
         txtMKM.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jPanel2.add(txtMKM, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 280, 245, 30));
+        jPanel2.add(txtMKM, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 300, 245, 30));
 
         titleNhapLai.setText("NHẬP LẠI MẬT KHẨU");
-        jPanel2.add(titleNhapLai, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 340, 170, 28));
+        jPanel2.add(titleNhapLai, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 360, 170, 28));
 
         txtNhapLai.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jPanel2.add(txtNhapLai, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 370, 245, 30));
+        jPanel2.add(txtNhapLai, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 390, 245, 30));
 
         btnCapNhap.setText("CẬP NHẬP");
         btnCapNhap.addActionListener(new java.awt.event.ActionListener() {
@@ -92,7 +94,7 @@ public class QLTKhoan extends javax.swing.JPanel {
                 btnCapNhapActionPerformed(evt);
             }
         });
-        jPanel2.add(btnCapNhap, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 430, 100, 30));
+        jPanel2.add(btnCapNhap, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 450, 100, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -101,7 +103,7 @@ public class QLTKhoan extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 805, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1068, Short.MAX_VALUE)
                     .addComponent(Header, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -111,7 +113,7 @@ public class QLTKhoan extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(Header, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 534, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -134,52 +136,54 @@ public class QLTKhoan extends javax.swing.JPanel {
         }
         if (sb.length() > 0) {
             JOptionPane.showMessageDialog(this,
-                sb.toString(),
-                "Thông báo", JOptionPane.ERROR_MESSAGE);
+                    sb.toString(),
+                    "Thông báo", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         try {
-            FileInputStream fis = new FileInputStream(f);
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            String cu = ois.readObject().toString();
+            byte[] savedHash;
+            try (FileInputStream fis = new FileInputStream(f); ObjectInputStream ois = new ObjectInputStream(fis)) {
+                savedHash = (byte[]) ois.readObject();
+            }
+
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] enteredHash = digest.digest(mkCu.getBytes());
 
             if (evt.getSource() == btnCapNhap) {
-                while (cu != null) {
-                    if (mkCu.equals(cu)) {
+                while (savedHash != null) {
+                    if (MessageDigest.isEqual(savedHash, enteredHash)) {
                         if (!nhaplai.equals(mkMoi)) {
                             JOptionPane.showMessageDialog(this,
-                                "Nhập lại mật khẩu không đúng",
-                                "Thông báo",
-                                JOptionPane.ERROR_MESSAGE);
+                                    "Nhập lại mật khẩu không đúng",
+                                    "Thông báo",
+                                    JOptionPane.ERROR_MESSAGE);
                             txtNhapLai.setText("");
                         } else {
-                            ois.close();
-                            fis.close();
-                            FileOutputStream fos = new FileOutputStream(f);
-                            try (ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-                                oos.writeObject(mkMoi);
+                            byte[] newHash = digest.digest(mkMoi.getBytes());
+                            try (FileOutputStream fos = new FileOutputStream(f); ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+                                oos.writeObject(newHash);
                                 oos.flush();
                             }
                             JOptionPane.showMessageDialog(this,
-                                "Cập nhập thành công",
-                                "Thông báo",
-                                JOptionPane.INFORMATION_MESSAGE);
+                                    "Cập nhập thành công",
+                                    "Thông báo",
+                                    JOptionPane.INFORMATION_MESSAGE);
                             txtMKC.setText("");
                             txtMKM.setText("");
                             txtNhapLai.setText("");
                         }
                     } else {
                         JOptionPane.showMessageDialog(this,
-                            "Nhập sai mật khẩu cũ",
-                            "Thông báo",
-                            JOptionPane.ERROR_MESSAGE);
+                                "Nhập sai mật khẩu cũ",
+                                "Thông báo",
+                                JOptionPane.ERROR_MESSAGE);
                         txtMKC.setText("");
                     }
                     break;
                 }
             }
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException | NoSuchAlgorithmException e) {
             JOptionPane.showMessageDialog(this, e, "Thông báo", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnCapNhapActionPerformed
