@@ -40,29 +40,32 @@ public class QLNHView extends javax.swing.JPanel {
         this.listMatHang = IO.MatHangIO.readFromFile();
         this.listProduct = getListProducts();
         this.listNhaCungCap = IO.NhaCungCapIO.readFromFile();
+        inputMaPhieu.setText("PN" + System.currentTimeMillis());
         this.showTableProduct("Get");
         this.setSelectedNhaCungCap();
         this.showListSelected("Create");
     }
     
-    public QLNHView(int inputIndex, PhieuNhapView inputMainView, String inputMaPhieuNhap, JFrame inputFrameView) {
+    public QLNHView(int inputIndex, PhieuNhapView inputMainView, JFrame inputFrameView) {
         initComponents();
         this.currentIndex = inputIndex;
         this.mainView = inputMainView;
         this.frameView = inputFrameView;
-        ArrayList<PhieuNhap> dsPhieuNhap = IO.PhieuNhapIO.readFromFile();
+    }
+    
+    public void setValue(String maPhieuNhap) {
+         ArrayList<PhieuNhap> dsPhieuNhap = IO.PhieuNhapIO.readFromFile();
         for (PhieuNhap i : dsPhieuNhap) {
-            if (inputMaPhieuNhap.equalsIgnoreCase(i.getMa())) {
+            if (maPhieuNhap.equalsIgnoreCase(i.getMa())) {
                 this.currentValue = i;
                 break;
             }
         }
         this.inputMaPhieu.setText(this.currentValue.getMa());
         ArrayList<Product> sanPham = new ArrayList<Product>();
-        for (Product i : this.currentValue.getSanPhamNhap()) {
-            this.listSelectedProduct.add(i);
+        for (int i = 0; i < this.currentValue.getSanPhamNhap().size(); i++) {
+            this.listSelectedProduct.add(this.currentValue.getSanPhamNhap().get(i));
         }
-        this.currentValue.setSanPhamNhap(sanPham);
         this.listMatHang = IO.MatHangIO.readFromFile();
         this.listProduct = getListProducts();
         this.listNhaCungCap = IO.NhaCungCapIO.readFromFile();
@@ -282,13 +285,14 @@ public class QLNHView extends javax.swing.JPanel {
         inputNhaCungCap.removeAllItems();
         int index = -1;
         for (int i = 0; i < listNhaCungCap.size(); i++) {
-            inputNhaCungCap.addItem(listNhaCungCap.get(i).getTen());
             if (listNhaCungCap.get(i).getMa().equalsIgnoreCase(inputMa)) {
+                inputNhaCungCap.addItem(listNhaCungCap.get(i).getTen());
                 index = i;
+                break;
             }
         }
         if (index != -1) {
-            inputNhaCungCap.setSelectedIndex(index);
+            inputNhaCungCap.setSelectedIndex(0);
         }
     }
     
@@ -303,7 +307,6 @@ public class QLNHView extends javax.swing.JPanel {
             Product valueSelected = this.getValueTable(index, this.tableViewProduct);
             valueSelected.setProductQuantity(Integer.parseInt(inputQuantity.getText()));
             this.listSelectedProduct.add(valueSelected);
-            System.out.println("Size: " + this.currentValue.getSanPhamNhap().size());
             this.showTableProduct("Remove");
             this.showListSelected("Create");
         } else {
@@ -317,12 +320,13 @@ public class QLNHView extends javax.swing.JPanel {
             this.listSelectedProduct.clear();
             this.showListSelected("Create");
         } else {
-            this.listSelectedProduct = this.currentValue.getSanPhamNhap();
-            this.setSelectedNhaCungCap(this.currentValue.getMaNhaCungCap());
+            this.listSelectedProduct.clear();
+            for (int i = 0; i < this.currentValue.getSanPhamNhap().size(); i++) {
+                this.listSelectedProduct.add(this.currentValue.getSanPhamNhap().get(i));
+            }
             System.out.println("size: " + this.currentValue.getSanPhamNhap().size());
             this.showTableProduct("Edit");
             this.showListSelected("Edit");
-            System.out.println("Da qua");
         }
     }
     
@@ -417,7 +421,7 @@ public class QLNHView extends javax.swing.JPanel {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(inputSearch)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnRefresh))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -506,15 +510,15 @@ public class QLNHView extends javax.swing.JPanel {
                 .addGap(6, 6, 6)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 524, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addComponent(jScrollPane1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -524,6 +528,7 @@ public class QLNHView extends javax.swing.JPanel {
 
         jLabel2.setText("Mã phiếu nhập:");
 
+        inputMaPhieu.setEditable(false);
         inputMaPhieu.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         inputMaPhieu.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
@@ -604,7 +609,7 @@ public class QLNHView extends javax.swing.JPanel {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 524, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
