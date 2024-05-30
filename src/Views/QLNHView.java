@@ -29,7 +29,7 @@ public class QLNHView extends javax.swing.JPanel {
     private ArrayList<Product> listSelectedProduct = new ArrayList<Product>();
     private ArrayList<MatHang> listMatHang = new ArrayList<MatHang>();
     
-    private PhieuNhap currentValue;
+    private PhieuNhap currentValue = new PhieuNhap();
     private int currentIndex;
     private PhieuNhapView mainView;
     private String type = "Create";
@@ -45,18 +45,28 @@ public class QLNHView extends javax.swing.JPanel {
         this.showListSelected("Create");
     }
     
-    public QLNHView(int inputIndex, PhieuNhapView inputMainView, PhieuNhap inputPhieuNhap, JFrame inputFrameView) {
+    public QLNHView(int inputIndex, PhieuNhapView inputMainView, String inputMaPhieuNhap, JFrame inputFrameView) {
         initComponents();
         this.currentIndex = inputIndex;
         this.mainView = inputMainView;
         this.frameView = inputFrameView;
-        this.currentValue = inputPhieuNhap;
-        this.inputMaPhieu.setText(inputPhieuNhap.getMa());
-        this.listSelectedProduct = inputPhieuNhap.getSanPhamNhap();
+        ArrayList<PhieuNhap> dsPhieuNhap = IO.PhieuNhapIO.readFromFile();
+        for (PhieuNhap i : dsPhieuNhap) {
+            if (inputMaPhieuNhap.equalsIgnoreCase(i.getMa())) {
+                this.currentValue = i;
+                break;
+            }
+        }
+        this.inputMaPhieu.setText(this.currentValue.getMa());
+        ArrayList<Product> sanPham = new ArrayList<Product>();
+        for (Product i : this.currentValue.getSanPhamNhap()) {
+            this.listSelectedProduct.add(i);
+        }
+        this.currentValue.setSanPhamNhap(sanPham);
         this.listMatHang = IO.MatHangIO.readFromFile();
         this.listProduct = getListProducts();
         this.listNhaCungCap = IO.NhaCungCapIO.readFromFile();
-        this.setSelectedNhaCungCap(inputPhieuNhap.getMaNhaCungCap());
+        this.setSelectedNhaCungCap(this.currentValue.getMaNhaCungCap());
         this.showTableProduct("Edit");
         this.showListSelected("Edit");
         btnDone.setBackground(new Color(75,174,79));
@@ -293,6 +303,7 @@ public class QLNHView extends javax.swing.JPanel {
             Product valueSelected = this.getValueTable(index, this.tableViewProduct);
             valueSelected.setProductQuantity(Integer.parseInt(inputQuantity.getText()));
             this.listSelectedProduct.add(valueSelected);
+            System.out.println("Size: " + this.currentValue.getSanPhamNhap().size());
             this.showTableProduct("Remove");
             this.showListSelected("Create");
         } else {
@@ -308,6 +319,7 @@ public class QLNHView extends javax.swing.JPanel {
         } else {
             this.listSelectedProduct = this.currentValue.getSanPhamNhap();
             this.setSelectedNhaCungCap(this.currentValue.getMaNhaCungCap());
+            System.out.println("size: " + this.currentValue.getSanPhamNhap().size());
             this.showTableProduct("Edit");
             this.showListSelected("Edit");
             System.out.println("Da qua");

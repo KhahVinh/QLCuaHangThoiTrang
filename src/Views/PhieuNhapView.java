@@ -147,7 +147,7 @@ public class PhieuNhapView extends javax.swing.JPanel {
         if (index != -1) {
             JFrame frameView = new JFrame();
             frameView.setLayout(new BorderLayout());
-            QLNHView editView = new QLNHView(index, this, this.listPhieuNhap.get(index), frameView);
+            QLNHView editView = new QLNHView(index, this, this.listPhieuNhap.get(index).getMa(), frameView);
             frameView.add(editView);
             frameView.setVisible(true);
             frameView.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
