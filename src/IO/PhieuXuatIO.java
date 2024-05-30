@@ -2,6 +2,7 @@ package IO;
 
 import Models.PhieuXuat;
 import Models.Product;
+import Views.QLSP;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -42,17 +43,10 @@ public class PhieuXuatIO {
                 String maPhieu = txt[0];
                 String tenKH = txt[1];
                 String sdtKH = txt[2];
-                String diaChi = txt[5];
-                String listProduct[] = txt[3].split("&");
-                ArrayList<Product> products = new ArrayList<>();
-                for (int i = 0; i < listProduct.length; i++) {
-                    String valueProduct[] = listProduct[i].split(";");
-                    Product product = new Product(valueProduct[0], valueProduct[1], valueProduct[2], Integer.parseInt(valueProduct[3]), Long.parseLong(valueProduct[4]));
-                    products.add(product);
-                }
-                String tongTien = txt[6];
-                PhieuXuat phieuxuat = new PhieuXuat(maPhieu,tenKH, sdtKH, products, diaChi,Long.parseLong(tongTien));
-                phieuxuat.setNgayTao(txt[4]);
+                String diaChi = txt[4];
+                String tongTien = txt[5];
+                PhieuXuat phieuxuat = new PhieuXuat(maPhieu,tenKH, sdtKH, diaChi,Long.parseLong(tongTien));
+                phieuxuat.setNgayTao(txt[3]);
                 if (!danhsachphieuxuat.contains(phieuxuat)) {
                     danhsachphieuxuat.add(phieuxuat);
                 }
@@ -69,5 +63,61 @@ public class PhieuXuatIO {
             danhsachphieuxuat = new ArrayList<PhieuXuat>();
         }
         return danhsachphieuxuat;
+    }
+    public void deleteByIdMaPhieuNhap(String id) {
+        try {
+            ArrayList<PhieuXuat> list = readFilePX(FILE_PX);
+            int index = 0;
+            int size = list.size();
+            while (index < size) {
+                if (list.get(index).getMaPhieu().equalsIgnoreCase(id)) {
+                    list.remove(index);
+                    if (index == 0) {
+                        index = 0;
+                    } else {
+                        index = index - 1;
+                    }
+                    size = list.size();
+                } else {
+                    index = index + 1;
+                }
+            }
+            FileWriter fw = new FileWriter(FILE_PX);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (PhieuXuat i : list) {
+                bw.write(i.toString());
+                bw.newLine();
+            }
+            bw.close();
+            fw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void updateInfoById(PhieuXuat data) {
+        try {
+            ArrayList<PhieuXuat> list = readFilePX(FILE_PX);
+            for (int i = 0; i < list.size(); i++) {
+                if (data.getMaPhieu().equalsIgnoreCase(list.get(i).getMaPhieu())) {
+                    list.get(i).setMaPhieu(data.getMaPhieu());
+                    list.get(i).setTenKH(data.getTenKH());
+                    list.get(i).setSdtKH(data.getSdtKH());
+                    list.get(i).setDiaChi(data.getDiaChi());
+                    list.get(i).setNgayTao(data.getNgayTao());
+                    list.get(i).setTien(data.getTien());
+                    break;
+                }
+            }
+            FileWriter fw = new FileWriter(FILE_PX);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (PhieuXuat i : list) {
+                bw.write(i.toString());
+                bw.newLine();
+            }
+            bw.close();
+            fw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

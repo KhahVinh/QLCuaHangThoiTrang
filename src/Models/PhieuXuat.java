@@ -9,7 +9,6 @@ public class PhieuXuat implements Serializable{
     private String maPhieu;
     private String tenKH;
     private String sdtKH;
-    private ArrayList<Product> danhsachsanphamxuat;
     private String ngayTao;
     private String diaChi;
     private long tien;
@@ -17,11 +16,10 @@ public class PhieuXuat implements Serializable{
     public PhieuXuat() {
     }
 
-    public PhieuXuat(String maPhieu, String tenKH, String sdtKH, ArrayList<Product> danhsachsanphamxuat,String diaChi, long tien) {
+    public PhieuXuat(String maPhieu, String tenKH, String sdtKH,String diaChi, long tien) {
         this.maPhieu = maPhieu;
         this.tenKH = tenKH;
         this.sdtKH = sdtKH;
-        this.danhsachsanphamxuat = danhsachsanphamxuat;
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         this.ngayTao = formatter.format(new Date());
         this.diaChi = diaChi;
@@ -52,14 +50,6 @@ public class PhieuXuat implements Serializable{
         this.sdtKH = sdtKH;
     }
 
-    public ArrayList<Product> getDanhsachsanphamxuat() {
-        return danhsachsanphamxuat;
-    }
-
-    public void setDanhsachsanphamxuat(ArrayList<Product> danhsachsanphamxuat) {
-        this.danhsachsanphamxuat = danhsachsanphamxuat;
-    }
-
     public String getNgayTao() {
         return ngayTao;
     }
@@ -85,22 +75,11 @@ public class PhieuXuat implements Serializable{
     public void setTien(long tien) {
         this.tien = tien;
     }
-    private String listProduct() {
-        String result = "";
-        int size = this.danhsachsanphamxuat.size();
-        for (int i = 0; i < size; i++) {
-            if (i != size - 1) {
-                result = result + this.danhsachsanphamxuat.get(i).toString() + "&";
-            } else {
-                result = result + this.danhsachsanphamxuat.get(i).toString();
-            }
-        }
-        return result;
-    }
+ 
 
     @Override
     public String toString() {
-        return maPhieu+"-"+tenKH + "-" + sdtKH + "-" + this.listProduct() + "-" + ngayTao +"-"+diaChi+ "-" + tien;
+        return maPhieu+"-"+tenKH + "-" + sdtKH + "-" + ngayTao +"-"+diaChi+ "-" + tien;
     }
     
 }

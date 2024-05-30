@@ -4,9 +4,11 @@ import IO.ListProduct;
 import IO.PhieuXuatIO;
 import IO.ProductIO;
 import IO.ReadWriteProduct;
+import IO.SanPhamXuatIO;
 import Models.MatHang;
 import Models.PhieuXuat;
 import Models.Product;
+import Models.SanPhamXuat;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -34,18 +36,20 @@ import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import static Views.PhieuXuatView.vitrisuaphieu;
 import static Views.PhieuXuatView.checkFeature;
 import com.itextpdf.text.pdf.BaseFont;
 import java.util.Random;
 
 public class QLXH extends javax.swing.JPanel {
-
+    
     ArrayList<Product> listSP = new ArrayList<>();
     static ArrayList<PhieuXuat> danhsachphieuxuat = new ArrayList<>();
     private IO.PhieuXuatIO phieuxuatIO = new PhieuXuatIO();
     private IO.ListProduct listProduct = new ListProduct();
+    private IO.SanPhamXuatIO sanPhamXuatIO = new SanPhamXuatIO();
+    private IO.ProductIO productIO = new ProductIO();
     private PhieuXuatView phieuXuatView;
+    private SanPhamXuat sanPhamXuat;
     String fileQLSP = "QuanLySanPham.txt";
     String fileMatHang = "MatHang.txt";
     String fileQLPX = "QuanLyPhieuXuat.txt";
@@ -55,13 +59,13 @@ public class QLXH extends javax.swing.JPanel {
     DefaultTableModel model2;
     ReadWriteProduct rwp = new ReadWriteProduct();
     NumberFormat f = NumberFormat.getInstance(Locale.US);
-
+    
     public QLXH() {
         initComponents();
         getData();
     }
-
-    public QLXH(String maPhieu, String tenKH, String SDT, String diaChi, ArrayList<Product> listsanphamxuat, long tongTien) {
+    
+    public QLXH(String maPhieu, String tenKH, String SDT, String diaChi, long tongTien) {
         initComponents();
         getData();
         NumberFormat format = NumberFormat.getInstance(Locale.US);
@@ -71,15 +75,17 @@ public class QLXH extends javax.swing.JPanel {
         txtDiaChi.setText(diaChi);
         txtTotalPrice.setText(String.valueOf(tongTien));
         model2 = (DefaultTableModel) tableXuat.getModel();
-        for (Product product : listsanphamxuat) {
-            String formattedNumber = format.format(product.getProductPrice());
-            String productPrice = formattedNumber;
-            Object datarows[] = {product.getProductID(), product.getProductName(), product.getProductCategory(), product.getProductQuantity(), productPrice};
-            model2.addRow(datarows);
+        ArrayList<SanPhamXuat> listsanphamxuat = sanPhamXuatIO.getListByID(maPhieu);
+        for (SanPhamXuat spx : listsanphamxuat) {
+            Product product = sanPhamXuatIO.getInfoProductById(spx.getMaSanPham(), spx.getSoLuong(), spx.getThanhTien());
+            String formattedPrice = format.format(product.getProductPrice());
+            String price = formattedPrice;
+            Object[] rowdatas = {product.getProductID(), product.getProductName(), product.getProductCategory(), product.getProductQuantity(), price};
+            model2.addRow(rowdatas);
         }
         tableXuat.setModel(model2);
     }
-
+    
     public boolean checkID(String id) {
         ArrayList<PhieuXuat> listPhieuXuat = new ArrayList<>();
         listPhieuXuat = phieuxuatIO.readFilePX(fileQLPX);
@@ -90,7 +96,7 @@ public class QLXH extends javax.swing.JPanel {
         }
         return true;
     }
-
+    
     private void getData() {
         try {
             rwp.readFile(fileQLSP, listSP);
@@ -104,7 +110,7 @@ public class QLXH extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Danh sách rỗng");
         }
         model = (DefaultTableModel) tableThongTin.getModel();
-
+        
         for (Product i : listSP) {
             String listMatHang = i.getProductCategory();
             String tenMatHang = loaiSP(listMatHang);
@@ -113,7 +119,7 @@ public class QLXH extends javax.swing.JPanel {
             model.addRow(rows);
         }
     }
-
+    
     private ArrayList<MatHang> readFromFile(String url) {
         ArrayList<MatHang> list = new ArrayList<MatHang>();
         try {
@@ -138,7 +144,7 @@ public class QLXH extends javax.swing.JPanel {
         }
         return list;
     }
-
+    
     private String loaiSP(String category) {
         ArrayList<Models.MatHang> listMatHang = new ArrayList<>();
         listMatHang = readFromFile(fileMatHang);
@@ -150,7 +156,7 @@ public class QLXH extends javax.swing.JPanel {
         }
         return categoryItem;
     }
-
+    
     private void totalPrice() {
         model = (DefaultTableModel) tableXuat.getModel();
         int total = 0;
@@ -164,7 +170,7 @@ public class QLXH extends javax.swing.JPanel {
         }
         txtTotalPrice.setText(f.format(total));
     }
-
+    
     private void totalPriceNew() {
         int total = 0;
         for (int i = 0; i < model.getRowCount(); i++) {
@@ -177,7 +183,7 @@ public class QLXH extends javax.swing.JPanel {
         }
         txtTotalPrice.setText(f.format(total));
     }
-
+    
     private Product getValueTable(int index, JTable table) {
         Product value = new Product();
         try {
@@ -192,18 +198,18 @@ public class QLXH extends javax.swing.JPanel {
         }
         return value;
     }
-
+    
     public static String generateMaPhieu() {
         Random random = new Random();
         char letter = (char) (random.nextInt(26) + 'A');
         int number = random.nextInt(9000) + 1000;
         return letter + String.valueOf(number);
     }
-
+    
     private void showMessageWarning(String message, String title) {
         JOptionPane.showMessageDialog(null, message, title, JOptionPane.WARNING_MESSAGE);
     }
-
+    
     private boolean checkValue(String tenKH, String sdt, String diaChi, TableModel TableXuat) {
         boolean check = true;
         if (tenKH.trim().length() == 0) {
@@ -220,14 +226,14 @@ public class QLXH extends javax.swing.JPanel {
             showMessageWarning("Địa chỉ không được bỏ trống", "Thông báo");
             check = false;
         }
-
+        
         if (TableXuat.getRowCount() == 0) {
             showMessageWarning("Chưa chọn sản phẩm xuất", "Thông báo");
             check = false;
         }
         return check;
     }
-
+    
     private void getDataFromTable() {
         String maPhieu = txtMaphieuxuat.getText();
         String tenKH = txtTenKH.getText();
@@ -240,40 +246,50 @@ public class QLXH extends javax.swing.JPanel {
         } catch (ParseException ex) {
             Logger.getLogger(QLXH.class.getName()).log(Level.SEVERE, null, ex);
         }
-        ArrayList<Product> danhsachsanphamxuat = new ArrayList<>();
+        ArrayList<Product> listSanPham = new ArrayList<>();
+        ArrayList<SanPhamXuat> listSPXuat = new ArrayList<>();
         for (int i = 0; i < tableXuat.getRowCount(); i++) {
             String maSP = (String) tableXuat.getValueAt(i, 0);
             String tenSP = (String) tableXuat.getValueAt(i, 1);
-            String loaiSP = (String) tableXuat.getValueAt(i, 2);
-            String valueSOLuongString = (String) tableXuat.getValueAt(i, 3);
-            int soLuong = Integer.parseInt(valueSOLuongString);
+            String loaiSP = (String) tableXuat.getValueAt(i, 2);          
+            Object valueAt3 = tableXuat.getValueAt(i, 3);
+            int soLuong;
+            if (valueAt3 instanceof String) {
+                soLuong = Integer.parseInt((String) valueAt3);
+            } else if (valueAt3 instanceof Integer) {
+                soLuong = (Integer) valueAt3;
+            } else {
+                throw new ClassCastException("Lỗi " + valueAt3.getClass().getName());
+            }
             try {
                 gia = (long) f.parse((String) tableXuat.getValueAt(i, 4));
             } catch (ParseException ex) {
                 Logger.getLogger(QLXH.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+            
             Product product = new Product(maSP, tenSP, loaiSP, soLuong, gia);
-            danhsachsanphamxuat.add(product);
+            listSanPham.add(product);
+            sanPhamXuat = new SanPhamXuat(maSP, soLuong, gia, maPhieu);
+            listSPXuat.add(sanPhamXuat);
         }
         model2 = (DefaultTableModel) tableXuat.getModel();
         if (checkValue(tenKH, sdtKH, diaChi, model2)) {
-            phieuxuatsanpham = new PhieuXuat(maPhieu, tenKH, sdtKH, danhsachsanphamxuat, diaChi, tongTien);
+            phieuxuatsanpham = new PhieuXuat(maPhieu, tenKH, sdtKH, diaChi, tongTien);
             phieuXuatView = new PhieuXuatView();
             phieuXuatView.addPhieu(phieuxuatsanpham);
             phieuxuatIO.writePhieuXuat(phieuxuatsanpham, danhsachphieuxuat);
+            sanPhamXuatIO.writeFIleSPX(listSPXuat);
             int select = JOptionPane.showConfirmDialog(null, "Bạn có muốn xuất PDF không ", "Thông báo", JOptionPane.YES_NO_OPTION);
             if (select == 0) {
                 exportPDF();
             }
             deleteFile();
         }
-
     }
-
+    
     private void modifyPhieuXuat() {
         ArrayList<PhieuXuat> listPX = new ArrayList<>();
-        listPX = phieuxuatIO.readFilePX(fileQLPX);
+        ArrayList<SanPhamXuat> spx = new ArrayList<>();
         String maPhieu = txtMaphieuxuat.getText();
         String tenKH = txtTenKH.getText();
         String sdtKH = txtSDT.getText();
@@ -285,11 +301,8 @@ public class QLXH extends javax.swing.JPanel {
         } catch (ParseException ex) {
             Logger.getLogger(QLXH.class.getName()).log(Level.SEVERE, null, ex);
         }
-        ArrayList<Product> danhsachsanphamxuat = new ArrayList<>();
         for (int i = 0; i < tableXuat.getRowCount(); i++) {
             String maSP = (String) tableXuat.getValueAt(i, 0);
-            String tenSP = (String) tableXuat.getValueAt(i, 1);
-            String loaiSP = (String) tableXuat.getValueAt(i, 2);
             Object valueAt3 = tableXuat.getValueAt(i, 3);
             int soLuong;
             if (valueAt3 instanceof String) {
@@ -299,40 +312,29 @@ public class QLXH extends javax.swing.JPanel {
             } else {
                 throw new ClassCastException("Lỗi " + valueAt3.getClass().getName());
             }
-
+            
             try {
                 gia = (long) f.parse((String) tableXuat.getValueAt(i, 4));
             } catch (ParseException ex) {
                 Logger.getLogger(QLXH.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-            Product product = new Product(maSP, tenSP, loaiSP, soLuong, gia);
-            danhsachsanphamxuat.add(product);
+            sanPhamXuat = new SanPhamXuat(maSP, soLuong, gia, maPhieu);
+            spx.add(sanPhamXuat);
         }
         model2 = (DefaultTableModel) tableXuat.getModel();
         if (checkValue(tenKH, sdtKH, diaChi, model2)) {
-            phieuxuatsanpham = new PhieuXuat(maPhieu, tenKH, sdtKH, danhsachsanphamxuat, diaChi, tongTien);
-            listPX.set(vitrisuaphieu, phieuxuatsanpham);
-
-            PrintWriter writer;
-            try {
-                writer = new PrintWriter(fileQLPX);
-                writer.print("");
-                writer.close();
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(QLSP.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            for (PhieuXuat phieuxuat : listPX) {
-                phieuxuatIO.writePhieuXuat(phieuxuat, listPX);
-            }
+            phieuxuatsanpham = new PhieuXuat(maPhieu, tenKH, sdtKH, diaChi, tongTien);
+            listPX.add(phieuxuatsanpham);
+            phieuxuatIO.updateInfoById(phieuxuatsanpham);
+            sanPhamXuatIO.updateDataByIdMaPhieu(maPhieu, spx);
             phieuXuatView = new PhieuXuatView();
             phieuXuatView.updateTable();
             deleteFile();
             JOptionPane.showMessageDialog(null, "Sửa thành công", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            checkFeature = 0;
         }
-
     }
-
+    
     private void addProduct() {
         TableModel model1 = tableThongTin.getModel();
         DefaultTableModel model2 = (DefaultTableModel) tableThongTin.getModel();
@@ -341,7 +343,7 @@ public class QLXH extends javax.swing.JPanel {
         if (selectedRowIndex == -1) {
             showMessageWarning("Chưa chọn sản phẩm", "Thông báo");
         } else {
-
+            
             int[] indexs = tableThongTin.getSelectedRows();
             Object[] row = new Object[6];
             String soLuong = txtSoLuong.getText();
@@ -365,7 +367,7 @@ public class QLXH extends javax.swing.JPanel {
             txtSoLuong.setText("1");
         }
     }
-
+    
     private void deleteProduct() {
         model = (DefaultTableModel) tableXuat.getModel();
         model2 = (DefaultTableModel) tableThongTin.getModel();
@@ -376,13 +378,13 @@ public class QLXH extends javax.swing.JPanel {
             if (selectedRowIndex == JOptionPane.NO_OPTION) {
                 JOptionPane.showMessageDialog(this, "Sản phẩm chưa xóa", " Thông báo", JOptionPane.OK_OPTION);
             }
-
+            
             if (selectedRowIndex == JOptionPane.YES_OPTION) {
                 model.removeRow(selectedRowIndex);
                 JOptionPane.showMessageDialog(this, "Xóa thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-
+                
                 totalPriceNew();
-
+                
                 for (int i = 0; i < this.listSP.size(); i++) {
                     if (value.getProductID().equalsIgnoreCase(this.listSP.get(i).getProductID())) {
                         int quantity = this.listSP.get(i).getProductQuantity();
@@ -399,17 +401,17 @@ public class QLXH extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Chưa chọn sản phẩm cần xóa", "Thông báo lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    
     private void Modify() {
         try {
             model = (DefaultTableModel) tableXuat.getModel();
-
+            
             int selectedRowIndex = tableXuat.getSelectedRow();
-
+            
             String soLuong = model.getValueAt(selectedRowIndex, 3).toString();
-
+            
             String newSoLuong = JOptionPane.showInputDialog(null, "Nhập lại số lượng", soLuong);
-
+            
             StringBuilder sb = new StringBuilder();
             if (newSoLuong.trim().equals("")) {
                 sb.append("Số lượng không được để trống\n");
@@ -423,7 +425,7 @@ public class QLXH extends javax.swing.JPanel {
                         "Thông báo", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
+            
             if (Integer.parseInt(newSoLuong) > 50) {
                 JOptionPane.showMessageDialog(this, "Số lượng vượt mức cho phép", "Thông báo", JOptionPane.ERROR_MESSAGE);
             } else {
@@ -435,7 +437,7 @@ public class QLXH extends javax.swing.JPanel {
         }
         totalPriceNew();
     }
-
+    
     private void exportPDF() {
         model = (DefaultTableModel) tableXuat.getModel();
         Document doc = new Document();
@@ -448,66 +450,66 @@ public class QLXH extends javax.swing.JPanel {
                 f.createNewFile();
             }
             PdfWriter.getInstance(doc, new FileOutputStream(f));
-
+            
             doc.open();
-
+            
             BaseFont bf = BaseFont.createFont("c:\\windows\\fonts\\times.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             Font fontTitle = new Font(bf, 18, Font.BOLD);
             Font fontContent = new Font(bf, 12, Font.NORMAL);
-
+            
             Paragraph p1 = new Paragraph("THÔNG TIN PHIẾU XUẤT\n\n", fontTitle);
             p1.setAlignment(Element.ALIGN_CENTER);
             doc.add(p1);
-
+            
             Paragraph p2 = new Paragraph("Mã phiếu: " + txtMaphieuxuat.getText() + "\nTên khách hàng: " + txtTenKH.getText()
                     + "\nSố điện thoại: " + txtSDT.getText()
                     + "\nĐịa chỉ: " + txtDiaChi.getText() + "\n\n", fontContent);
             doc.add(p2);
-
+            
             PdfPTable tb = new PdfPTable(5);
-
+            
             tb.addCell(new Paragraph("Mã sản phẩm", fontContent));
             tb.addCell(new Paragraph("Tên sản phẩm", fontContent));
             tb.addCell(new Paragraph("Loại", fontContent));
             tb.addCell(new Paragraph("Số lượng", fontContent));
             tb.addCell(new Paragraph("Giá bán", fontContent));
-
+            
             for (int i = 0; i < tableXuat.getRowCount(); i++) {
                 String Ma = tableXuat.getValueAt(i, 0).toString();
                 String Ten = tableXuat.getValueAt(i, 1).toString();
                 String Loai = tableXuat.getValueAt(i, 2).toString();
                 String soLuong = tableXuat.getValueAt(i, 3).toString();
                 String giaBan = tableXuat.getValueAt(i, 4).toString();
-
+                
                 tb.addCell(new Paragraph(Ma, fontContent));
                 tb.addCell(new Paragraph(Ten, fontContent));
                 tb.addCell(new Paragraph(Loai, fontContent));
                 tb.addCell(new Paragraph(soLuong, fontContent));
                 tb.addCell(new Paragraph(giaBan, fontContent));
             }
-
+            
             doc.add(tb);
-
+            
             Paragraph p3 = new Paragraph("\nTổng tiền: " + txtTotalPrice.getText(), fontContent);
             doc.add(p3);
-
+            
             doc.close();
             JOptionPane.showMessageDialog(null, "Xuất thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-
+            
         } catch (FileNotFoundException | DocumentException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    
     private void deleteFile() {
         String IDPhieuXuat = generateMaPhieu();
         if (checkID(IDPhieuXuat)) {
             txtMaphieuxuat.setText(IDPhieuXuat);
         } else {
             txtMaphieuxuat.setText(generateMaPhieu());
-
+            
         }
         txtTenKH.setText("");
         txtSDT.setText("");
@@ -515,14 +517,14 @@ public class QLXH extends javax.swing.JPanel {
         txtTotalPrice.setText("");
         model.setRowCount(0);
     }
-
+    
     private void searchProductTableThongTin() {
         model = (DefaultTableModel) tableThongTin.getModel();
         TableRowSorter<DefaultTableModel> obj = new TableRowSorter<>(model);
         tableThongTin.setRowSorter(obj);
         obj.setRowFilter(RowFilter.regexFilter("(?i)" + txtTimKiem.getText(), 1));
     }
-
+    
     public void updateTableModifyPX() {
         String[] columnNames = {"Mã sản phẩm", "Tên sản phẩm", "Loại", "Số lượng", "Giá bán"};
         ArrayList<Product> listProductTableThongTin = new ArrayList<>();
@@ -543,10 +545,10 @@ public class QLXH extends javax.swing.JPanel {
                 if (listProductTableThongTin.get(j).getProductID().equalsIgnoreCase(pd.getProductID())) {
                     listProductTableThongTin.remove(j);
                 }
-
+                
             }
         }
-
+        
         DefaultTableModel dtmTableThongTin = new DefaultTableModel(columnNames, 0);
         for (Product i : listProductTableThongTin) {
             String listMatHang = i.getProductCategory();
@@ -557,7 +559,7 @@ public class QLXH extends javax.swing.JPanel {
         }
         tableThongTin.setModel(dtmTableThongTin);
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -917,7 +919,7 @@ public class QLXH extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-
+        
         addProduct();
     }//GEN-LAST:event_btnThemActionPerformed
 
@@ -930,13 +932,12 @@ public class QLXH extends javax.swing.JPanel {
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatActionPerformed
-
         if (checkFeature == 1) {
             modifyPhieuXuat();
         } else {
             getDataFromTable();
         }
-
+        
 
     }//GEN-LAST:event_btnXuatActionPerformed
 

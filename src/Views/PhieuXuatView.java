@@ -2,10 +2,13 @@ package Views;
 
 import javax.swing.table.DefaultTableModel;
 import IO.PhieuXuatIO;
+import IO.ProductIO;
+import IO.SanPhamXuatIO;
 import Models.PhieuXuat;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import Models.Product;
+import Models.SanPhamXuat;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -28,12 +31,16 @@ import javax.swing.JPanel;
 import javax.swing.RowFilter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+
 public class PhieuXuatView extends javax.swing.JPanel {
+
     static int checkFeature;
     static int vitrisuaphieu;
-    static String[] ColumnName = {"Mã phiếu xuất","Tên khách hàng", "Số điện thoại", "Ngày tạo","Địa chỉ", "Tổng tiền"};
+    static String[] ColumnName = {"Mã phiếu xuất", "Tên khách hàng", "Số điện thoại", "Ngày tạo", "Địa chỉ", "Tổng tiền"};
     static DefaultTableModel dtmPhieuXuat = new DefaultTableModel(ColumnName, 0);
     private PhieuXuatIO phieuxuatIO = new PhieuXuatIO();
+    private SanPhamXuatIO sanPhamXuatIO = new SanPhamXuatIO();
+    private ProductIO productIO = new ProductIO();
     private String FILE_NAME_XH = "QuanLyPhieuXuat.txt";
     private String PHIEU_XUAT_PDF = "PhieuXuat.pdf";
     private ArrayList<PhieuXuat> listPhieuXuat = new ArrayList<>();
@@ -58,11 +65,11 @@ public class PhieuXuatView extends javax.swing.JPanel {
         listPhieuXuat.add(phieuxuat);
         updateTable();
     }
-    
+
     private void showMessage(String message, String title) {
         JOptionPane.showMessageDialog(null, message, title, JOptionPane.WARNING_MESSAGE);
     }
-    
+
     public void updateTable() {
         NumberFormat format = NumberFormat.getInstance(Locale.US);
         this.listPhieuXuat.clear();
@@ -71,13 +78,13 @@ public class PhieuXuatView extends javax.swing.JPanel {
         for (PhieuXuat phieuxuat : listPhieuXuat) {
             String formattedNumber = format.format(phieuxuat.getTien());
             String price = formattedNumber;
-            Object[] rowData = {phieuxuat.getMaPhieu(),phieuxuat.getTenKH(), phieuxuat.getSdtKH(), phieuxuat.getNgayTao(),phieuxuat.getDiaChi(), price};
+            Object[] rowData = {phieuxuat.getMaPhieu(), phieuxuat.getTenKH(), phieuxuat.getSdtKH(), phieuxuat.getNgayTao(), phieuxuat.getDiaChi(), price};
             dtmPhieuXuat.addRow(rowData);
         }
         TablePhieuXuat.setModel(dtmPhieuXuat);
     }
 
-    private void displayFunctions(String name, JPanel jpl,int width, int height) {
+    private void displayFunctions(String name, JPanel jpl, int width, int height) {
         JFrame newFrame = new JFrame(name);
         newFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         newFrame.setSize(width, height);
@@ -85,20 +92,24 @@ public class PhieuXuatView extends javax.swing.JPanel {
         newFrame.setVisible(true);
         newFrame.setLocationRelativeTo(null);
     }
-    
-    public void getListSPDetail(int index){
+
+    public void getListSPDetail(int index) {
         ArrayList<PhieuXuat> listPhieuXuat = new ArrayList<>();
         listPhieuXuat = phieuxuatIO.readFilePX(FILE_NAME_XH);
         ArrayList<Product> listDetailSP = new ArrayList<>();
+        ArrayList<Product> dataSP = new ArrayList<>();
+        dataSP = IO.ProductIO.readFromFile();
+        ArrayList<SanPhamXuat> listSPXuat = new ArrayList<>();
+        listSPXuat = sanPhamXuatIO.readFileSPX();
+
         PhieuXuat px = null;
-        if(index == -1 ){
+        if (index == -1) {
             showMessage("Bạn chưa chọn phiếu để xem", "Thông báo");
-        }
-        else {
+        } else {
             NumberFormat format = NumberFormat.getInstance(Locale.US);
             String maPhieuCheck = (String) TablePhieuXuat.getValueAt(index, 0);
             for (int i = 0; i < listPhieuXuat.size(); i++) {
-                if(listPhieuXuat.get(index).getMaPhieu().equals(maPhieuCheck)){
+                if (listPhieuXuat.get(index).getMaPhieu().equals(maPhieuCheck)) {
                     String maPhieu = listPhieuXuat.get(index).getMaPhieu();
                     String tenKH = listPhieuXuat.get(index).getTenKH();
                     String sdtKH = listPhieuXuat.get(index).getSdtKH();
@@ -106,13 +117,13 @@ public class PhieuXuatView extends javax.swing.JPanel {
                     long tongtien = listPhieuXuat.get(index).getTien();
                     String formattedNumber = format.format(tongtien);
                     String totalPrice = formattedNumber;
-                    listDetailSP = listPhieuXuat.get(index).getDanhsachsanphamxuat();  
-                    PhieuXuatDetail phieuXuatDetail = new PhieuXuatDetail(index,maPhieu, tenKH, sdtKH, (String)TablePhieuXuat.getValueAt(index, 2), listDetailSP, diaChi,totalPrice);
-                    displayFunctions("Chi tiết phiếu xuất", phieuXuatDetail,825,520);                 
+                    PhieuXuatDetail phieuXuatDetail = new PhieuXuatDetail(index, maPhieu, tenKH, sdtKH, (String) TablePhieuXuat.getValueAt(index, 2), diaChi, totalPrice);
+                    displayFunctions("Chi tiết phiếu xuất", phieuXuatDetail, 825, 520);
                     break;
                 }
             }
         }
+        System.out.println(listDetailSP);
     }
 
     private void delete() {
@@ -121,42 +132,32 @@ public class PhieuXuatView extends javax.swing.JPanel {
         ArrayList<PhieuXuat> listphieuxuatsauxoa = new ArrayList<>();
         int index = -1;
         index = TablePhieuXuat.getSelectedRow();
-        if(index == -1) {
+        if (index == -1) {
             showMessage("Bạn chưa chọn phiếu để xóa", "Thông báo");
         } else {
             int select = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa không", "Thông báo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-            if(select == 0){
-                danhsachhientai.remove(index);
-                listphieuxuatsauxoa = danhsachhientai;
+            if (select == 0) {
+                String id = (String) TablePhieuXuat.getValueAt(index, 0);
                 PrintWriter writer;
-                try {
-                    writer = new PrintWriter(FILE_NAME_XH);
-                    writer.print("");
-                    writer.close();
-                } catch (FileNotFoundException ex) {
-                    Logger.getLogger(QLSP.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                for (PhieuXuat phieuxuat : listphieuxuatsauxoa) {
-                    phieuxuatIO.writePhieuXuat(phieuxuat, listphieuxuatsauxoa);
-                }
-            index --;
-            updateTable();
-            JOptionPane.showMessageDialog(null,"Xóa thành công" , "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                phieuxuatIO.deleteByIdMaPhieuNhap(id);
+                sanPhamXuatIO.deleteByIdMaPhieuNhap(id);
+                index--;
+                updateTable();
+                JOptionPane.showMessageDialog(null, "Xóa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
-    
-    private void Modify () {
-        DefaultTableModel dtmThongTin;
-        DefaultTableModel dtmXuat;
-        
+
+    private void Modify() {
         ArrayList<PhieuXuat> danhsachhientai = new ArrayList<>();
         danhsachhientai = phieuxuatIO.readFilePX(FILE_NAME_XH);
         ArrayList<PhieuXuat> listphieuxuatsauxoa = new ArrayList<>();
         ArrayList<Product> listsanpham = new ArrayList<>();
+        ArrayList<Product> listdatasanpham = new ArrayList<>();
+        listdatasanpham = productIO.readFromFile();
         vitrisuaphieu = -1;
         vitrisuaphieu = TablePhieuXuat.getSelectedRow();
-        if(vitrisuaphieu == -1){
+        if (vitrisuaphieu == -1) {
             showMessage("Bạn chưa chọn sản phẩm để sửa", "Thông báo");
         } else {
             String maPhieu = danhsachhientai.get(vitrisuaphieu).getMaPhieu();
@@ -164,101 +165,110 @@ public class PhieuXuatView extends javax.swing.JPanel {
             String sdtKH = danhsachhientai.get(vitrisuaphieu).getSdtKH();
             String diaChi = danhsachhientai.get(vitrisuaphieu).getDiaChi();
             long tongTien = danhsachhientai.get(vitrisuaphieu).getTien();
-            listsanpham = danhsachhientai.get(vitrisuaphieu).getDanhsachsanphamxuat();
-            QLXH qlxh = new QLXH(maPhieu,tenKH, sdtKH, diaChi, listsanpham, tongTien);
+            ArrayList<SanPhamXuat> sanphamxuat = new ArrayList<>();
+            PhieuXuat data = new PhieuXuat(maPhieu, tenKH, sdtKH, diaChi, tongTien);
+            sanphamxuat = sanPhamXuatIO.readFileSPX();
+            listsanpham = productIO.readFromFile();
+            ArrayList<SanPhamXuat> listSPXuat = sanPhamXuatIO.getListByID(maPhieu);
+            QLXH qlxh = new QLXH(maPhieu, tenKH, sdtKH, diaChi, tongTien);
             qlxh.btnXuat.setText("Cập nhật");
             qlxh.updateTableModifyPX();
-            displayFunctions(FILE_NAME_XH,qlxh,1000,800 );
+            displayFunctions(FILE_NAME_XH, qlxh, 1000, 800);
         }
     }
-    
+
     private void searchPhieu() {
-    ArrayList<Product> danhsachsanphamtimkiem = new ArrayList<>();
-    danhsachsanphamtimkiem = phieuxuatIO.readFilePX(FILE_NAME_XH);
-    String name = JtfSearch.getText();
-    try {
-        TableRowSorter<TableModel> sorter = new TableRowSorter<>(dtmPhieuXuat);
-        TablePhieuXuat.setRowSorter(sorter);
-        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + name, 1));
-    } catch (Exception e) {
-        showMessage("Lỗi", "Thông báo");
+        ArrayList<Product> danhsachsanphamtimkiem = new ArrayList<>();
+        danhsachsanphamtimkiem = phieuxuatIO.readFilePX(FILE_NAME_XH);
+        String name = JtfSearch.getText();
+        try {
+            TableRowSorter<TableModel> sorter = new TableRowSorter<>(dtmPhieuXuat);
+            TablePhieuXuat.setRowSorter(sorter);
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + name, 1));
+        } catch (Exception e) {
+            showMessage("Lỗi", "Thông báo");
+        }
     }
-}
 
     private void exportPDF() {
-    Document doc = new Document();
-    File f = new File(PHIEU_XUAT_PDF);
-    ArrayList<PhieuXuat> listPhieuXuat = new ArrayList<>();
-    listPhieuXuat = phieuxuatIO.readFilePX(FILE_NAME_XH);
-    int viTriXuat = -1;
-    viTriXuat = TablePhieuXuat.getSelectedRow();
-    if (viTriXuat == -1) {
-        showMessage("Bạn chưa chọn sản phẩm để in phiếu xuất", "Thông báo");
-    } else {
-        try {
-            if (!f.exists()) {
-                f.createNewFile();
-            } else {
-                f.delete();
-                f.createNewFile();
+        Document doc = new Document();
+        File f = new File(PHIEU_XUAT_PDF);
+        int viTriXuat = -1;
+        viTriXuat = TablePhieuXuat.getSelectedRow();
+        if (viTriXuat == -1) {
+            showMessage("Bạn chưa chọn sản phẩm để in phiếu xuất", "Thông báo");
+        } else {
+            try {
+                if (!f.exists()) {
+                    f.createNewFile();
+                } else {
+                    f.delete();
+                    f.createNewFile();
+                }
+
+                PdfWriter.getInstance(doc, new FileOutputStream(f));
+                doc.open();
+
+                BaseFont bf = BaseFont.createFont("c:\\windows\\fonts\\times.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                Font f1 = new Font(bf, 18, Font.BOLD);
+                Font f2 = new Font(bf, 12);
+
+                Paragraph p1 = new Paragraph("THÔNG TIN PHIẾU XUẤT\n\n", f1);
+                p1.setAlignment(Element.ALIGN_CENTER);
+                doc.add(p1);
+
+                Paragraph p2 = new Paragraph("Mã phiếu: " + listPhieuXuat.get(viTriXuat).getMaPhieu()
+                        + "\nTên khách hàng: " + listPhieuXuat.get(viTriXuat).getTenKH()
+                        + "\nSố điện thoại: " + listPhieuXuat.get(viTriXuat).getSdtKH()
+                        + "\nĐịa chỉ: " + listPhieuXuat.get(viTriXuat).getDiaChi() + "\n\n", f2);
+                doc.add(p2);
+
+                PdfPTable tb = new PdfPTable(5);
+
+                tb.addCell(new Paragraph("Mã sản phẩm", f2));
+                tb.addCell(new Paragraph("Tên sản phẩm", f2));
+                tb.addCell(new Paragraph("Loại", f2));
+                tb.addCell(new Paragraph("Số lượng", f2));
+                tb.addCell(new Paragraph("Giá bán", f2));
+                ArrayList<SanPhamXuat> listSP = new ArrayList<>();
+                String maPhieu = (String) TablePhieuXuat.getValueAt(viTriXuat, 0);
+                listSP = sanPhamXuatIO.getListByID(maPhieu);
+                long tongTien = 0;
+                    for (SanPhamXuat sanPhamXuat : listSP) {
+                    
+                    Product product = sanPhamXuatIO.getInfoProductById(sanPhamXuat.getMaSanPham(), sanPhamXuat.getSoLuong(), sanPhamXuat.getThanhTien());
+                    String Ma = product.getProductID();
+                    String Ten = product.getProductName();
+                    String Loai = product.getProductCategory();
+                    int soLuong = product.getProductQuantity();
+                    long giaBan = product.getProductPrice();
+                    
+                    tb.addCell(new Paragraph(Ma, f2));
+                    tb.addCell(new Paragraph(Ten, f2));
+                    tb.addCell(new Paragraph(Loai, f2));
+                    tb.addCell(new Paragraph(String.valueOf(soLuong), f2));
+                   tb.addCell(new Paragraph(String.valueOf(giaBan), f2));
+                   
+                   tongTien += giaBan;
+                }
+                
+
+                doc.add(tb);
+
+                Paragraph p3 = new Paragraph("\nTổng tiền: " + String.valueOf(tongTien), f2);
+                doc.add(p3);
+
+                doc.close();
+                JOptionPane.showMessageDialog(this, "Xuất thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+
+            } catch (FileNotFoundException | DocumentException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
-
-            PdfWriter.getInstance(doc, new FileOutputStream(f));
-            doc.open();
-
-            BaseFont bf = BaseFont.createFont("c:\\windows\\fonts\\times.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-            Font f1 = new Font(bf, 18, Font.BOLD);
-            Font f2 = new Font(bf, 12);
-
-            Paragraph p1 = new Paragraph("THÔNG TIN PHIẾU XUẤT\n\n", f1);
-            p1.setAlignment(Element.ALIGN_CENTER);
-            doc.add(p1);
-
-            Paragraph p2 = new Paragraph("Mã phiếu: " + listPhieuXuat.get(viTriXuat).getMaPhieu()
-                    + "\nTên khách hàng: " + listPhieuXuat.get(viTriXuat).getTenKH()
-                    + "\nSố điện thoại: " + listPhieuXuat.get(viTriXuat).getSdtKH()
-                    + "\nĐịa chỉ: " + listPhieuXuat.get(viTriXuat).getDiaChi() + "\n\n", f2);
-            doc.add(p2);
-
-            PdfPTable tb = new PdfPTable(5);
-
-            tb.addCell(new Paragraph("Mã sản phẩm", f2));
-            tb.addCell(new Paragraph("Tên sản phẩm", f2));
-            tb.addCell(new Paragraph("Loại", f2));
-            tb.addCell(new Paragraph("Số lượng", f2));
-            tb.addCell(new Paragraph("Giá bán", f2));
-            ArrayList<Product> listSP = new ArrayList<>();
-            listSP = listPhieuXuat.get(viTriXuat).getDanhsachsanphamxuat();
-            for (int i = 0; i < listSP.size(); i++) {
-
-                String Ma = listSP.get(i).getProductID();
-                String Ten = listSP.get(i).getProductName();
-                String Loai = listSP.get(i).getProductCategory();
-                int soLuong = listSP.get(i).getProductQuantity();
-                long giaBan = listSP.get(i).getProductPrice();
-
-                tb.addCell(new Paragraph(Ma, f2));
-                tb.addCell(new Paragraph(Ten, f2));
-                tb.addCell(new Paragraph(Loai, f2));
-                tb.addCell(new Paragraph(String.valueOf(soLuong), f2));
-                tb.addCell(new Paragraph(String.valueOf(giaBan), f2));
-            }
-
-            doc.add(tb);
-
-            Paragraph p3 = new Paragraph("\nTổng tiền: " + listPhieuXuat.get(viTriXuat).getTien(), f2);
-            doc.add(p3);
-
-            doc.close();
-            JOptionPane.showMessageDialog(this, "Xuất thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-
-        } catch (FileNotFoundException | DocumentException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
-}
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
