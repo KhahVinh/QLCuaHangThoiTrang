@@ -84,11 +84,8 @@ public class PhieuXuatView extends javax.swing.JPanel {
         ArrayList<PhieuXuat> listPhieuXuat = new ArrayList<>();
         listPhieuXuat = phieuxuatIO.readFilePX(FILE_NAME_XH);
         ArrayList<Product> listDetailSP = new ArrayList<>();
-//        ArrayList<Product> dataSP = new ArrayList<>();
-//        dataSP = IO.ProductIO.readFromFile();
         ArrayList<SanPhamXuat> listSPXuat = new ArrayList<>();
         listSPXuat = sanPhamXuatIO.readFileSPX();
-        System.out.println(TablePhieuXuat.getValueAt(vitrisuaphieu, 0));
         PhieuXuat px = null;
         if (index == -1) {
             showMessage("Bạn chưa chọn phiếu để xem", "Thông báo");
@@ -186,8 +183,15 @@ public class PhieuXuatView extends javax.swing.JPanel {
         int index = -1;
         index = TablePhieuXuat.getSelectedRow();
         if (index != -1) {
-            String maPhieu = this.listPhieuXuat.get(index).getMaPhieu();
-            PdfIO.handleExportPdfFilePX(this, maPhieu);
+            ArrayList<PhieuXuat> listPX = new ArrayList<>();
+            listPX = phieuxuatIO.readFilePX(FILE_NAME_XH);
+            String maPhieu = (String) TablePhieuXuat.getValueAt(index, 0);           
+            for (int i = 0; i < listPX.size(); i++) {
+                if(listPX.get(i).getMaPhieu().equalsIgnoreCase(maPhieu)){
+                     PdfIO.handleExportPdfFilePX(this, maPhieu);           
+                     System.out.println(listPX.get(i).getMaPhieu());
+                }
+            }
         } else {
             showMessage("Chưa chọn phiếu nhập để xuất PDF","Thông báo");
         }
