@@ -337,15 +337,20 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
             quantity = Integer.parseInt(ProductQuantity.getText());
 
         } catch (NumberFormatException e) {
-            showMessage("Số lượng không đúng");
+            showMessage("Số lượng không đúng"); 
         }
         if (checkValue(id, name, category, quantity, price)) {
             qlsp = new QLSP();
-            danhsachsanpham.get(index).setProductID(id);
-            danhsachsanpham.get(index).setProductName(name);
-            danhsachsanpham.get(index).setProductCategory(category);
-            danhsachsanpham.get(index).setProductQuantity(quantity);
-            danhsachsanpham.get(index).setProductPrice(price);
+            Product products = new Product(id, name, category, quantity, price);
+            for (int i = 0; i < danhsachsanpham.size(); i++) {
+                if(danhsachsanpham.get(i).getProductID().equalsIgnoreCase(products.getProductID())){
+                    danhsachsanpham.get(i).setProductID(id);
+                    danhsachsanpham.get(i).setProductName(name);
+                    danhsachsanpham.get(i).setProductCategory(category);
+                    danhsachsanpham.get(i).setProductQuantity(quantity);
+                    danhsachsanpham.get(i).setProductPrice(price);
+                }
+            }
             PrintWriter writer;
             try {
                 writer = new PrintWriter(fileName);

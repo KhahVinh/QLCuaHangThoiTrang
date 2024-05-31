@@ -84,24 +84,24 @@ public class PhieuXuatView extends javax.swing.JPanel {
         ArrayList<PhieuXuat> listPhieuXuat = new ArrayList<>();
         listPhieuXuat = phieuxuatIO.readFilePX(FILE_NAME_XH);
         ArrayList<Product> listDetailSP = new ArrayList<>();
-        ArrayList<Product> dataSP = new ArrayList<>();
-        dataSP = IO.ProductIO.readFromFile();
+//        ArrayList<Product> dataSP = new ArrayList<>();
+//        dataSP = IO.ProductIO.readFromFile();
         ArrayList<SanPhamXuat> listSPXuat = new ArrayList<>();
         listSPXuat = sanPhamXuatIO.readFileSPX();
-
+        System.out.println(TablePhieuXuat.getValueAt(vitrisuaphieu, 0));
         PhieuXuat px = null;
         if (index == -1) {
             showMessage("Bạn chưa chọn phiếu để xem", "Thông báo");
         } else {
             NumberFormat format = NumberFormat.getInstance(Locale.US);
-            String maPhieuCheck = (String) TablePhieuXuat.getValueAt(index, 0);
+            String maPhieuCheck = (String) TablePhieuXuat.getValueAt(vitrisuaphieu, 0);
             for (int i = 0; i < listPhieuXuat.size(); i++) {
-                if (listPhieuXuat.get(index).getMaPhieu().equals(maPhieuCheck)) {
-                    String maPhieu = listPhieuXuat.get(index).getMaPhieu();
-                    String tenKH = listPhieuXuat.get(index).getTenKH();
-                    String sdtKH = listPhieuXuat.get(index).getSdtKH();
-                    String diaChi = listPhieuXuat.get(index).getDiaChi();
-                    long tongtien = listPhieuXuat.get(index).getTien();
+                if (listPhieuXuat.get(i).getMaPhieu().equals(maPhieuCheck)) {
+                    String maPhieu = listPhieuXuat.get(i).getMaPhieu();
+                    String tenKH = listPhieuXuat.get(i).getTenKH();
+                    String sdtKH = listPhieuXuat.get(i).getSdtKH();
+                    String diaChi = listPhieuXuat.get(i).getDiaChi();
+                    long tongtien = listPhieuXuat.get(i).getTien();
                     String formattedNumber = format.format(tongtien);
                     String totalPrice = formattedNumber;
                     PhieuXuatDetail phieuXuatDetail = new PhieuXuatDetail(index, maPhieu, tenKH, sdtKH, (String) TablePhieuXuat.getValueAt(index, 3), diaChi, totalPrice);
@@ -110,7 +110,6 @@ public class PhieuXuatView extends javax.swing.JPanel {
                 }
             }
         }
-        System.out.println(listDetailSP);
     }
 
     private void delete() {
@@ -147,11 +146,15 @@ public class PhieuXuatView extends javax.swing.JPanel {
         if (vitrisuaphieu == -1) {
             showMessage("Bạn chưa chọn sản phẩm để sửa", "Thông báo");
         } else {
-            String maPhieu = danhsachhientai.get(vitrisuaphieu).getMaPhieu();
-            String tenKH = danhsachhientai.get(vitrisuaphieu).getTenKH();
-            String sdtKH = danhsachhientai.get(vitrisuaphieu).getSdtKH();
-            String diaChi = danhsachhientai.get(vitrisuaphieu).getDiaChi();
-            long tongTien = danhsachhientai.get(vitrisuaphieu).getTien();
+            String value = (String) TablePhieuXuat.getValueAt(vitrisuaphieu, 0);
+            for (int i = 0; i < danhsachhientai.size(); i++) {
+                if(danhsachhientai.get(i).getMaPhieu().equalsIgnoreCase(value)){
+                    
+            String maPhieu = danhsachhientai.get(i).getMaPhieu();
+            String tenKH = danhsachhientai.get(i).getTenKH();
+            String sdtKH = danhsachhientai.get(i).getSdtKH();
+            String diaChi = danhsachhientai.get(i).getDiaChi();
+            long tongTien = danhsachhientai.get(i).getTien();
             ArrayList<SanPhamXuat> sanphamxuat = new ArrayList<>();
             PhieuXuat data = new PhieuXuat(maPhieu, tenKH, sdtKH, diaChi, tongTien);
             sanphamxuat = sanPhamXuatIO.readFileSPX();
@@ -161,6 +164,8 @@ public class PhieuXuatView extends javax.swing.JPanel {
             qlxh.btnXuat.setText("Cập nhật");
             qlxh.updateTableModifyPX();
             displayFunctions(FILE_NAME_XH, qlxh, 1000, 800);
+                }
+            }
         }
     }
 
