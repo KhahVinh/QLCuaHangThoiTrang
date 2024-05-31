@@ -301,6 +301,7 @@ public class PhieuNhapView extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        tableViewData.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tableViewData.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -312,6 +313,9 @@ public class PhieuNhapView extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tableViewData.setRowHeight(25);
+        tableViewData.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tableViewData.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tableViewData.setShowGrid(true);
         jScrollPane1.setViewportView(tableViewData);
 

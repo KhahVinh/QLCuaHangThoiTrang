@@ -9,20 +9,8 @@ import Models.MatHang;
 import Models.PhieuXuat;
 import Models.Product;
 import Models.SanPhamXuat;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Color;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -36,7 +24,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import static Views.PhieuXuatView.checkFeature;
-import com.itextpdf.text.pdf.BaseFont;
+import java.io.FileReader;
 import java.util.Random;
 
 public class QLXH extends javax.swing.JPanel {
@@ -52,7 +40,6 @@ public class QLXH extends javax.swing.JPanel {
     String fileQLSP = "QuanLySanPham.txt";
     String fileMatHang = "MatHang.txt";
     String fileQLPX = "QuanLyPhieuXuat.txt";
-    String phieuXuatPDF = "PhieuXuat.pdf";
     private Models.PhieuXuat phieuxuatsanpham;
     DefaultTableModel model;
     DefaultTableModel model2;
@@ -278,10 +265,7 @@ public class QLXH extends javax.swing.JPanel {
             phieuXuatView.addPhieu(phieuxuatsanpham);
             phieuxuatIO.writePhieuXuat(phieuxuatsanpham, danhsachphieuxuat);
             sanPhamXuatIO.writeFIleSPX(listSPXuat);
-            int select = JOptionPane.showConfirmDialog(null, "Bạn có muốn xuất PDF không ", "Thông báo", JOptionPane.YES_NO_OPTION);
-            if (select == 0) {
-                exportPDF();
-            }
+            JOptionPane.showMessageDialog(null, "Tạo phiếu thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             deleteFile();
         }
     }
@@ -373,12 +357,12 @@ public class QLXH extends javax.swing.JPanel {
         int selectedRowIndex = tableXuat.getSelectedRow();
         try {
             Product value = this.getValueTable(selectedRowIndex, this.tableXuat);
-            selectedRowIndex = JOptionPane.showConfirmDialog(this, "Bạn có muốn xóa không?", "Thông báo", JOptionPane.YES_NO_OPTION);
-            if (selectedRowIndex == JOptionPane.NO_OPTION) {
+            int check = JOptionPane.showConfirmDialog(this, "Bạn có muốn xóa không?", "Thông báo", JOptionPane.YES_NO_OPTION);
+            if (check == JOptionPane.NO_OPTION) {
                 JOptionPane.showMessageDialog(this, "Sản phẩm chưa xóa", " Thông báo", JOptionPane.OK_OPTION);
             }
             
-            if (selectedRowIndex == JOptionPane.YES_OPTION) {
+            if (check == JOptionPane.YES_OPTION) {
                 model.removeRow(selectedRowIndex);
                 JOptionPane.showMessageDialog(this, "Xóa thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 
@@ -438,68 +422,7 @@ public class QLXH extends javax.swing.JPanel {
     }
     
     private void exportPDF() {
-        model = (DefaultTableModel) tableXuat.getModel();
-        Document doc = new Document();
-        File f = new File(phieuXuatPDF);
-        try {
-            if (!f.exists()) {
-                f.createNewFile();
-            } else {
-                f.delete();
-                f.createNewFile();
-            }
-            PdfWriter.getInstance(doc, new FileOutputStream(f));
-            
-            doc.open();
-            
-            BaseFont bf = BaseFont.createFont("c:\\windows\\fonts\\times.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-            Font fontTitle = new Font(bf, 18, Font.BOLD);
-            Font fontContent = new Font(bf, 12, Font.NORMAL);
-            
-            Paragraph p1 = new Paragraph("THÔNG TIN PHIẾU XUẤT\n\n", fontTitle);
-            p1.setAlignment(Element.ALIGN_CENTER);
-            doc.add(p1);
-            
-            Paragraph p2 = new Paragraph("Mã phiếu: " + txtMaphieuxuat.getText() + "\nTên khách hàng: " + txtTenKH.getText()
-                    + "\nSố điện thoại: " + txtSDT.getText()
-                    + "\nĐịa chỉ: " + txtDiaChi.getText() + "\n\n", fontContent);
-            doc.add(p2);
-            
-            PdfPTable tb = new PdfPTable(5);
-            
-            tb.addCell(new Paragraph("Mã sản phẩm", fontContent));
-            tb.addCell(new Paragraph("Tên sản phẩm", fontContent));
-            tb.addCell(new Paragraph("Loại", fontContent));
-            tb.addCell(new Paragraph("Số lượng", fontContent));
-            tb.addCell(new Paragraph("Giá bán", fontContent));
-            
-            for (int i = 0; i < tableXuat.getRowCount(); i++) {
-                String Ma = tableXuat.getValueAt(i, 0).toString();
-                String Ten = tableXuat.getValueAt(i, 1).toString();
-                String Loai = tableXuat.getValueAt(i, 2).toString();
-                String soLuong = tableXuat.getValueAt(i, 3).toString();
-                String giaBan = tableXuat.getValueAt(i, 4).toString();
-                
-                tb.addCell(new Paragraph(Ma, fontContent));
-                tb.addCell(new Paragraph(Ten, fontContent));
-                tb.addCell(new Paragraph(Loai, fontContent));
-                tb.addCell(new Paragraph(soLuong, fontContent));
-                tb.addCell(new Paragraph(giaBan, fontContent));
-            }
-            
-            doc.add(tb);
-            
-            Paragraph p3 = new Paragraph("\nTổng tiền: " + txtTotalPrice.getText(), fontContent);
-            doc.add(p3);
-            
-            doc.close();
-            JOptionPane.showMessageDialog(null, "Xuất thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-            
-        } catch (FileNotFoundException | DocumentException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
-        }
+      
     }
     
     private void deleteFile() {
@@ -602,6 +525,7 @@ public class QLXH extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel1.setText("Thông Tin Sản Phẩm");
 
+        tableThongTin.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tableThongTin.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -611,6 +535,8 @@ public class QLXH extends javax.swing.JPanel {
             }
         ));
         tableThongTin.setRowHeight(25);
+        tableThongTin.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tableThongTin.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tableThongTin);
 
         btnThem.setBackground(new java.awt.Color(0, 153, 51));
@@ -626,6 +552,7 @@ public class QLXH extends javax.swing.JPanel {
         jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel4.setText("Xuất Hàng");
 
+        tableXuat.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tableXuat.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -643,6 +570,8 @@ public class QLXH extends javax.swing.JPanel {
             }
         });
         tableXuat.setRowHeight(25);
+        tableXuat.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tableXuat.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane2.setViewportView(tableXuat);
 
         btnXoa.setBackground(new java.awt.Color(255, 0, 51));
@@ -894,15 +823,13 @@ public class QLXH extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, 0)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                            .addComponent(txtTimKiem))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

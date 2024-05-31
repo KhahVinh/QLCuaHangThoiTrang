@@ -286,6 +286,7 @@ public class MatHangView extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
+        tableView.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tableView.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -301,7 +302,6 @@ public class MatHangView extends javax.swing.JPanel {
         tableView.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tableView.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tableView.setShowGrid(true);
-        tableView.setShowHorizontalLines(true);
         jScrollPane1.setViewportView(tableView);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

@@ -1,5 +1,6 @@
 package Views;
 
+import IO.PdfIO;
 import javax.swing.table.DefaultTableModel;
 import IO.PhieuXuatIO;
 import IO.ProductIO;
@@ -9,24 +10,10 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import Models.Product;
 import Models.SanPhamXuat;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
-import java.io.File;
 import java.text.NumberFormat;
 import java.util.Locale;
 import javax.swing.JFrame;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JPanel;
 import javax.swing.RowFilter;
 import javax.swing.table.TableModel;
@@ -117,7 +104,7 @@ public class PhieuXuatView extends javax.swing.JPanel {
                     long tongtien = listPhieuXuat.get(index).getTien();
                     String formattedNumber = format.format(tongtien);
                     String totalPrice = formattedNumber;
-                    PhieuXuatDetail phieuXuatDetail = new PhieuXuatDetail(index, maPhieu, tenKH, sdtKH, (String) TablePhieuXuat.getValueAt(index, 2), diaChi, totalPrice);
+                    PhieuXuatDetail phieuXuatDetail = new PhieuXuatDetail(index, maPhieu, tenKH, sdtKH, (String) TablePhieuXuat.getValueAt(index, 3), diaChi, totalPrice);
                     displayFunctions("Chi tiết phiếu xuất", phieuXuatDetail, 825, 520);
                     break;
                 }
@@ -191,81 +178,13 @@ public class PhieuXuatView extends javax.swing.JPanel {
     }
 
     private void exportPDF() {
-        Document doc = new Document();
-        File f = new File(PHIEU_XUAT_PDF);
-        int viTriXuat = -1;
-        viTriXuat = TablePhieuXuat.getSelectedRow();
-        if (viTriXuat == -1) {
-            showMessage("Bạn chưa chọn sản phẩm để in phiếu xuất", "Thông báo");
+        int index = -1;
+        index = TablePhieuXuat.getSelectedRow();
+        if (index != -1) {
+            String maPhieu = this.listPhieuXuat.get(index).getMaPhieu();
+            PdfIO.handleExportPdfFilePX(this, maPhieu);
         } else {
-            try {
-                if (!f.exists()) {
-                    f.createNewFile();
-                } else {
-                    f.delete();
-                    f.createNewFile();
-                }
-
-                PdfWriter.getInstance(doc, new FileOutputStream(f));
-                doc.open();
-
-                BaseFont bf = BaseFont.createFont("c:\\windows\\fonts\\times.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-                Font f1 = new Font(bf, 18, Font.BOLD);
-                Font f2 = new Font(bf, 12);
-
-                Paragraph p1 = new Paragraph("THÔNG TIN PHIẾU XUẤT\n\n", f1);
-                p1.setAlignment(Element.ALIGN_CENTER);
-                doc.add(p1);
-
-                Paragraph p2 = new Paragraph("Mã phiếu: " + listPhieuXuat.get(viTriXuat).getMaPhieu()
-                        + "\nTên khách hàng: " + listPhieuXuat.get(viTriXuat).getTenKH()
-                        + "\nSố điện thoại: " + listPhieuXuat.get(viTriXuat).getSdtKH()
-                        + "\nĐịa chỉ: " + listPhieuXuat.get(viTriXuat).getDiaChi() + "\n\n", f2);
-                doc.add(p2);
-
-                PdfPTable tb = new PdfPTable(5);
-
-                tb.addCell(new Paragraph("Mã sản phẩm", f2));
-                tb.addCell(new Paragraph("Tên sản phẩm", f2));
-                tb.addCell(new Paragraph("Loại", f2));
-                tb.addCell(new Paragraph("Số lượng", f2));
-                tb.addCell(new Paragraph("Giá bán", f2));
-                ArrayList<SanPhamXuat> listSP = new ArrayList<>();
-                String maPhieu = (String) TablePhieuXuat.getValueAt(viTriXuat, 0);
-                listSP = sanPhamXuatIO.getListByID(maPhieu);
-                long tongTien = 0;
-                    for (SanPhamXuat sanPhamXuat : listSP) {
-                    
-                    Product product = sanPhamXuatIO.getInfoProductById(sanPhamXuat.getMaSanPham(), sanPhamXuat.getSoLuong(), sanPhamXuat.getThanhTien());
-                    String Ma = product.getProductID();
-                    String Ten = product.getProductName();
-                    String Loai = product.getProductCategory();
-                    int soLuong = product.getProductQuantity();
-                    long giaBan = product.getProductPrice();
-                    
-                    tb.addCell(new Paragraph(Ma, f2));
-                    tb.addCell(new Paragraph(Ten, f2));
-                    tb.addCell(new Paragraph(Loai, f2));
-                    tb.addCell(new Paragraph(String.valueOf(soLuong), f2));
-                   tb.addCell(new Paragraph(String.valueOf(giaBan), f2));
-                   
-                   tongTien += giaBan;
-                }
-                
-
-                doc.add(tb);
-
-                Paragraph p3 = new Paragraph("\nTổng tiền: " + String.valueOf(tongTien), f2);
-                doc.add(p3);
-
-                doc.close();
-                JOptionPane.showMessageDialog(this, "Xuất thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-
-            } catch (FileNotFoundException | DocumentException ex) {
-                JOptionPane.showMessageDialog(this, ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
-            }
+            showMessage("Chưa chọn phiếu nhập để xuất PDF","Thông báo");
         }
     }
 

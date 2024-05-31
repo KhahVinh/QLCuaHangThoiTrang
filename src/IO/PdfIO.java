@@ -2,8 +2,10 @@ package IO;
 
 import Models.NhaCungCap;
 import Models.PhieuNhap;
+import Models.PhieuXuat;
 import Models.Product;
 import Models.SanPhamNhap;
+import Models.SanPhamXuat;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -13,6 +15,7 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,9 +24,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class PdfIO {
-    
     private static File fontFile = new File("fonts/vuTimes.ttf");
-    
     public static void handleExportPdfFile(JPanel mainView, String maPhieu) {
         File defaultFile = new File("PhieuNhap.pdf");
         JFileChooser fChooser = new JFileChooser();
@@ -102,6 +103,75 @@ public class PdfIO {
         Paragraph pTongTien = new Paragraph("\nTổng tiền: " + String.format("%,d", phieuNhap.getTien()) + " VND", font);
         document.add(pTongTien);
         document.close();
+    }
+    public static void handleExportPdfFilePX(JPanel mainView, String maPhieu) {
+        File defaultFile = new File("PhieuXuat.pdf");
+        JFileChooser fChooser = new JFileChooser();
+        fChooser.setSelectedFile(defaultFile);
+        int result = fChooser.showSaveDialog(mainView);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            try {
+                String filePath = fChooser.getSelectedFile().getAbsolutePath();
+                createPhieuXuatPDF(maPhieu, filePath);
+                JOptionPane.showMessageDialog(null, "Lưu thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException | DocumentException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Xuất file không thành công", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
+        }  
+    }
+    public static void createPhieuXuatPDF(String maPhieu,String filePath) throws FileNotFoundException, DocumentException, IOException {
+            PhieuXuat phieuxuat = IO.PhieuXuatIO.getInfoById(maPhieu);
+            Document doc = new Document();
+            PdfWriter.getInstance(doc, new FileOutputStream(filePath));
+            doc.open();
+            
+            BaseFont bf = BaseFont.createFont("c:\\windows\\fonts\\times.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            Font fontTitle = new Font(bf, 18, Font.BOLD);
+            Font fontContent = new Font(bf, 12, Font.NORMAL);
+            
+            Paragraph p1 = new Paragraph("THÔNG TIN PHIẾU XUẤT\n\n", fontTitle);
+            p1.setAlignment(Element.ALIGN_CENTER);
+            doc.add(p1);
+            
+            Paragraph p2 = new Paragraph("Mã phiếu: " + phieuxuat.getMaPhieu() + "\nTên khách hàng: " + phieuxuat.getTenKH()
+                    + "\nSố điện thoại: " + phieuxuat.getSdtKH()
+                    + "\nĐịa chỉ: " + phieuxuat.getDiaChi() + "\n\n", fontContent);
+            doc.add(p2);
+            
+            PdfPTable tb = new PdfPTable(5);
+            
+            tb.addCell(new Paragraph("Mã sản phẩm", fontContent));
+            tb.addCell(new Paragraph("Tên sản phẩm", fontContent));
+            tb.addCell(new Paragraph("Loại", fontContent));
+            tb.addCell(new Paragraph("Số lượng", fontContent));
+            tb.addCell(new Paragraph("Giá bán", fontContent));
+            System.out.println(maPhieu);
+            ArrayList<SanPhamXuat> listSPX = IO.SanPhamXuatIO.getListByID(maPhieu);
+            long tongTien = 0;
+            for (SanPhamXuat spx : listSPX) {
+                Product product = IO.SanPhamXuatIO.getInfoProductById(spx.getMaSanPham(), spx.getSoLuong(), spx.getThanhTien());
+                String Ma = product.getProductID();
+                String Ten = product.getProductName();
+                String Loai = product.getProductCategory();
+                String soLuong = String.valueOf(product.getProductQuantity());
+                String giaBan = String.valueOf(product.getProductPrice());
+                tb.addCell(new Paragraph(Ma, fontContent));
+                tb.addCell(new Paragraph(Ten, fontContent));
+                tb.addCell(new Paragraph(Loai, fontContent));
+                tb.addCell(new Paragraph(soLuong, fontContent));
+                tb.addCell(new Paragraph(giaBan, fontContent));
+                tongTien += product.getProductPrice();
+            }
+            
+            doc.add(tb);
+            
+            Paragraph p3 = new Paragraph("\nTổng tiền: " + String.valueOf(tongTien), fontContent);
+            doc.add(p3);
+            
+            doc.close();
+            JOptionPane.showMessageDialog(null, "Xuất thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            
     }
     
 }
