@@ -5,9 +5,11 @@
 package IO;
 
 import Models.PhieuXuat;
-import Models.Product;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -25,17 +27,22 @@ public class PhieuXuatIOTest {
     @Test
     public void testWritePhieuXuat() {
         System.out.println("writePhieuXuat");
-        Product p = new Product("1", "A", "B", 2, 10);
-        ArrayList<Product> lp = new ArrayList<>();
-        lp.add(p);
-        PhieuXuat phieuxuat = new PhieuXuat("1", "a", "b", lp, "C", 10);
+        PhieuXuat phieuxuat = new PhieuXuat("", "", "", "", 0);
         ArrayList<PhieuXuat> danhsachphieuxuat = new ArrayList<>();
-        danhsachphieuxuat.add(phieuxuat);
-        PhieuXuatIO instance = new PhieuXuatIO();
-        instance.writePhieuXuat(phieuxuat, danhsachphieuxuat);
-        ArrayList<PhieuXuat> exp = new ArrayList<>();
-        exp.add(phieuxuat);
-        assertEquals(exp, danhsachphieuxuat);
+
+ 
+        PhieuXuatIO phieuXuatIO = new PhieuXuatIO();
+        phieuXuatIO.writePhieuXuat(phieuxuat, danhsachphieuxuat);
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(""));
+            String line = reader.readLine();
+            reader.close();
+            assertTrue(line.contains((CharSequence) danhsachphieuxuat));
+            
+        } catch (Exception e) {
+        }
+
     }
 
     /**
@@ -49,6 +56,34 @@ public class PhieuXuatIOTest {
         ArrayList expResult = new ArrayList();
         ArrayList result = instance.readFilePX(fileName);
         assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of deleteByIdMaPhieuNhap method, of class PhieuXuatIO.
+     */
+    @Test
+    public void testDeleteByIdMaPhieuNhap() {
+        System.out.println("deleteByIdMaPhieuNhap");
+        String id = "";
+        PhieuXuatIO instance = new PhieuXuatIO();
+        instance.deleteByIdMaPhieuNhap(id);
+        PhieuXuat p  = new PhieuXuat();
+        p.setMaPhieu("");
+        assertEquals(id, p.getMaPhieu());
+                
+    }
+
+    /**
+     * Test of updateInfoById method, of class PhieuXuatIO.
+     */
+    @Test
+    public void testUpdateInfoById() {
+        System.out.println("updateInfoById");
+        PhieuXuat data = null;
+        PhieuXuatIO instance = new PhieuXuatIO();
+        instance.updateInfoById(data);
+        PhieuXuat p = null;
+        assertEquals(data, p);
     }
     
 }

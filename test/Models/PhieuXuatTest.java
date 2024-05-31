@@ -4,7 +4,6 @@
  */
 package Models;
 
-import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
@@ -100,33 +99,6 @@ public class PhieuXuatTest {
     }
 
     /**
-     * Test of getDanhsachsanphamxuat method, of class PhieuXuat.
-     */
-    @Test
-    public void testGetDanhsachsanphamxuat() {
-        System.out.println("getDanhsachsanphamxuat");
-        PhieuXuat instance = new PhieuXuat();
-        ArrayList<Product> expResult = null;
-        instance.setDanhsachsanphamxuat(null);
-        ArrayList<Product> result = instance.getDanhsachsanphamxuat();
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of setDanhsachsanphamxuat method, of class PhieuXuat.
-     */
-    @Test
-    public void testSetDanhsachsanphamxuat() {
-        System.out.println("setDanhsachsanphamxuat");
-        ArrayList<Product> danhsachsanphamxuat = null;
-        PhieuXuat instance = new PhieuXuat();
-        instance.setDanhsachsanphamxuat(danhsachsanphamxuat);
-        ArrayList<Product> result = instance.getDanhsachsanphamxuat();
-        ArrayList<Product> expResult = null;
-        assertEquals(expResult, result);
-    }
-
-    /**
      * Test of getNgayTao method, of class PhieuXuat.
      */
     @Test
@@ -214,17 +186,13 @@ public class PhieuXuatTest {
     public void testToString() {
         System.out.println("toString");
         PhieuXuat instance = new PhieuXuat();
-        String expResult = "a-b-c-b;b;b;0;0-d-e-0";
-        Product p = new Product("b", "b", "b", 0, 0);
-        ArrayList<Product> sanPhamXuat = new ArrayList<>();
-        sanPhamXuat.add(p);
+        String expResult = "a-b-c-d-e-0";
         instance.setMaPhieu("a");
         instance.setTenKH("b");
         instance.setSdtKH("c");
         instance.setNgayTao("d");
         instance.setDiaChi("e");
         instance.setTien(0);
-        instance.setDanhsachsanphamxuat(sanPhamXuat);
         String result = instance.toString();
         assertEquals(expResult, result);
     }
