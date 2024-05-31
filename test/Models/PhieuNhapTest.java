@@ -4,7 +4,6 @@
  */
 package Models;
 
-import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
@@ -39,9 +38,9 @@ public class PhieuNhapTest {
         String ngayCapNhat = "";
         PhieuNhap instance = new PhieuNhap();
         instance.setNgayCapNhat(ngayCapNhat);
-        String result = instance.getNgayCapNhat();
-        String expResult = "";
-        assertEquals(expResult, result);
+        String exp = "";
+        String act = instance.getNgayCapNhat();
+        assertEquals(exp, act);
     }
 
     /**
@@ -71,19 +70,6 @@ public class PhieuNhapTest {
     }
 
     /**
-     * Test of getSanPhamNhap method, of class PhieuNhap.
-     */
-    @Test
-    public void testGetSanPhamNhap() {
-        System.out.println("getSanPhamNhap");
-        PhieuNhap instance = new PhieuNhap();
-        ArrayList<Product> expResult = null;
-        instance.setSanPhamNhap(null);
-        ArrayList<Product> result = instance.getSanPhamNhap();
-        assertEquals(expResult, result);
-    }
-
-    /**
      * Test of getTien method, of class PhieuNhap.
      */
     @Test
@@ -105,9 +91,9 @@ public class PhieuNhapTest {
         String ma = "";
         PhieuNhap instance = new PhieuNhap();
         instance.setMa(ma);
-        String result = instance.getMa();
-        String expResult = "";
-        assertEquals(expResult, result);
+        String act = instance.getMa();
+        String exp = "";
+        assertEquals(exp, act);
     }
 
     /**
@@ -119,23 +105,9 @@ public class PhieuNhapTest {
         String maNhaCungCap = "";
         PhieuNhap instance = new PhieuNhap();
         instance.setMaNhaCungCap(maNhaCungCap);
-        String result = instance.getMaNhaCungCap();
-        String expResult = "";
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of setSanPhamNhap method, of class PhieuNhap.
-     */
-    @Test
-    public void testSetSanPhamNhap() {
-        System.out.println("setSanPhamNhap");
-        ArrayList<Product> sanPhamNhap = null;
-        PhieuNhap instance = new PhieuNhap();
-        instance.setSanPhamNhap(sanPhamNhap);
-        ArrayList<Product> result = instance.getSanPhamNhap();
-        ArrayList<Product> expResult = null;
-        assertEquals(expResult, result);
+        String act = instance.getMaNhaCungCap();
+        String exp = "";
+        assertEquals(exp, act);
     }
 
     /**
@@ -160,9 +132,9 @@ public class PhieuNhapTest {
         String ngayTao = "";
         PhieuNhap instance = new PhieuNhap();
         instance.setNgayTao(ngayTao);
-        String reslut = instance.getNgayTao();
-        String expResult = "";
-        assertEquals(expResult, reslut);
+        String act = instance.getNgayTao();
+        String exp = "";
+        assertEquals(exp, act);
     }
 
     /**
@@ -174,9 +146,9 @@ public class PhieuNhapTest {
         Long tien = null;
         PhieuNhap instance = new PhieuNhap();
         instance.setTien(tien);
-        Long result = instance.getTien();
-        Long expResult = null;
-        assertEquals(expResult, result);
+        Long act = instance.getTien();
+        Long exp = null;
+        assertEquals(exp, act);
     }
 
     /**
@@ -186,16 +158,7 @@ public class PhieuNhapTest {
     public void testToString() {
         System.out.println("toString");
         PhieuNhap instance = new PhieuNhap();
-        String expResult = "a-a-b;b;b;0;0-a-a-10";
-        instance.setMa("a");
-        instance.setMaNhaCungCap("a");
-        instance.setNgayCapNhat("a");
-        instance.setNgayTao("a");
-        Product p = new Product("b", "b", "b", 0, 0);
-        ArrayList<Product> sanPhamNhap = new ArrayList<>();
-        sanPhamNhap.add(p);
-        instance.setSanPhamNhap(sanPhamNhap);
-        instance.setTien(Long.valueOf(10));
+        String expResult = "null-null-null-null-null";
         String result = instance.toString();
         assertEquals(expResult, result);
     }

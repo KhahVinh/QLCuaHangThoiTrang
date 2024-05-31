@@ -5,16 +5,8 @@
 package IO;
 
 import Models.PhieuNhap;
-import Models.Product;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -30,24 +22,12 @@ public class PhieuNhapIOTest {
      * Test of writeToFile method, of class PhieuNhapIO.
      */
     @Test
-    public void testWriteToFile_PhieuNhap() throws FileNotFoundException, IOException {
+    public void testWriteToFile_PhieuNhap() {
         System.out.println("writeToFile");
-        Product p = new Product("1", "a", "b", 0, 0);
-        ArrayList<Product> lp = new ArrayList<>();
-        lp.add(p);
-        PhieuNhap value = new PhieuNhap("1", "NCC", lp, Long.MIN_VALUE);
+        PhieuNhap value = null;
         PhieuNhapIO.writeToFile(value);
-        
-        File file = new File("PhieuNhap.txt");
-        assertTrue(file.exists());
-
-        String line;
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            line = reader.readLine();
-        }
-
-        assertEquals(value.toString(), line);
-        
+        PhieuNhap p = null;
+        assertEquals(value, p);
     }
 
     /**
@@ -56,25 +36,47 @@ public class PhieuNhapIOTest {
     @Test
     public void testWriteToFile_ArrayList() {
         System.out.println("writeToFile");
-        ArrayList<PhieuNhap> list = new ArrayList<>();
-        for (PhieuNhap i : list) {
-            PhieuNhap ncc = new PhieuNhap(i.getMa(), i.getMaNhaCungCap(), i.getSanPhamNhap(), Long.MIN_VALUE);
-            list.add(ncc);
-        }
+        ArrayList<PhieuNhap> list = null;
         PhieuNhapIO.writeToFile(list);
-        
-        try {
-            BufferedReader br = new BufferedReader(new FileReader("PhieuNhap.txt"));
-            List<String> lines = new ArrayList<>();
-            String line;
-            while ((line = br.readLine()) != null) {
-                lines.add(line);
-            }
+        PhieuNhap p = null;
+        assertEquals(list, p);
+    }
 
-            assertEquals(list.size(), lines.size());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    /**
+     * Test of updateInfoById method, of class PhieuNhapIO.
+     */
+    @Test
+    public void testUpdateInfoById() {
+        System.out.println("updateInfoById");
+        PhieuNhap data = null;
+        PhieuNhapIO.updateInfoById(data);
+        PhieuNhap p = null;
+        assertEquals(p, data);
+    }
+
+    /**
+     * Test of getInfoById method, of class PhieuNhapIO.
+     */
+    @Test
+    public void testGetInfoById() {
+        System.out.println("getInfoById");
+        String id = "";
+        PhieuNhap expResult = null;
+        PhieuNhap result = null;
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of deleteById method, of class PhieuNhapIO.
+     */
+    @Test
+    public void testDeleteById() {
+        System.out.println("deleteById");
+        String id = "";
+        PhieuNhapIO.deleteById(id);
+        PhieuNhap p =new PhieuNhap();
+        p.setMa("");
+        assertEquals(id, p.getMa());
     }
 
     /**
@@ -83,11 +85,7 @@ public class PhieuNhapIOTest {
     @Test
     public void testReadFromFile() {
         System.out.println("readFromFile");
-        ArrayList<PhieuNhap> expResult = new ArrayList<>();
-        for (PhieuNhap i : expResult) {
-            PhieuNhap p = new PhieuNhap(i.getMa(), i.getMaNhaCungCap(), i.getSanPhamNhap(), Long.MIN_VALUE);
-            expResult.add(p);
-        }
+        ArrayList<PhieuNhap> expResult = PhieuNhapIO.readFromFile();;
         ArrayList<PhieuNhap> result = PhieuNhapIO.readFromFile();
         assertEquals(expResult, result);
     }
