@@ -86,4 +86,61 @@ public class ProductIO {
             e.printStackTrace();
         }
     }
+ 
+ public static Product getInfoProductById(String maSanPham) {
+        Product result = new Product();
+        try {
+            FileReader fr = new FileReader(FILE_NAME_PRODUCT);
+            BufferedReader br = new BufferedReader(fr);
+            String line = "";
+            while(true) {
+                line = br.readLine();
+                if (line == null) {
+                    break;
+                }
+                String txt[] = line.split(";");
+                Product value = new Product(txt[0], txt[1], txt[2], Integer.parseInt(txt[3]), Long.parseLong(txt[4]));
+                if (value.getProductID().equalsIgnoreCase(maSanPham)) {
+                    result = value;
+                    break;
+                }
+            }
+            br.close();
+            fr.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }   
+ 
+    public static void deleteByIdMatHang(String id) {
+        try {
+            ArrayList<Product> list = IO.ProductIO.readFromFile();
+            int index = 0;
+            int size = list.size();
+            while (index < size) {
+                if (list.get(index).getProductCategory().equalsIgnoreCase(id)) {
+                    list.remove(index);
+                    if (index == 0) {
+                        index = 0;
+                    } else {
+                        index = index - 1;
+                    }
+                    size = list.size();
+                } else {
+                    index = index + 1;
+                }
+            }
+            FileWriter fw = new FileWriter(FILE_NAME_PRODUCT);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (Product i : list) {
+                bw.write(i.toString());
+                bw.newLine();
+            }
+            bw.close();
+            fw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -90,7 +90,7 @@ public class NhaCungCapView extends javax.swing.JPanel {
         int index = -1;
         index = tableView.getSelectedRow();
         if (index != -1) {
-            int rely = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa không?", "Thông báo", JOptionPane.YES_NO_OPTION);
+            int rely = JOptionPane.showConfirmDialog(null, "Thao tác này sẽ ảnh hưởng đến thông tin các phiếu nhập và không thể hoàn tác. Bạn có muốn tiếp tục không?", "Thông báo", JOptionPane.YES_NO_OPTION);
             if (rely == JOptionPane.YES_NO_OPTION){
                 deleteValue(index);
                 JOptionPane.showMessageDialog(null, "Xóa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);

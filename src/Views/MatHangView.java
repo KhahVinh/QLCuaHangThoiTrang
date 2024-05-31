@@ -84,6 +84,7 @@ public class MatHangView extends javax.swing.JPanel {
     }
     
     private void deleteValue(String id) {
+        IO.ProductIO.deleteByIdMatHang(id);
         IO.MatHangIO.deteleById(id);
     }
     
@@ -91,7 +92,7 @@ public class MatHangView extends javax.swing.JPanel {
         int index = -1;
         index = tableView.getSelectedRow();
         if (index != -1) {
-            int rely = JOptionPane.showConfirmDialog(null, "Thao tác này sẽ xóa tất cả các sản phẩm thuộc mặt hàng này và không thể hoàn tác.\nBạn có muốn tiếp tục không?", "Thông báo", JOptionPane.YES_NO_OPTION);
+            int rely = JOptionPane.showConfirmDialog(null, "Thao tác này sẽ xóa tất cả các sản phẩm thuộc mặt hàng này và không thể hoàn tác. Bạn có muốn tiếp tục không?", "Thông báo", JOptionPane.YES_NO_OPTION);
             if (rely == JOptionPane.YES_NO_OPTION){
                 String id = this.getIdSelected(index, tableView);
                 this.deleteValue(id);
