@@ -313,9 +313,9 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
                     + "\nLoại: " + category + "\nSố lượng: " + quantity + "\nGiá: " + price, "Thông báo", JOptionPane.OK_CANCEL_OPTION);
             if (select == 0) {
                 rwp.writeFile(product, fileName, danhsachsanpham);
+                JOptionPane.showMessageDialog(null, "Thêm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 qlsp.addProduct(product);
                 deleteFile();
-                JOptionPane.showMessageDialog(null, "Thêm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
         }
 
@@ -363,8 +363,8 @@ public class DienThongTInSanPham extends javax.swing.JPanel {
 
                 rwp.writeFile(product, fileName, danhsachsanpham);
             }
-            JOptionPane.showMessageDialog(null, "Sửa thành công", "Thông báo", JOptionPane.WARNING_MESSAGE);
             qlsp.updateTable();
+            JOptionPane.showMessageDialog(null, "Sửa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
     }
     
