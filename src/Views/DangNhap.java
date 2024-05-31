@@ -22,7 +22,6 @@ public class DangNhap extends javax.swing.JFrame {
         GiaoDien gd = new GiaoDien();
         gd.setExtendedState(JFrame.MAXIMIZED_BOTH);
         gd.setVisible(true);
-        gd.setLocationRelativeTo(null);
     }
 
     @SuppressWarnings("unchecked")

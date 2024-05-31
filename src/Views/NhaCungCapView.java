@@ -300,6 +300,7 @@ public class NhaCungCapView extends javax.swing.JPanel {
         jScrollPane2.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane2.setOpaque(false);
 
+        tableView.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tableView.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},

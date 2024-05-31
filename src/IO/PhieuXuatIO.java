@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 public class PhieuXuatIO {
 
-    String FILE_PX = "QuanLyPhieuXuat.txt";
+    static String FILE_PX = "QuanLyPhieuXuat.txt";
 
     public void writePhieuXuat(PhieuXuat phieuxuat, ArrayList<PhieuXuat> danhsachphieuxuat) {
         try {
@@ -119,5 +119,34 @@ public class PhieuXuatIO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public static PhieuXuat getInfoById(String id) {
+        PhieuXuat data = new PhieuXuat();
+        try {
+            FileReader fr = new FileReader(FILE_PX);
+            BufferedReader br = new BufferedReader(fr);
+            String line = "";
+            while(true) {
+                line = br.readLine();
+                if (line == null) {
+                    break;
+                }
+                String txt[] = line.split("-");
+                if (txt[0].equalsIgnoreCase(id)) {
+                    data.setMaPhieu(txt[0]);
+                    data.setTenKH(txt[1]);
+                    data.setSdtKH(txt[2]);
+                    data.setNgayTao(txt[3]);
+                    data.setDiaChi(txt[4]);
+                    data.setTien(Long.parseLong(txt[5]));
+                    break;
+                }
+            }
+            br.close();
+            fr.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return data;
     }
 }

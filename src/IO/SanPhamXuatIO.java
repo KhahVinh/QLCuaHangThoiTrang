@@ -10,7 +10,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class SanPhamXuatIO {
-    String FILE_NAME = "SanPhamXuat.txt";
+    static String FILE_NAME = "SanPhamXuat.txt";
     public void writeFIleSPX(ArrayList<SanPhamXuat> danhsachsanphamxuat) {
         try {
             FileWriter fw = new FileWriter(FILE_NAME,true);
@@ -52,7 +52,7 @@ public class SanPhamXuatIO {
         return listsanphamxuat;
     }
      
-    public ArrayList getListByID(String maPhieu) {
+    public static ArrayList getListByID(String maPhieu) {
         ArrayList<SanPhamXuat> listsanphamxuat = new ArrayList<>();
         try {
             FileReader fr = new FileReader(FILE_NAME);
@@ -79,7 +79,7 @@ public class SanPhamXuatIO {
         }
         return listsanphamxuat;
     }
-    public Product getInfoProductById(String maSanPham,int soLuong,long giaBan) {
+    public static Product getInfoProductById(String maSanPham,int soLuong,long giaBan) {
         Product result = new Product();
         try {
             FileReader fr = new FileReader("QuanLySanPham.txt");

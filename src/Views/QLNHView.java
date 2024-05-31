@@ -440,6 +440,7 @@ public class QLNHView extends javax.swing.JPanel {
 
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
 
+        tableViewProduct.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tableViewProduct.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -452,6 +453,7 @@ public class QLNHView extends javax.swing.JPanel {
             }
         ));
         tableViewProduct.setDragEnabled(true);
+        tableViewProduct.setRowHeight(25);
         tableViewProduct.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tableViewProduct.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tableViewProduct.setShowGrid(true);
@@ -549,6 +551,7 @@ public class QLNHView extends javax.swing.JPanel {
 
         jScrollPane2.setBackground(new java.awt.Color(255, 255, 255));
 
+        tableViewSelected.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tableViewSelected.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -561,6 +564,7 @@ public class QLNHView extends javax.swing.JPanel {
             }
         ));
         tableViewSelected.setDragEnabled(true);
+        tableViewSelected.setRowHeight(25);
         tableViewSelected.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tableViewSelected.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tableViewSelected.setShowGrid(true);
