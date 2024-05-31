@@ -114,6 +114,7 @@ public class ChinhSuaNhaCungCap extends javax.swing.JFrame {
         jLabel1.setText("Mã nhà cung cấp:");
 
         inputMaNCC.setEditable(false);
+        inputMaNCC.setFocusable(false);
 
         jLabel2.setText("Tên nhà cung cấp:");
 

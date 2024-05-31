@@ -85,6 +85,7 @@ public class ChinhSuaMatHang extends javax.swing.JFrame {
         jLabel1.setText("Mã mặt hàng:");
 
         inputMa.setEditable(false);
+        inputMa.setEnabled(false);
 
         jLabel2.setText("Tên mặt hàng:");
 

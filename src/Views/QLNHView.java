@@ -548,6 +548,7 @@ public class QLNHView extends javax.swing.JPanel {
         inputMaPhieu.setEditable(false);
         inputMaPhieu.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         inputMaPhieu.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        inputMaPhieu.setFocusable(false);
 
         jLabel3.setText("Nhà cung cấp:");
 
