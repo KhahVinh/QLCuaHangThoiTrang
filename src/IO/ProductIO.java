@@ -7,6 +7,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import javax.swing.JTable;
 
 public class ProductIO {
     private static final String FILE_NAME_PRODUCT = "QuanLySanPham.txt";
@@ -38,6 +39,41 @@ public class ProductIO {
     
     public static void writeToFile(ArrayList<Product> list) {
         try {
+            FileWriter fw = new FileWriter(FILE_NAME_PRODUCT);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (Product i : list) {
+                bw.write(i.toString());
+                bw.newLine();
+            }
+            bw.close();
+            fw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public static ArrayList deleteByID(String id) {
+        ArrayList<Product> listSP = new ArrayList<>();
+        listSP = IO.ProductIO.readFromFile();
+        for (int i = 0; i < listSP.size(); i++) {
+            if(listSP.get(i).getProductID().equalsIgnoreCase(id)){
+                listSP.remove(i);
+            }
+        }
+        return listSP;
+    }
+    
+ public static void updateInfoById(String id, Product data) {
+        try {
+            ArrayList<Product> list = IO.ProductIO.readFromFile();
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getProductID().equalsIgnoreCase(id)) {
+                    list.get(i).setProductName(data.getProductName());
+                    list.get(i).setProductCategory(data.getProductCategory());
+                    list.get(i).setProductQuantity(data.getProductQuantity());
+                    list.get(i).setProductPrice(data.getProductPrice());
+                    break;
+                }
+            }
             FileWriter fw = new FileWriter(FILE_NAME_PRODUCT);
             BufferedWriter bw = new BufferedWriter(fw);
             for (Product i : list) {

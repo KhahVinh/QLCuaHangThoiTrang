@@ -421,10 +421,6 @@ public class QLXH extends javax.swing.JPanel {
         totalPriceNew();
     }
     
-    private void exportPDF() {
-      
-    }
-    
     private void deleteFile() {
         String IDPhieuXuat = generateMaPhieu();
         if (checkID(IDPhieuXuat)) {

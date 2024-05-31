@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -122,17 +123,45 @@ public class QLSP extends javax.swing.JPanel {
         }
     }
 
+    public Product getValueTable(int index, JTable table) {
+        Product pd = new Product();
+        pd.setProductID(table.getValueAt(index, 0).toString());
+        pd.setProductName(table.getValueAt(index, 1).toString());
+        pd.setProductCategory(table.getValueAt(index, 2).toString());
+        pd.setProductQuantity(Integer.parseInt(table.getValueAt(index, 3).toString()));
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        long gia = 0;
+        try {
+            gia = numberFormat.parse(table.getValueAt(index, 4).toString()).longValue();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        pd.setProductPrice(gia);
+        return pd;
+    }
+    public String getIDSelected(int index, JTable table) {
+        String id = "";
+        id = (String) table.getValueAt(index, 0);
+        return id;
+    }
+     private void deleteValue(int inputIndex) {
+        String id = this.getIDSelected(inputIndex, TableProduct);
+        IO.ProductIO.deleteByID(id);
+    }
+
     private void deleteProduct() {
+        danhsachsanpham.clear();
         ArrayList<Product> danhsachsauxoa = new ArrayList<>();
         int vitri = -1;
         vitri = TableProduct.getSelectedRow();
+        String valueID = getIDSelected(vitri, TableProduct);
         if (vitri == -1) {
             showMessageWarning("Bạn chưa chọn sản phẩm để xóa");
         } else {
             int select = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa không", "Thông báo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
             if (select == 0) {
-                danhsachsanpham.remove(vitri);
-                danhsachsauxoa = danhsachsanpham;
+                danhsachsauxoa = IO.ProductIO.deleteByID(valueID    );
+                danhsachsanpham = danhsachsauxoa;
                 PrintWriter writer;
                 try {
                     writer = new PrintWriter(fileName);
@@ -142,7 +171,6 @@ public class QLSP extends javax.swing.JPanel {
                     Logger.getLogger(QLSP.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 for (Product product : danhsachsauxoa) {
-
                     rwp.writeFile(product, fileName, danhsachsauxoa);
                 }
                 vitri--;
@@ -168,14 +196,19 @@ public class QLSP extends javax.swing.JPanel {
         } else {
             try {
                 checkFuntions = 2;
-                String id = danhsachsanpham.get(index).getProductID();
-                String name = danhsachsanpham.get(index).getProductName();
-                String categoryItem = danhsachsanpham.get(index).getProductCategory();
-                String category = getCategory(categoryItem);
-                int quantity = danhsachsanpham.get(index).getProductQuantity();
-                long price = danhsachsanpham.get(index).getProductPrice();
-                DienThongTInSanPham dienthongtinsanpham = new DienThongTInSanPham(index, id, name, category, quantity, price);
-                displayFunctions("Điền thông tin sản phẩm", dienthongtinsanpham);
+                String valueID = getIDSelected(index, TableProduct);
+                for (int i = 0; i < danhsachsanpham.size(); i++) {
+                    if (danhsachsanpham.get(i).getProductID().equalsIgnoreCase(valueID)) {
+                        String id = danhsachsanpham.get(i).getProductID();
+                        String name = danhsachsanpham.get(i).getProductName();
+                        String categoryItem = danhsachsanpham.get(i).getProductCategory();
+                        String category = getCategory(categoryItem);
+                        int quantity = danhsachsanpham.get(i).getProductQuantity();
+                        long price = danhsachsanpham.get(i).getProductPrice();
+                        DienThongTInSanPham dienthongtinsanpham = new DienThongTInSanPham(i, id, name, category, quantity, price);
+                        displayFunctions("Điền thông tin sản phẩm", dienthongtinsanpham);
+                    }
+                }
 
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -421,7 +454,7 @@ public class QLSP extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JFeatureLayout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 393, Short.MAX_VALUE))
         );
         JFeatureLayout.setVerticalGroup(
             JFeatureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -550,7 +583,7 @@ public class QLSP extends javax.swing.JPanel {
     private javax.swing.JPanel JSearch;
     private javax.swing.JScrollPane Products;
     private javax.swing.JTextField SearchText;
-    private javax.swing.JTable TableProduct;
+    public javax.swing.JTable TableProduct;
     private javax.swing.JLabel Title;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
