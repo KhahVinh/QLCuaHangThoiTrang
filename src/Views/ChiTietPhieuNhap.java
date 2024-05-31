@@ -48,7 +48,6 @@ public class ChiTietPhieuNhap extends javax.swing.JFrame {
             } else {
                 category = IO.MatHangIO.getNameById(value.getProductCategory());
             }
-            category = IO.MatHangIO.getNameById(value.getProductCategory());
             Object[] rowData = {dsSanPhamNhap.get(i).getMaSanPham(), value.getProductName(), category, dsSanPhamNhap.get(i).getSoLuong(), String.format("%,d", value.getProductPrice()), String.format("%,d", dsSanPhamNhap.get(i).getThanhTien())};
             defaultTableModel.addRow(rowData);
         }

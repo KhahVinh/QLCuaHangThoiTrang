@@ -14,7 +14,6 @@
 14;Giày thể thao nam;GIAYM1923;90;800000
 15;Giày cao gót nữ;GIAYFM192;70;950000
 16;Áo khoác jean nữ;AOFM9012;110;1100000
-17;Quần baggy nữ;QNU9349;150;370000
 18;Áo sơ mi họa tiết;AOM120;180;320000
 19;Phụ kiện thời trang;PK919;200;150000
 20;Chân váy xếp ly;CHANV9129;130;480000
