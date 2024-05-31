@@ -55,7 +55,7 @@ public class QLNHView extends javax.swing.JPanel {
         this.inputMaPhieu.setText(this.currentValue.getMa());
         ArrayList<SanPhamNhap> listSPNhap = IO.SanPhamNhapIO.getListById(maPhieuNhap);
         for (int i = 0; i < listSPNhap.size(); i++) {
-            Product value = IO.SanPhamNhapIO.getInfoProductById(listSPNhap.get(i).getMaSanPham());
+            Product value = IO.ProductIO.getInfoProductById(listSPNhap.get(i).getMaSanPham());
             String category = "";
             if (value.getProductID() == null) {
                 value.setProductName("Không tồn tại");
@@ -328,7 +328,7 @@ public class QLNHView extends javax.swing.JPanel {
             String maPhieuNhap = inputMaPhieu.getText();
             ArrayList<SanPhamNhap> listSPNhap = IO.SanPhamNhapIO.getListById(maPhieuNhap);
         for (int i = 0; i < listSPNhap.size(); i++) {
-            Product value = IO.SanPhamNhapIO.getInfoProductById(listSPNhap.get(i).getMaSanPham());
+            Product value = IO.ProductIO.getInfoProductById(listSPNhap.get(i).getMaSanPham());
             String category = "";
             if (value.getProductID() == null) {
                 value.setProductName("Không tồn tại");

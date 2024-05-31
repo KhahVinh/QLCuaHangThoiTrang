@@ -81,7 +81,7 @@ public class PdfIO {
         ArrayList<Product> listSP = new ArrayList<Product>();
         ArrayList<SanPhamNhap> listSPNhap = IO.SanPhamNhapIO.getListById(inputMaPhieu);
             for (int i = 0; i < listSPNhap.size(); i++) {
-                Product value = IO.SanPhamNhapIO.getInfoProductById(listSPNhap.get(i).getMaSanPham());
+                Product value = IO.ProductIO.getInfoProductById(listSPNhap.get(i).getMaSanPham());
                 String category = IO.MatHangIO.getNameById(value.getProductCategory());
                 listSP.add(new Product(value.getProductID(), value.getProductName(), category, listSPNhap.get(i).getSoLuong(), value.getProductPrice()));
             }

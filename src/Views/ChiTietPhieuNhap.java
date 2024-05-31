@@ -38,7 +38,7 @@ public class ChiTietPhieuNhap extends javax.swing.JFrame {
         ArrayList<SanPhamNhap> dsSanPhamNhap = IO.SanPhamNhapIO.getListById(maPhieu.getText());
         DefaultTableModel defaultTableModel = new DefaultTableModel(columnName, 0);   
         for (int i = 0; i < dsSanPhamNhap.size(); i++) {
-            Product value = IO.SanPhamNhapIO.getInfoProductById(dsSanPhamNhap.get(i).getMaSanPham());
+            Product value = IO.ProductIO.getInfoProductById(dsSanPhamNhap.get(i).getMaSanPham());
             String category = "";
             if (value.getProductID() == null) {
                 value.setProductName("Không tồn tại");

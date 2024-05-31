@@ -142,29 +142,5 @@ public class SanPhamNhapIO {
         }
     }
     
-    public static Product getInfoProductById(String maSanPham) {
-        Product result = new Product();
-        try {
-            FileReader fr = new FileReader("QuanLySanPham.txt");
-            BufferedReader br = new BufferedReader(fr);
-            String line = "";
-            while(true) {
-                line = br.readLine();
-                if (line == null) {
-                    break;
-                }
-                String txt[] = line.split(";");
-                Product value = new Product(txt[0], txt[1], txt[2], Integer.parseInt(txt[3]), Long.parseLong(txt[4]));
-                if (value.getProductID().equalsIgnoreCase(maSanPham)) {
-                    result = value;
-                    break;
-                }
-            }
-            br.close();
-            fr.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-    }   
+    
 }
