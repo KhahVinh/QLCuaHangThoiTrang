@@ -25,6 +25,15 @@ public class ThemNhaCungCap extends javax.swing.JFrame {
     private void showMessage(String errorMessage) {
         JOptionPane.showMessageDialog(null, errorMessage, "Cảnh báo nhập dữ liệu", JOptionPane.WARNING_MESSAGE);
     }
+    
+    private boolean hasId(String id) {
+        for (int i = 0; i < IO.NhaCungCapIO.readFromFile().size(); i++) {
+            if (IO.NhaCungCapIO.readFromFile().get(i).getMa().equalsIgnoreCase(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     private boolean checkInput() {
         boolean check = true;
@@ -36,9 +45,7 @@ public class ThemNhaCungCap extends javax.swing.JFrame {
             if (ma.length() == 0) {
                 showMessage("Không được để trống mã nhà cung cấp");
                 check = false;
-            }
-            if (this.hasId(ma)) {
-                System.out.println("1");
+            } else if (this.hasId(ma)) {
                 showMessage("Mã nhà cung cấp đã tồn tại");
                 check = false;
             }
@@ -68,17 +75,7 @@ public class ThemNhaCungCap extends javax.swing.JFrame {
         return check;
     }
     
-    private boolean hasId(String id) {
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getMa().equalsIgnoreCase(id)) {
-                return true;
-            }
-            if (IO.NhaCungCapIO.readFromFile().get(i).getMa().equalsIgnoreCase(id)) {
-                return true;
-            }
-        }
-        return false;
-    }
+    
 
     private void resetInput() {
         inputMaNCC.setText("");
@@ -95,11 +92,11 @@ public class ThemNhaCungCap extends javax.swing.JFrame {
     }
 
     private void getInfor() {
-        if (checkInput()) {
+        if (this.checkInput()) {
             NhaCungCap newValue = new NhaCungCap(inputMaNCC.getText(), inputTenNCC.getText(), inputSdtNCC.getText(), inputDiaChiNCC.getText());
             if(checkSame(newValue, list)){            
-            resetInput();
-            JOptionPane.showMessageDialog(null, "Đã thêm vào danh sách chờ", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                resetInput();
+                JOptionPane.showMessageDialog(null, "Đã thêm vào danh sách chờ", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
