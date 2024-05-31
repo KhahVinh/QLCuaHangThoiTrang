@@ -8,8 +8,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.RowFilter;
-import javax.swing.RowSorter;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
@@ -65,7 +65,7 @@ public class NhaCungCapView extends javax.swing.JPanel {
     public void showListData() {
         this.list.clear();
         this.list = IO.NhaCungCapIO.readFromFile();
-        DefaultTableModel defaultTableModel = new DefaultTableModel(columnName, 0);   
+        DefaultTableModel defaultTableModel = new DefaultTableModel(columnName, 0);
         for (NhaCungCap i : list) {
             Object[] rowData = {i.getMa(), i.getTen(), i.getSoDienThoai(), i.getDiaChi()}; 
             defaultTableModel.addRow(rowData);
@@ -75,9 +75,15 @@ public class NhaCungCapView extends javax.swing.JPanel {
         tableView.repaint();
     }    
     
+    private String getIdSelected(int index, JTable table) {
+        String id = "";
+        id = table.getValueAt(index, 0).toString();
+        return id;
+    }
+    
     private void deleteValue(int inputIndex) {
-        this.list.remove(inputIndex);
-        IO.NhaCungCapIO.writeToFile(list);
+        String id = this.getIdSelected(inputIndex, tableView);
+        IO.NhaCungCapIO.deleteById(id);
     }
     
     private void handleDeleteValue() {
@@ -99,9 +105,9 @@ public class NhaCungCapView extends javax.swing.JPanel {
         int index = -1;
         index = tableView.getSelectedRow();
         if (index != -1) {
-            ChinhSuaNhaCungCap editView = new ChinhSuaNhaCungCap(this, index);
-            NhaCungCap currentValue = this.list.get(index);
-            editView.setValueInput(currentValue.getMa(), currentValue.getTen(), currentValue.getSoDienThoai(), currentValue.getDiaChi());
+            ChinhSuaNhaCungCap editView = new ChinhSuaNhaCungCap(this);
+            String id = this.getIdSelected(index, tableView);
+            editView.setValueInput(id);
             editView.display();
             
         } else {
@@ -109,12 +115,8 @@ public class NhaCungCapView extends javax.swing.JPanel {
         }
     }
     
-    public void editValue(int index, NhaCungCap value) {
-            this.list.get(index).setMa(value.getMa());
-            this.list.get(index).setTen(value.getTen());
-            this.list.get(index).setSoDienThoai(value.getSoDienThoai());
-            this.list.get(index).setDiaChi(value.getDiaChi());
-            IO.NhaCungCapIO.writeToFile(list);
+    public void editValue(String id, NhaCungCap value) {
+        IO.NhaCungCapIO.updateInfoById(id, value);
     }
     
     private void handleAddValues() {
@@ -356,6 +358,7 @@ public class NhaCungCapView extends javax.swing.JPanel {
 
     private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
         this.showListData();
+        searchInput.setText("");
     }//GEN-LAST:event_refreshBtnActionPerformed
 
     private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed

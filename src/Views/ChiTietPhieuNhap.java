@@ -37,10 +37,19 @@ public class ChiTietPhieuNhap extends javax.swing.JFrame {
         tongTien.setText(String.format("%,d", phieuNhap.getTien()));
         ArrayList<SanPhamNhap> dsSanPhamNhap = IO.SanPhamNhapIO.getListById(maPhieu.getText());
         DefaultTableModel defaultTableModel = new DefaultTableModel(columnName, 0);   
-        for (SanPhamNhap i : dsSanPhamNhap) {
-            Product value = IO.SanPhamNhapIO.getInfoProductById(i.getMaSanPham());
-            String category = IO.MatHangIO.getNameById(value.getProductCategory());
-            Object[] rowData = {i.getMaSanPham(), value.getProductName(), category, i.getSoLuong(), String.format("%,d", value.getProductPrice()), String.format("%,d", i.getThanhTien())};
+        for (int i = 0; i < dsSanPhamNhap.size(); i++) {
+            Product value = IO.SanPhamNhapIO.getInfoProductById(dsSanPhamNhap.get(i).getMaSanPham());
+            String category = "";
+            if (value.getProductID() == null) {
+                value.setProductName("Không tồn tại");
+                category = "Không tồn tại";
+                long price = dsSanPhamNhap.get(i).getThanhTien() / dsSanPhamNhap.get(i).getSoLuong();
+                value.setProductPrice(price);
+            } else {
+                category = IO.MatHangIO.getNameById(value.getProductCategory());
+            }
+            category = IO.MatHangIO.getNameById(value.getProductCategory());
+            Object[] rowData = {dsSanPhamNhap.get(i).getMaSanPham(), value.getProductName(), category, dsSanPhamNhap.get(i).getSoLuong(), String.format("%,d", value.getProductPrice()), String.format("%,d", dsSanPhamNhap.get(i).getThanhTien())};
             defaultTableModel.addRow(rowData);
         }
         defaultTableModel.fireTableDataChanged();

@@ -91,4 +91,50 @@ public class NhaCungCapIO {
             e.printStackTrace();
         }
     }
+    
+    public static void deleteById(String id) {
+        try {
+            ArrayList<NhaCungCap> list = IO.NhaCungCapIO.readFromFile();
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getMa().equalsIgnoreCase(id)) {
+                    list.remove(i);
+                    break;
+                }
+            }
+            FileWriter fw = new FileWriter(FILE_NAME_NHACUNGCAP);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (NhaCungCap i : list) {
+                bw.write(i.toString());
+                bw.newLine();
+            }
+            bw.close();
+            fw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void updateInfoById(String id, NhaCungCap data) {
+        try {
+            ArrayList<NhaCungCap> list = IO.NhaCungCapIO.readFromFile();
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getMa().equalsIgnoreCase(id)) {
+                    list.get(i).setDiaChi(data.getDiaChi());
+                    list.get(i).setSoDienThoai(data.getSoDienThoai());
+                    list.get(i).setTen(data.getTen());
+                    break;
+                }
+            }
+            FileWriter fw = new FileWriter(FILE_NAME_NHACUNGCAP);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (NhaCungCap i : list) {
+                bw.write(i.toString());
+                bw.newLine();
+            }
+            bw.close();
+            fw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
