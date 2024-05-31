@@ -7,13 +7,10 @@ import javax.swing.JOptionPane;
 
 public class ChinhSuaNhaCungCap extends javax.swing.JFrame {
     private NhaCungCapView mainView;
-    
-    private int currentIndex;
 
-    public ChinhSuaNhaCungCap(NhaCungCapView inputView, int inputCurrentIndex) {
+    public ChinhSuaNhaCungCap(NhaCungCapView inputView) {
         initComponents();
         this.mainView = inputView;
-        this.currentIndex = inputCurrentIndex;
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
     
@@ -25,11 +22,12 @@ public class ChinhSuaNhaCungCap extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, errorMessage, "Cảnh báo nhập dữ liệu", JOptionPane.WARNING_MESSAGE);
     }
     
-    public void setValueInput(String ma, String ten, String sdt, String diaChi) {
-        inputMaNCC.setText(ma);
-        inputTenNCC.setText(ten);
-        inputSdtNCC.setText(sdt);
-        inputDiaChiNCC.setText(diaChi);
+    public void setValueInput(String id) {
+        NhaCungCap nhaCungCap = IO.NhaCungCapIO.getInfoById(id);
+        inputMaNCC.setText(nhaCungCap.getMa());
+        inputTenNCC.setText(nhaCungCap.getTen());
+        inputSdtNCC.setText(nhaCungCap.getSoDienThoai());
+        inputDiaChiNCC.setText(nhaCungCap.getDiaChi());
     }
     
     private boolean checkInput() {
@@ -76,7 +74,7 @@ public class ChinhSuaNhaCungCap extends javax.swing.JFrame {
             value.setTen(inputTenNCC.getText());
             value.setSoDienThoai(inputSdtNCC.getText());
             value.setDiaChi(inputDiaChiNCC.getText());
-            this.mainView.editValue(this.currentIndex, value);
+            this.mainView.editValue(value.getMa(), value);
             JOptionPane.showMessageDialog(null, "Chỉnh sửa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             this.dispose();
             this.mainView.showListData();

@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -76,17 +77,14 @@ public class MatHangView extends javax.swing.JPanel {
         }
     }
     
-    private void deleteValue(int inputIndex) {
-        this.listProduct = IO.ProductIO.readFromFile();
-        String maMatHang = this.list.get(inputIndex).getMa();
-        for (int i = 0; i < listProduct.size(); i++) {
-            if (listProduct.get(i).getProductCategory().equalsIgnoreCase(maMatHang)) {
-                listProduct.remove(i);
-            }
-        }
-        IO.ProductIO.writeToFile(this.listProduct);
-        this.list.remove(inputIndex);
-        IO.MatHangIO.writeToFile(list);
+    private String getIdSelected(int index, JTable table) {
+        String id = "";
+        id = table.getValueAt(index, 0).toString();
+        return id;
+    }
+    
+    private void deleteValue(String id) {
+        IO.MatHangIO.deteleById(id);
     }
     
     private void handleDeleteValue() {
@@ -95,7 +93,8 @@ public class MatHangView extends javax.swing.JPanel {
         if (index != -1) {
             int rely = JOptionPane.showConfirmDialog(null, "Thao tác này sẽ xóa tất cả các sản phẩm thuộc mặt hàng này và không thể hoàn tác.\nBạn có muốn tiếp tục không?", "Thông báo", JOptionPane.YES_NO_OPTION);
             if (rely == JOptionPane.YES_NO_OPTION){
-                deleteValue(index);
+                String id = this.getIdSelected(index, tableView);
+                this.deleteValue(id);
                 JOptionPane.showMessageDialog(null, "Xóa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 showListData();
             }
@@ -108,19 +107,17 @@ public class MatHangView extends javax.swing.JPanel {
         int index = -1;
         index = tableView.getSelectedRow();
         if (index != -1) {
-            ChinhSuaMatHang editView = new ChinhSuaMatHang(this, index);
-            MatHang currentValue = list.get(index);
-            editView.setInputValue(currentValue.getMa(), currentValue.getTen());
+            ChinhSuaMatHang editView = new ChinhSuaMatHang(this);
+            String id = this.getIdSelected(index, tableView);
+            editView.setInputValue(id);
             editView.display();
         } else {
             showMessage("Chưa chọn mặt hàng để sửa");
         }
     }
     
-    public void editValue(int index, MatHang value) {
-        this.list.get(index).setMa(value.getMa());
-        this.list.get(index).setTen(value.getTen());
-        IO.MatHangIO.writeToFile(list);
+    public void editValue(String index, MatHang value) {
+        IO.MatHangIO.updateInfoById(index, value);
     }
     
     private void handleAddValues() {
@@ -335,6 +332,7 @@ public class MatHangView extends javax.swing.JPanel {
 
     private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
         this.showListData();
+        inputSearch.setText("");
     }//GEN-LAST:event_refreshBtnActionPerformed
 
     private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed

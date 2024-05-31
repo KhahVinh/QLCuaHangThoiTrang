@@ -7,22 +7,21 @@ import javax.swing.JOptionPane;
 
 public class ChinhSuaMatHang extends javax.swing.JFrame {
     private MatHangView mainView;
-    private int currentIndex;
     
-    public ChinhSuaMatHang(MatHangView inputView, int inputCurrentIndex) {
+    public ChinhSuaMatHang(MatHangView inputView) {
         initComponents();
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.mainView = inputView;
-        this.currentIndex = inputCurrentIndex;
     }
     
     public void display() {
         this.setVisible(true);        
     }
     
-    public void setInputValue(String ma, String ten) {
-        inputMa.setText(ma);
-        inputTen.setText(ten);
+    public void setInputValue(String id) {
+        MatHang data = IO.MatHangIO.getInfoById(id);
+        inputMa.setText(data.getMa());
+        inputTen.setText(data.getTen());
     }
     
     private void showMessage(String errorMessage) {
@@ -53,7 +52,7 @@ public class ChinhSuaMatHang extends javax.swing.JFrame {
             MatHang value = new MatHang();
             value.setMa(inputMa.getText());
             value.setTen(inputTen.getText());
-            this.mainView.editValue(this.currentIndex, value);
+            this.mainView.editValue(value.getMa(), value);
             JOptionPane.showMessageDialog(null, "Chỉnh sửa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             this.dispose();
             this.mainView.showListData();

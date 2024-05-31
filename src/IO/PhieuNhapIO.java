@@ -40,7 +40,7 @@ public class PhieuNhapIO {
         }
     }
     
-    public static void updateInfoById(PhieuNhap data) {
+    public static void updateInfo(PhieuNhap data) {
         try {
             ArrayList<PhieuNhap> list = IO.PhieuNhapIO.readFromFile();
             for (int i = 0; i < list.size(); i++) {

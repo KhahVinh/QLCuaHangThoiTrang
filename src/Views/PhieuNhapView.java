@@ -9,6 +9,7 @@ import java.awt.BorderLayout;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -32,11 +33,16 @@ public class PhieuNhapView extends javax.swing.JPanel {
     public void showListData() {
         this.listPhieuNhap.clear();
         this.listPhieuNhap = IO.PhieuNhapIO.readFromFile();
-        DefaultTableModel defaultTableModel = new DefaultTableModel(columnName, 0);   
+        DefaultTableModel defaultTableModel = new DefaultTableModel(columnName, 0);
         for (int i = 0; i < this.listPhieuNhap.size(); i++) {
             PhieuNhap value = this.listPhieuNhap.get(i);
             NhaCungCap nhaCungCap = IO.NhaCungCapIO.getInfoById(value.getMaNhaCungCap());
-            String tenNCC = nhaCungCap.getTen();
+            String tenNCC = "";
+            if (nhaCungCap.getMa() == null) {
+                tenNCC = "Không tồn tại";
+            } else {
+                tenNCC = nhaCungCap.getTen();
+            }
             Object[] rowData = {value.getMa(), tenNCC, value.getNgayTao(), value.getNgayCapNhat(), String.format("%,d", value.getTien())}; 
             defaultTableModel.addRow(rowData);
         }
@@ -82,18 +88,24 @@ public class PhieuNhapView extends javax.swing.JPanel {
         }
     }
     
+    private String getIdSelected(int index, JTable table) {
+        String id = "";
+        id = table.getValueAt(index, 0).toString();
+        return id;
+    }
+    
     private void handleDetailValue() {
         int index = -1;
         index = tableViewData.getSelectedRow();
         if (index != -1) {
-            PhieuNhap currentValue = IO.PhieuNhapIO.getInfoById(this.listPhieuNhap.get(index).getMa());
+            PhieuNhap currentValue = IO.PhieuNhapIO.getInfoById(this.getIdSelected(index, tableViewData));
             String maNCC = currentValue.getMaNhaCungCap();
             NhaCungCap nhaCungCap = IO.NhaCungCapIO.getInfoById(maNCC);
-            if (nhaCungCap == null) {
-                nhaCungCap.setMa("");
-                nhaCungCap.setTen("");
-                nhaCungCap.setDiaChi("");
-                nhaCungCap.setSoDienThoai("");
+            if (nhaCungCap.getMa() == null) {
+                nhaCungCap.setMa("Không tồn tại");
+                nhaCungCap.setTen("Không tồn tại");
+                nhaCungCap.setDiaChi("Không tồn tại");
+                nhaCungCap.setSoDienThoai("Không tồn tại");
             }
             ChiTietPhieuNhap detailView = new ChiTietPhieuNhap(currentValue, nhaCungCap);
             detailView.display();
@@ -108,7 +120,7 @@ public class PhieuNhapView extends javax.swing.JPanel {
         if (index != -1) {
             int rely = JOptionPane.showConfirmDialog(null, "Sau khi xóa sẽ không thể hoàn tác. Tiếp tục?", "Thông báo", JOptionPane.YES_NO_OPTION);
             if (rely == JOptionPane.YES_NO_OPTION){
-                String maPhieu = this.listPhieuNhap.get(index).getMa();
+                String maPhieu = this.getIdSelected(index, tableViewData);
                 IO.SanPhamNhapIO.deleteByIdMaPhieuNhap(maPhieu);
                 IO.PhieuNhapIO.deleteById(maPhieu);
                 JOptionPane.showMessageDialog(null, "Xóa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
@@ -126,7 +138,7 @@ public class PhieuNhapView extends javax.swing.JPanel {
             JFrame frameView = new JFrame();
             frameView.setLayout(new BorderLayout());
             QLNHView editView = new QLNHView(index, this, frameView);
-            editView.setValue(this.listPhieuNhap.get(index).getMa());
+            editView.setValue(this.getIdSelected(index, tableViewData));
             frameView.add(editView);
             frameView.setVisible(true);
             frameView.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -139,13 +151,9 @@ public class PhieuNhapView extends javax.swing.JPanel {
         }
     }
     
-    public void editValue(int index, PhieuNhap value, ArrayList<SanPhamNhap> data) {
-//        this.listPhieuNhap.get(index).setNgayCapNhat(value.getNgayTao());
-//        this.listPhieuNhap.get(index).setTien(value.getTien());
-//        IO.PhieuNhapIO.writeToFile(listPhieuNhap);
-        IO.PhieuNhapIO.updateInfoById(value);
-        String maPhieuNhap = this.listPhieuNhap.get(index).getMa();
-        IO.SanPhamNhapIO.updateDataByIdMaPhieu(maPhieuNhap, data);
+    public void editValue(PhieuNhap value, ArrayList<SanPhamNhap> data) {
+        IO.PhieuNhapIO.updateInfo(value);
+        IO.SanPhamNhapIO.updateDataByIdMaPhieu(value.getMa(), data);
     }
     
     private void handleExportPdfFile() {

@@ -61,6 +61,75 @@ public class MatHangIO {
         return result;
     }
     
+    public static MatHang getInfoById(String id) {
+        MatHang result = new MatHang();
+        try {
+            FileReader fr = new FileReader(FILE_NAME_MATHANG);
+            BufferedReader br = new BufferedReader(fr);
+            String line = "";
+            while(true) {
+                line = br.readLine();
+                if (line == null) {
+                    break;
+                }
+                String txt[] = line.split(";");
+                if (txt[0].equalsIgnoreCase(id)) {
+                    result = new MatHang(txt[0], txt[1]);
+                    break;
+                }
+            }
+            br.close();
+            fr.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+    
+    public static void deteleById(String id) {
+        try {
+            ArrayList<MatHang> list = IO.MatHangIO.readFromFile();
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getMa().equalsIgnoreCase(id)) {
+                    list.remove(i);
+                    break;
+                }
+            }
+            FileWriter fw = new FileWriter(FILE_NAME_MATHANG);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (MatHang i : list) {
+                bw.write(i.toString());
+                bw.newLine();
+            }
+            bw.close();
+            fw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void updateInfoById(String id, MatHang data) {
+        try {
+            ArrayList<MatHang> list = IO.MatHangIO.readFromFile();
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getMa().equalsIgnoreCase(id)) {
+                    list.get(i).setTen(data.getTen());
+                    break;
+                }
+            }
+            FileWriter fw = new FileWriter(FILE_NAME_MATHANG);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (MatHang i : list) {
+                bw.write(i.toString());
+                bw.newLine();
+            }
+            bw.close();
+            fw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     public static void writeToFile(ArrayList<MatHang> list) {
         try {
             FileWriter fw = new FileWriter(FILE_NAME_MATHANG);

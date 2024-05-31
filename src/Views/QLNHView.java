@@ -30,7 +30,6 @@ public class QLNHView extends javax.swing.JPanel {
     private ArrayList<Product> listSelectedProduct = new ArrayList<Product>();
     
     private PhieuNhap currentValue = new PhieuNhap();
-    private int currentIndex;
     private PhieuNhapView mainView;
     private String type = "Create";
     private JFrame frameView;
@@ -47,7 +46,6 @@ public class QLNHView extends javax.swing.JPanel {
     
     public QLNHView(int inputIndex, PhieuNhapView inputMainView, JFrame inputFrameView) {
         initComponents();
-        this.currentIndex = inputIndex;
         this.mainView = inputMainView;
         this.frameView = inputFrameView;
     }
@@ -58,11 +56,24 @@ public class QLNHView extends javax.swing.JPanel {
         ArrayList<SanPhamNhap> listSPNhap = IO.SanPhamNhapIO.getListById(maPhieuNhap);
         for (int i = 0; i < listSPNhap.size(); i++) {
             Product value = IO.SanPhamNhapIO.getInfoProductById(listSPNhap.get(i).getMaSanPham());
-            String category = IO.MatHangIO.getNameById(value.getProductCategory());
-            this.listSelectedProduct.add(new Product(value.getProductID(), value.getProductName(), category, listSPNhap.get(i).getSoLuong(), value.getProductPrice()));
+            String category = "";
+            if (value.getProductID() == null) {
+                value.setProductName("Không tồn tại");
+                category = "Không tồn tại";
+                long price = listSPNhap.get(i).getThanhTien() / listSPNhap.get(i).getSoLuong();
+                value.setProductPrice(price);
+            } else {
+                category = IO.MatHangIO.getNameById(value.getProductCategory());
+            }
+            this.listSelectedProduct.add(new Product(listSPNhap.get(i).getMaSanPham(), value.getProductName(), category, listSPNhap.get(i).getSoLuong(), value.getProductPrice()));
         }
         this.listProduct = getListProducts();
-        this.listNhaCungCap = IO.NhaCungCapIO.readFromFile();
+        NhaCungCap currentNCC = IO.NhaCungCapIO.getInfoById(this.currentValue.getMaNhaCungCap());
+        if (currentNCC.getMa() == null) {
+            this.listNhaCungCap.add(new NhaCungCap(this.currentValue.getMaNhaCungCap(), "Không tồn tại", "Không tồn tại", "Không tồn tại"));
+        } else {
+            this.listNhaCungCap.add(currentNCC);
+        }
         this.setSelectedNhaCungCap(this.currentValue.getMaNhaCungCap());
         this.showTableProduct("Edit");
         this.showListSelected("Edit");
@@ -132,7 +143,7 @@ public class QLNHView extends javax.swing.JPanel {
                 long gia = this.listSelectedProduct.get(i).getProductPrice() * this.listSelectedProduct.get(i).getProductQuantity();
                 dsSanPhamNhap.add(new SanPhamNhap(this.listSelectedProduct.get(i).getProductID(), this.listSelectedProduct.get(i).getProductQuantity(), gia, maPhieuNhap));
             }
-            this.mainView.editValue(currentIndex, this.getValue(), dsSanPhamNhap);
+            this.mainView.editValue(this.getValue(), dsSanPhamNhap);
             JOptionPane.showMessageDialog(null, "Chỉnh sửa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             this.frameView.dispose();
             this.mainView.showListData();
@@ -284,17 +295,8 @@ public class QLNHView extends javax.swing.JPanel {
     
     private void setSelectedNhaCungCap(String inputMa) {
         inputNhaCungCap.removeAllItems();
-        int index = -1;
-        for (int i = 0; i < listNhaCungCap.size(); i++) {
-            if (listNhaCungCap.get(i).getMa().equalsIgnoreCase(inputMa)) {
-                inputNhaCungCap.addItem(listNhaCungCap.get(i).getTen());
-                index = i;
-                break;
-            }
-        }
-        if (index != -1) {
-            inputNhaCungCap.setSelectedIndex(0);
-        }
+        inputNhaCungCap.addItem(listNhaCungCap.get(0).getTen());
+        inputNhaCungCap.setSelectedIndex(0);
     }
     
     private void resetInputQuantity() {
@@ -325,11 +327,19 @@ public class QLNHView extends javax.swing.JPanel {
             this.listSelectedProduct.clear();
             String maPhieuNhap = inputMaPhieu.getText();
             ArrayList<SanPhamNhap> listSPNhap = IO.SanPhamNhapIO.getListById(maPhieuNhap);
-            for (int i = 0; i < listSPNhap.size(); i++) {
-                Product value = IO.SanPhamNhapIO.getInfoProductById(listSPNhap.get(i).getMaSanPham());
-                String category = IO.MatHangIO.getNameById(value.getProductCategory());
-                this.listSelectedProduct.add(new Product(value.getProductID(), value.getProductName(), category, listSPNhap.get(i).getSoLuong(), value.getProductPrice()));
+        for (int i = 0; i < listSPNhap.size(); i++) {
+            Product value = IO.SanPhamNhapIO.getInfoProductById(listSPNhap.get(i).getMaSanPham());
+            String category = "";
+            if (value.getProductID() == null) {
+                value.setProductName("Không tồn tại");
+                category = "Không tồn tại";
+                long price = listSPNhap.get(i).getThanhTien() / listSPNhap.get(i).getSoLuong();
+                value.setProductPrice(price);
+            } else {
+                category = IO.MatHangIO.getNameById(value.getProductCategory());
             }
+            this.listSelectedProduct.add(new Product(listSPNhap.get(i).getMaSanPham(), value.getProductName(), category, listSPNhap.get(i).getSoLuong(), value.getProductPrice()));
+        }
             this.showTableProduct("Edit");
             this.showListSelected("Edit");
         }
