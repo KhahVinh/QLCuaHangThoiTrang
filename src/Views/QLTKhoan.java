@@ -63,30 +63,30 @@ public class QLTKhoan extends javax.swing.JPanel {
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         titleTK.setText("TÀI KHOẢN");
-        jPanel2.add(titleTK, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 90, 170, 28));
+        jPanel2.add(titleTK, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 100, 170, 28));
 
         jTextField5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jTextField5.setText("admin");
         jTextField5.setToolTipText("");
-        jPanel2.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 120, 245, 30));
+        jPanel2.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 130, 245, 30));
 
         titleMKCu.setText("MẬT KHẨU CŨ");
-        jPanel2.add(titleMKCu, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 180, 170, 28));
+        jPanel2.add(titleMKCu, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 190, 170, 28));
 
         txtMKC.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jPanel2.add(txtMKC, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 210, 245, 30));
+        jPanel2.add(txtMKC, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 220, 245, 30));
 
         titleMKMoi.setText("MẬT KHẨU MỚI");
-        jPanel2.add(titleMKMoi, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 270, 170, 28));
+        jPanel2.add(titleMKMoi, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 280, 170, 28));
 
         txtMKM.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jPanel2.add(txtMKM, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 300, 245, 30));
+        jPanel2.add(txtMKM, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 310, 245, 30));
 
         titleNhapLai.setText("NHẬP LẠI MẬT KHẨU");
-        jPanel2.add(titleNhapLai, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 360, 170, 28));
+        jPanel2.add(titleNhapLai, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 370, 170, 28));
 
         txtNhapLai.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jPanel2.add(txtNhapLai, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 390, 245, 30));
+        jPanel2.add(txtNhapLai, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 400, 245, 30));
 
         btnCapNhap.setText("CẬP NHẬP");
         btnCapNhap.addActionListener(new java.awt.event.ActionListener() {
@@ -94,7 +94,7 @@ public class QLTKhoan extends javax.swing.JPanel {
                 btnCapNhapActionPerformed(evt);
             }
         });
-        jPanel2.add(btnCapNhap, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 450, 100, 30));
+        jPanel2.add(btnCapNhap, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 460, 100, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -103,7 +103,7 @@ public class QLTKhoan extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1068, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1233, Short.MAX_VALUE)
                     .addComponent(Header, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
