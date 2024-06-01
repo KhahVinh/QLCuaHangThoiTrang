@@ -91,7 +91,7 @@ public class PhieuXuatView extends javax.swing.JPanel {
             showMessage("Bạn chưa chọn phiếu để xem", "Thông báo");
         } else {
             NumberFormat format = NumberFormat.getInstance(Locale.US);
-            String maPhieuCheck = (String) TablePhieuXuat.getValueAt(vitrisuaphieu, 0);
+            String maPhieuCheck = (String) TablePhieuXuat.getValueAt(index, 0);
             for (int i = 0; i < listPhieuXuat.size(); i++) {
                 if (listPhieuXuat.get(i).getMaPhieu().equals(maPhieuCheck)) {
                     String maPhieu = listPhieuXuat.get(i).getMaPhieu();

@@ -37,6 +37,7 @@ public class QLXH extends javax.swing.JPanel {
     private IO.ProductIO productIO = new ProductIO();
     private PhieuXuatView phieuXuatView;
     private SanPhamXuat sanPhamXuat;
+    private QLSP qlsp = new QLSP();
     String fileQLSP = "QuanLySanPham.txt";
     String fileMatHang = "MatHang.txt";
     String fileQLPX = "QuanLyPhieuXuat.txt";
@@ -64,9 +65,11 @@ public class QLXH extends javax.swing.JPanel {
         ArrayList<SanPhamXuat> listsanphamxuat = sanPhamXuatIO.getListByID(maPhieu);
         for (SanPhamXuat spx : listsanphamxuat) {
             Product product = sanPhamXuatIO.getInfoProductById(spx.getMaSanPham(), spx.getSoLuong(), spx.getThanhTien());
+            String categoryItem = product.getProductCategory();
+            String category = qlsp.getCategory(categoryItem);
             String formattedPrice = format.format(product.getProductPrice());
             String price = formattedPrice;
-            Object[] rowdatas = {product.getProductID(), product.getProductName(), product.getProductCategory(), product.getProductQuantity(), price};
+            Object[] rowdatas = {product.getProductID(), product.getProductName(), category, product.getProductQuantity(), price};
             model2.addRow(rowdatas);
         }
         tableXuat.setModel(model2);
