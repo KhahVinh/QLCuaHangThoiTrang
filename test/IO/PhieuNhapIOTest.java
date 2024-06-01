@@ -17,7 +17,7 @@ public class PhieuNhapIOTest {
     
     public PhieuNhapIOTest() {
     }
-
+    
     /**
      * Test of writeToFile method, of class PhieuNhapIO.
      */
@@ -46,10 +46,10 @@ public class PhieuNhapIOTest {
      * Test of updateInfoById method, of class PhieuNhapIO.
      */
     @Test
-    public void testUpdateInfoById() {
-        System.out.println("updateInfoById");
+    public void testUpdateInfo() {
+        System.out.println("updateInfo");
         PhieuNhap data = null;
-        PhieuNhapIO.updateInfoById(data);
+        PhieuNhapIO.updateInfo(data);
         PhieuNhap p = null;
         assertEquals(p, data);
     }
@@ -58,8 +58,8 @@ public class PhieuNhapIOTest {
      * Test of getInfoById method, of class PhieuNhapIO.
      */
     @Test
-    public void testGetInfoById() {
-        System.out.println("getInfoById");
+    public void testGetInfo() {
+        System.out.println("getInfo");
         String id = "";
         PhieuNhap expResult = null;
         PhieuNhap result = null;
@@ -85,7 +85,7 @@ public class PhieuNhapIOTest {
     @Test
     public void testReadFromFile() {
         System.out.println("readFromFile");
-        ArrayList<PhieuNhap> expResult = PhieuNhapIO.readFromFile();;
+        ArrayList<PhieuNhap> expResult = PhieuNhapIO.readFromFile();
         ArrayList<PhieuNhap> result = PhieuNhapIO.readFromFile();
         assertEquals(expResult, result);
     }
