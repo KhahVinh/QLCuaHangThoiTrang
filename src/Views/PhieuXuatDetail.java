@@ -4,7 +4,6 @@ import IO.SanPhamXuatIO;
 import Models.PhieuXuat;
 import Models.Product;
 import Models.SanPhamXuat;
-import static java.awt.image.ImageObserver.ABORT;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -17,7 +16,7 @@ public class PhieuXuatDetail extends javax.swing.JPanel {
     private ArrayList<PhieuXuat> phieuxuat = new ArrayList<>();
     private PhieuXuatView phieuXuatView = new PhieuXuatView();
     private SanPhamXuatIO sanPhamXuatIO = new SanPhamXuatIO();
-
+    private QLSP qlsp = new QLSP();
     public PhieuXuatDetail() {
         initComponents();
     }
@@ -36,9 +35,11 @@ public class PhieuXuatDetail extends javax.swing.JPanel {
         JlbSoluong.setText("Số lượng: " + danhsachsanphamdetail.size());
         for (SanPhamXuat spx : danhsachsanphamdetail) {
             Product product = sanPhamXuatIO.getInfoProductById(spx.getMaSanPham(), spx.getSoLuong(), spx.getThanhTien());
+            String categoryItem = product.getProductCategory();
+            String category = qlsp.getCategory(categoryItem);
             String formattedPrice = format.format(product.getProductPrice());
             String price = formattedPrice;
-            Object[] rowdatas = {product.getProductID(), product.getProductName(), product.getProductCategory(), product.getProductQuantity(), price};
+            Object[] rowdatas = {product.getProductID(), product.getProductName(), category, product.getProductQuantity(), price};
             dtmDetailPX.addRow(rowdatas);
         }
         TableDetail.setModel(dtmDetailPX);

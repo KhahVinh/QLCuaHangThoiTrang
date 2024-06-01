@@ -123,22 +123,7 @@ public class QLSP extends javax.swing.JPanel {
         }
     }
 
-    public Product getValueTable(int index, JTable table) {
-        Product pd = new Product();
-        pd.setProductID(table.getValueAt(index, 0).toString());
-        pd.setProductName(table.getValueAt(index, 1).toString());
-        pd.setProductCategory(table.getValueAt(index, 2).toString());
-        pd.setProductQuantity(Integer.parseInt(table.getValueAt(index, 3).toString()));
-        NumberFormat numberFormat = NumberFormat.getInstance();
-        long gia = 0;
-        try {
-            gia = numberFormat.parse(table.getValueAt(index, 4).toString()).longValue();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        pd.setProductPrice(gia);
-        return pd;
-    }
+
     public String getIDSelected(int index, JTable table) {
         String id = "";
         id = (String) table.getValueAt(index, 0);
@@ -154,10 +139,10 @@ public class QLSP extends javax.swing.JPanel {
         ArrayList<Product> danhsachsauxoa = new ArrayList<>();
         int vitri = -1;
         vitri = TableProduct.getSelectedRow();
-        String valueID = getIDSelected(vitri, TableProduct);
         if (vitri == -1) {
             showMessageWarning("Bạn chưa chọn sản phẩm để xóa");
         } else {
+            String valueID = getIDSelected(vitri, TableProduct);
             int select = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa không", "Thông báo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
             if (select == 0) {
                 danhsachsauxoa = IO.ProductIO.deleteByID(valueID    );
@@ -183,7 +168,7 @@ public class QLSP extends javax.swing.JPanel {
     private void displayFunctions(String name, DienThongTInSanPham dienthongtinsanpham) {
         JFrame newFrame = new JFrame(name);
         newFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        newFrame.setSize(720, 600);
+        newFrame.setSize(720, 550);
         newFrame.add(dienthongtinsanpham);
         newFrame.setVisible(true);
         newFrame.setLocationRelativeTo(null);
@@ -206,7 +191,7 @@ public class QLSP extends javax.swing.JPanel {
                         int quantity = danhsachsanpham.get(i).getProductQuantity();
                         long price = danhsachsanpham.get(i).getProductPrice();
                         DienThongTInSanPham dienthongtinsanpham = new DienThongTInSanPham(i, id, name, category, quantity, price);
-                        displayFunctions("Điền thông tin sản phẩm", dienthongtinsanpham);
+                        displayFunctions("Sửa thông tin sản phẩm", dienthongtinsanpham);
                     }
                 }
 
