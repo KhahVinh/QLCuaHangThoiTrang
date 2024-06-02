@@ -21,7 +21,7 @@ public class ChinhSuaSoLuongSP extends javax.swing.JFrame {
     }
     
     private boolean checkInput() {
-        boolean check = true;
+       boolean check = true;
         try {
             String quantity = inputQuantity.getText();
             if (quantity.length() == 0) {

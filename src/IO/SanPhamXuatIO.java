@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 public class SanPhamXuatIO {
     static String FILE_NAME = "SanPhamXuat.txt";
@@ -24,6 +25,7 @@ public class SanPhamXuatIO {
             fw.close();
         } catch (Exception e) {
             System.out.println(e.toString());
+            JOptionPane.showMessageDialog(null, "Lỗi kết nối dữ liệu", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
     public ArrayList readFileSPX() {
@@ -45,6 +47,7 @@ public class SanPhamXuatIO {
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, "Lỗi kết nối dữ liệu", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
             if(listsanphamxuat == null){
                 listsanphamxuat = new ArrayList<SanPhamXuat>();
@@ -73,6 +76,7 @@ public class SanPhamXuatIO {
             fr.close();
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi kết nối dữ liệu", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
         if (listsanphamxuat == null) {
             listsanphamxuat = new ArrayList<SanPhamXuat>();
@@ -101,6 +105,7 @@ public class SanPhamXuatIO {
             fr.close();
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi kết nối dữ liệu", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
         return result;
     }   
@@ -132,6 +137,7 @@ public class SanPhamXuatIO {
             fw.close();
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi kết nối dữ liệu", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
     public void updateDataByIdMaPhieu(String maPhieu, ArrayList<SanPhamXuat> data) {
@@ -147,6 +153,7 @@ public class SanPhamXuatIO {
             fw.close();
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi kết nối dữ liệu", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
     

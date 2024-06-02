@@ -99,6 +99,7 @@ public class PhieuNhapView extends javax.swing.JPanel {
         index = tableViewData.getSelectedRow();
         if (index != -1) {
             PhieuNhap currentValue = IO.PhieuNhapIO.getInfoById(this.getIdSelected(index, tableViewData));
+            String maPhieu = currentValue.getMa();
             String maNCC = currentValue.getMaNhaCungCap();
             NhaCungCap nhaCungCap = IO.NhaCungCapIO.getInfoById(maNCC);
             if (nhaCungCap.getMa() == null) {
@@ -107,7 +108,7 @@ public class PhieuNhapView extends javax.swing.JPanel {
                 nhaCungCap.setDiaChi("Không tồn tại");
                 nhaCungCap.setSoDienThoai("Không tồn tại");
             }
-            ChiTietPhieuNhap detailView = new ChiTietPhieuNhap(currentValue, nhaCungCap);
+            ChiTietPhieuNhap detailView = new ChiTietPhieuNhap(maPhieu, nhaCungCap);
             detailView.display();
         } else {
             this.showMessage("Chưa chọn phiếu để xem chi tiết");

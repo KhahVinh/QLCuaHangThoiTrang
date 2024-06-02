@@ -81,8 +81,8 @@ public class PhieuNhapIO {
                 if (txt[0].equalsIgnoreCase(id)) {
                     data.setMa(txt[0]);
                     data.setMaNhaCungCap(txt[1]);
-                    data.setNgayCapNhat(txt[2]);
-                    data.setNgayTao(txt[3]);
+                    data.setNgayTao(txt[2]);
+                    data.setNgayCapNhat(txt[3]);
                     data.setTien(Long.parseLong(txt[4]));
                     break;
                 }

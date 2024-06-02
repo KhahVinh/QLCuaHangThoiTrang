@@ -11,15 +11,15 @@ import javax.swing.table.DefaultTableModel;
 
 public class ChiTietPhieuNhap extends javax.swing.JFrame {
     private NhaCungCap nhaCungCap;
-    private PhieuNhap phieuNhap;
+    private String maPhieuNhap;
     
     private String[] columnName = {"Mã sản phẩm", "Tên sản phẩm", "Loại sản phẩm", "Số lượng", "Giá", "Thành tiền"};
 
-    public ChiTietPhieuNhap(PhieuNhap inputPhieuNhap, NhaCungCap inputNhaCungCap) {
+    public ChiTietPhieuNhap(String inputPhieuNhap, NhaCungCap inputNhaCungCap) {
         initComponents();
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.nhaCungCap = inputNhaCungCap;
-        this.phieuNhap = inputPhieuNhap;
+        this.maPhieuNhap = inputPhieuNhap;
     }
     
     public void display() {
@@ -28,6 +28,7 @@ public class ChiTietPhieuNhap extends javax.swing.JFrame {
     }
     
     private void setValue() {
+        PhieuNhap phieuNhap = IO.PhieuNhapIO.getInfoById(maPhieuNhap);
         maPhieu.setText(phieuNhap.getMa());
         ngayTao.setText(phieuNhap.getNgayTao());
         capNhat.setText(phieuNhap.getNgayCapNhat());
