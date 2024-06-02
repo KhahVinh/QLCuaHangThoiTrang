@@ -7,6 +7,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 public class PhieuNhapIO {
     private static final String FILE_NAME_PHIEUNHAP = "PhieuNhap.txt";
@@ -21,6 +22,7 @@ public class PhieuNhapIO {
             fw.close();
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi kết nối dữ liệu", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -36,6 +38,7 @@ public class PhieuNhapIO {
             fw.close();
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi kết nối dữ liệu", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -59,6 +62,7 @@ public class PhieuNhapIO {
             fw.close();
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi kết nối dữ liệu", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -87,6 +91,7 @@ public class PhieuNhapIO {
             fr.close();
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi kết nối dữ liệu", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
         return data;
     }
@@ -119,6 +124,7 @@ public class PhieuNhapIO {
             fw.close();
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi kết nối dữ liệu", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     } 
     
@@ -143,6 +149,7 @@ public class PhieuNhapIO {
             fr.close();
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi kết nối dữ liệu", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
         if (list == null) {
             list = new ArrayList<PhieuNhap>();

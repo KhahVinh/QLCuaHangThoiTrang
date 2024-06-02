@@ -8,6 +8,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 public class SanPhamNhapIO {
     private static final String FILE_NAME = "SanPhamNhap.txt";
@@ -30,6 +31,7 @@ public class SanPhamNhapIO {
             fr.close();
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi kết nối dữ liệu", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
         if (list == null) {
             list = new ArrayList<SanPhamNhap>();
@@ -58,6 +60,7 @@ public class SanPhamNhapIO {
             fr.close();
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi kết nối dữ liệu", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
         if (list == null) {
             list = new ArrayList<SanPhamNhap>();
@@ -93,6 +96,7 @@ public class SanPhamNhapIO {
             fw.close();
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi kết nối dữ liệu", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -108,6 +112,7 @@ public class SanPhamNhapIO {
             fw.close();
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi kết nối dữ liệu", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -123,6 +128,7 @@ public class SanPhamNhapIO {
             fw.close();
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi kết nối dữ liệu", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -139,6 +145,7 @@ public class SanPhamNhapIO {
             fw.close();
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi kết nối dữ liệu", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
     
