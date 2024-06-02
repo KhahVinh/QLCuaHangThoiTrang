@@ -315,6 +315,7 @@ public class QLXH extends javax.swing.JPanel {
             phieuXuatView = new PhieuXuatView();
             phieuXuatView.updateTable();
             deleteFile();
+            model2.setRowCount(0);
             JOptionPane.showMessageDialog(null, "Sửa thành công", "Thông báo", JOptionPane.WARNING_MESSAGE);
             checkFeature = 0;
         }

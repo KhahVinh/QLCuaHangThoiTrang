@@ -83,10 +83,6 @@ public class PhieuXuatView extends javax.swing.JPanel {
     public void getListSPDetail(int index) {
         ArrayList<PhieuXuat> listPhieuXuat = new ArrayList<>();
         listPhieuXuat = phieuxuatIO.readFilePX(FILE_NAME_XH);
-        ArrayList<Product> listDetailSP = new ArrayList<>();
-        ArrayList<SanPhamXuat> listSPXuat = new ArrayList<>();
-        listSPXuat = sanPhamXuatIO.readFileSPX();
-        PhieuXuat px = null;
         if (index == -1) {
             showMessage("Bạn chưa chọn phiếu để xem", "Thông báo");
         } else {
@@ -110,9 +106,6 @@ public class PhieuXuatView extends javax.swing.JPanel {
     }
 
     private void delete() {
-        ArrayList<PhieuXuat> danhsachhientai = new ArrayList<>();
-        danhsachhientai = phieuxuatIO.readFilePX(FILE_NAME_XH);
-        ArrayList<PhieuXuat> listphieuxuatsauxoa = new ArrayList<>();
         int index = -1;
         index = TablePhieuXuat.getSelectedRow();
         if (index == -1) {
@@ -121,7 +114,6 @@ public class PhieuXuatView extends javax.swing.JPanel {
             int select = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa không", "Thông báo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
             if (select == 0) {
                 String id = (String) TablePhieuXuat.getValueAt(index, 0);
-                PrintWriter writer;
                 phieuxuatIO.deleteByIdMaPhieuNhap(id);
                 sanPhamXuatIO.deleteByIdMaPhieuNhap(id);
                 index--;
@@ -134,10 +126,6 @@ public class PhieuXuatView extends javax.swing.JPanel {
     private void Modify() {
         ArrayList<PhieuXuat> danhsachhientai = new ArrayList<>();
         danhsachhientai = phieuxuatIO.readFilePX(FILE_NAME_XH);
-        ArrayList<PhieuXuat> listphieuxuatsauxoa = new ArrayList<>();
-        ArrayList<Product> listsanpham = new ArrayList<>();
-        ArrayList<Product> listdatasanpham = new ArrayList<>();
-        listdatasanpham = productIO.readFromFile();
         vitrisuaphieu = -1;
         vitrisuaphieu = TablePhieuXuat.getSelectedRow();
         if (vitrisuaphieu == -1) {
@@ -154,9 +142,6 @@ public class PhieuXuatView extends javax.swing.JPanel {
             long tongTien = danhsachhientai.get(i).getTien();
             ArrayList<SanPhamXuat> sanphamxuat = new ArrayList<>();
             PhieuXuat data = new PhieuXuat(maPhieu, tenKH, sdtKH, diaChi, tongTien);
-            sanphamxuat = sanPhamXuatIO.readFileSPX();
-            listsanpham = productIO.readFromFile();
-            ArrayList<SanPhamXuat> listSPXuat = sanPhamXuatIO.getListByID(maPhieu);
             QLXH qlxh = new QLXH(maPhieu, tenKH, sdtKH, diaChi, tongTien);
             qlxh.btnXuat.setText("Cập nhật");
             qlxh.updateTableModifyPX();
