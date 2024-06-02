@@ -1,4 +1,3 @@
-AOM120;Áo nam
 QA728;Quần nam
 VAYN123;Váy
 AOUNS012;Áo Unisex
