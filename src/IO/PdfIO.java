@@ -45,6 +45,9 @@ public class PdfIO {
     public static void createPdf(String filePath, String inputMaPhieu) throws IOException, DocumentException{
         PhieuNhap phieuNhap = IO.PhieuNhapIO.getInfoById(inputMaPhieu);
         NhaCungCap nhaCungCap = IO.NhaCungCapIO.getInfoById(phieuNhap.getMaNhaCungCap());
+        if (nhaCungCap.getMa() == null) {
+            nhaCungCap = new NhaCungCap(phieuNhap.getMaNhaCungCap(), "Không tồn tại", "Không tồn tại", "Không tồn tại");
+        }
         Document document = new Document();
         PdfWriter.getInstance(document, new FileOutputStream(filePath));
         BaseFont bf = BaseFont.createFont(fontFile.getAbsolutePath(), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
@@ -91,7 +94,7 @@ public class PdfIO {
                 } else {
                     category = IO.MatHangIO.getNameById(value.getProductCategory());
                 }
-                listSP.add(new Product(value.getProductID(), value.getProductName(), category, listSPNhap.get(i).getSoLuong(), value.getProductPrice()));
+                listSP.add(new Product(listSPNhap.get(i).getMaSanPham(), value.getProductName(), category, listSPNhap.get(i).getSoLuong(), value.getProductPrice()));
             }
         for (int i = 0; i < listSP.size(); i++) {
             String Ma = listSP.get(i).getProductID();

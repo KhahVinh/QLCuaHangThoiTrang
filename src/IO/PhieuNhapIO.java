@@ -2,7 +2,6 @@
 package IO;
 
 import Models.PhieuNhap;
-import Models.Product;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
