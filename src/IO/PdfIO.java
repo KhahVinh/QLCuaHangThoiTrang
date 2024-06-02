@@ -82,7 +82,15 @@ public class PdfIO {
         ArrayList<SanPhamNhap> listSPNhap = IO.SanPhamNhapIO.getListById(inputMaPhieu);
             for (int i = 0; i < listSPNhap.size(); i++) {
                 Product value = IO.ProductIO.getInfoProductById(listSPNhap.get(i).getMaSanPham());
-                String category = IO.MatHangIO.getNameById(value.getProductCategory());
+                String category = "";
+                if (value.getProductID() == null) {
+                    value.setProductName("Không tồn tại");
+                    category = "Không tồn tại";
+                    long price = listSPNhap.get(i).getThanhTien() / listSPNhap.get(i).getSoLuong();
+                    value.setProductPrice(price);
+                } else {
+                    category = IO.MatHangIO.getNameById(value.getProductCategory());
+                }
                 listSP.add(new Product(value.getProductID(), value.getProductName(), category, listSPNhap.get(i).getSoLuong(), value.getProductPrice()));
             }
         for (int i = 0; i < listSP.size(); i++) {
@@ -125,8 +133,7 @@ public class PdfIO {
             Document doc = new Document();
             PdfWriter.getInstance(doc, new FileOutputStream(filePath));
             doc.open();
-            
-            BaseFont bf = BaseFont.createFont("c:\\windows\\fonts\\times.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            BaseFont bf = BaseFont.createFont(fontFile.getAbsolutePath(), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             Font fontTitle = new Font(bf, 18, Font.BOLD);
             Font fontContent = new Font(bf, 12, Font.NORMAL);
             
@@ -153,7 +160,7 @@ public class PdfIO {
                 Product product = IO.SanPhamXuatIO.getInfoProductById(spx.getMaSanPham(), spx.getSoLuong(), spx.getThanhTien());
                 String Ma = product.getProductID();
                 String Ten = product.getProductName();
-                String Loai = product.getProductCategory();
+                String Loai = IO.MatHangIO.getNameById(product.getProductCategory());
                 String soLuong = String.valueOf(product.getProductQuantity());
                 String giaBan = String.valueOf(product.getProductPrice());
                 tb.addCell(new Paragraph(Ma, fontContent));
@@ -163,14 +170,10 @@ public class PdfIO {
                 tb.addCell(new Paragraph(giaBan, fontContent));
                 tongTien += product.getProductPrice();
             }
-            
             doc.add(tb);
-            
             Paragraph p3 = new Paragraph("\nTổng tiền: " + String.valueOf(tongTien), fontContent);
             doc.add(p3);
-            
             doc.close();
-            JOptionPane.showMessageDialog(null, "Xuất thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             
     }
     

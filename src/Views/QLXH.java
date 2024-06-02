@@ -65,8 +65,7 @@ public class QLXH extends javax.swing.JPanel {
         ArrayList<SanPhamXuat> listsanphamxuat = sanPhamXuatIO.getListByID(maPhieu);
         for (SanPhamXuat spx : listsanphamxuat) {
             Product product = sanPhamXuatIO.getInfoProductById(spx.getMaSanPham(), spx.getSoLuong(), spx.getThanhTien());
-            String categoryItem = product.getProductCategory();
-            String category = qlsp.getCategory(categoryItem);
+            String category = IO.MatHangIO.getNameById(product.getProductCategory());
             String formattedPrice = format.format(product.getProductPrice());
             String price = formattedPrice;
             Object[] rowdatas = {product.getProductID(), product.getProductName(), category, product.getProductQuantity(), price};

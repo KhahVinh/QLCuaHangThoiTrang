@@ -35,8 +35,7 @@ public class PhieuXuatDetail extends javax.swing.JPanel {
         JlbSoluong.setText("Số lượng: " + danhsachsanphamdetail.size());
         for (SanPhamXuat spx : danhsachsanphamdetail) {
             Product product = sanPhamXuatIO.getInfoProductById(spx.getMaSanPham(), spx.getSoLuong(), spx.getThanhTien());
-            String categoryItem = product.getProductCategory();
-            String category = qlsp.getCategory(categoryItem);
+            String category = IO.MatHangIO.getNameById(product.getProductCategory());
             String formattedPrice = format.format(product.getProductPrice());
             String price = formattedPrice;
             Object[] rowdatas = {product.getProductID(), product.getProductName(), category, product.getProductQuantity(), price};
