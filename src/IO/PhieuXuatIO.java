@@ -13,6 +13,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 public class PhieuXuatIO {
 
@@ -29,6 +30,7 @@ public class PhieuXuatIO {
             fw.close();
         } catch (IOException ex) {
             Logger.getLogger(PhieuXuatIO.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Lỗi kết nối dữ liệu", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -58,6 +60,9 @@ public class PhieuXuatIO {
             Logger.getLogger(PhieuXuatIO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(PhieuXuatIO.class.getName()).log(Level.SEVERE, null, ex);
+        }  catch (Exception e) {
+            System.out.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, "Lỗi kết nối dữ liệu", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
         if (danhsachphieuxuat == null) {
             danhsachphieuxuat = new ArrayList<PhieuXuat>();
@@ -92,6 +97,7 @@ public class PhieuXuatIO {
             fw.close();
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi kết nối dữ liệu", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
     public void updateInfoById(PhieuXuat data) {
@@ -146,6 +152,7 @@ public class PhieuXuatIO {
             fr.close();
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi kết nối dữ liệu", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
         return data;
     }

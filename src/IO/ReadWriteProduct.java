@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 public class ReadWriteProduct {
      ListProduct listProduct = new ListProduct();
@@ -30,6 +31,7 @@ public class ReadWriteProduct {
             fw.close();
         } catch (IOException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi kết nối dữ liệu", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
     private ArrayList<MatHang> readFromFile(String url) {
@@ -51,6 +53,7 @@ public class ReadWriteProduct {
             fr.close();
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi kết nối dữ liệu", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
         if (list == null) {
             list = new ArrayList<MatHang>();
@@ -75,6 +78,7 @@ public class ReadWriteProduct {
             }
             br.close();
         } catch (IOException | NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Lỗi kết nối dữ liệu", "Lỗi", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
 
         };

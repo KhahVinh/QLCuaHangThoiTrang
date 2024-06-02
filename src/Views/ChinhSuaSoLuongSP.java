@@ -21,7 +21,7 @@ public class ChinhSuaSoLuongSP extends javax.swing.JFrame {
     }
     
     private boolean checkInput() {
-        boolean check = true;
+       boolean check = true;
         try {
             String quantity = inputQuantity.getText();
             if (quantity.length() == 0) {
@@ -30,12 +30,10 @@ public class ChinhSuaSoLuongSP extends javax.swing.JFrame {
             }
             if (quantity.length() != 0) {
                 Integer qtt = Integer.parseInt(inputQuantity.getText());
-            } else {
-                Integer qtt = Integer.parseInt(inputQuantity.getText());
-                if (qtt == 0) {
-                    showMessage("Sản phẩm nhập có số lượng ít nhất là 1");
-                    check = false;
-                }
+            }
+            if (Integer.parseInt(inputQuantity.getText()) == 0 ){
+                showMessage("Sản phẩm nhập có số lượng ít nhất là 1");
+                check = false;
             }
         } catch (NumberFormatException e) {
             showMessage("Số lượng không thể chứa kí tự");
