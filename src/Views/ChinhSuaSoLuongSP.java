@@ -29,7 +29,11 @@ public class ChinhSuaSoLuongSP extends javax.swing.JFrame {
                 check = false;
             }
             if (quantity.length() != 0) {
-                Long qtt = Long.parseLong(inputQuantity.getText());
+                Integer qtt = Integer.parseInt(inputQuantity.getText());
+            }
+            if (Integer.parseInt(inputQuantity.getText()) == 0 ){
+                showMessage("Sản phẩm nhập có số lượng ít nhất là 1");
+                check = false;
             }
         } catch (NumberFormatException e) {
             showMessage("Số lượng không thể chứa kí tự");
